@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import Pagination from "@mui/material/Pagination";
-import Modal from "@mui/material/Modal";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react"
+import Box from "@mui/material/Box"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import FormControl from "@mui/material/FormControl"
+import Select from "@mui/material/Select"
+import Grid from "@mui/material/Grid"
+import Divider from "@mui/material/Divider"
+import List from "@mui/material/List"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import Avatar from "@mui/material/Avatar"
+import Typography from "@mui/material/Typography"
+import InputBase from "@mui/material/InputBase"
+import IconButton from "@mui/material/IconButton"
+import SearchIcon from "@mui/icons-material/Search"
+import Pagination from "@mui/material/Pagination"
+import Modal from "@mui/material/Modal"
+import styled from "styled-components"
 
 export default function DirectoryPage() {
-  const [category, setCategory] = useState("");
-  const [availableCategories, setAvailableCategories] = useState([]);
-  const [listings, setListings] = useState([]);
-  const [limit, setLimit] = useState(20);
-  const [offset, setOffset] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [paginatorCount, setPaginatorCount] = useState(0);
-  const [page, setPage] = React.useState(1);
-  const [selectedIndex, setSelectedIndex] = React.useState(-1);
-  const [open, setOpen] = React.useState(false);
+  const [category, setCategory] = useState("")
+  const [availableCategories, setAvailableCategories] = useState([])
+  const [listings, setListings] = useState([])
+  const [limit, setLimit] = useState(20)
+  const [offset, setOffset] = useState(0)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [paginatorCount, setPaginatorCount] = useState(0)
+  const [page, setPage] = React.useState(1)
+  const [selectedIndex, setSelectedIndex] = React.useState(-1)
+  const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
     async function fetchListings() {
@@ -38,48 +38,48 @@ export default function DirectoryPage() {
         Offset: offset,
         Categories: category,
         SearchTermA: searchTerm,
-      }).toString();
-      const response = await fetch(`/api/directory?${queryString}`);
-      const json = await response.json();
-      json.data ? setListings(json.data) : setListings([]);
-      setPaginatorCount(Math.ceil(json.count / limit));
+      }).toString()
+      const response = await fetch(`/api/directory?${queryString}`)
+      const json = await response.json()
+      json.data ? setListings(json.data) : setListings([])
+      setPaginatorCount(Math.ceil(json.count / limit))
     }
-    fetchListings();
-  }, [limit, offset, category, searchTerm]);
+    fetchListings()
+  }, [limit, offset, category, searchTerm])
 
   useEffect(() => {
     async function fetchCategories() {
-      const response = await fetch(`/api/category`);
-      const json = await response.json();
-      setAvailableCategories(json.data);
+      const response = await fetch(`/api/category`)
+      const json = await response.json()
+      setAvailableCategories(json.data)
     }
 
-    fetchCategories();
-  }, []);
+    fetchCategories()
+  }, [])
 
   const handleChange = (event) => {
-    setOffset(0);
-    setPage(1);
-    setCategory(event.target.value);
-  };
+    setOffset(0)
+    setPage(1)
+    setCategory(event.target.value)
+  }
   const handleClose = (event) => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handlePaging = (event, value) => {
-    setPage(value);
-    setOffset((value - 1) * limit);
-  };
+    setPage(value)
+    setOffset((value - 1) * limit)
+  }
 
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(true);
-  };
+    setSelectedIndex(index)
+    setOpen(true)
+  }
 
   const handleSearch = (term) => {
-    setOffset(0);
-    setSearchTerm(term);
-  };
+    setOffset(0)
+    setSearchTerm(term)
+  }
 
   const style = {
     position: "absolute",
@@ -91,12 +91,12 @@ export default function DirectoryPage() {
     background: "#fff",
     boxShadow: 24,
     p: 4,
-  };
+  }
 
   const Paginator = styled.div`
     display: flex;
     justify-content: center;
-  `;
+  `
 
   return (
     <>
@@ -169,7 +169,7 @@ export default function DirectoryPage() {
                     >
                       {availableCategory.category}
                     </MenuItem>
-                  );
+                  )
                 })}
               </Select>
             </FormControl>
@@ -208,7 +208,7 @@ export default function DirectoryPage() {
                   }
                 />
               </ListItemButton>
-            );
+            )
           })}
         </List>
         <Paginator>
@@ -221,5 +221,5 @@ export default function DirectoryPage() {
         </Paginator>
       </Box>
     </>
-  );
+  )
 }
