@@ -19,9 +19,19 @@ import Pagination from "@mui/material/Pagination"
 import Modal from "@mui/material/Modal"
 import styled from "styled-components"
 
-export default function DirectoryPage() {
+export async function getServerSideProps() {
+  const response = await fetch(`${process.env.API_URL}/api/category`)
+  const json = await response.json()
+  const availableCategories = json.data
+  // setAvailableCategories(json.data)
+
+  // Pass data to the page via props
+  return { props: { availableCategories } }
+}
+
+function DirectoryPage({ availableCategories }) {
   const [category, setCategory] = useState("")
-  const [availableCategories, setAvailableCategories] = useState([])
+  // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [limit, setLimit] = useState(20)
   const [offset, setOffset] = useState(0)
@@ -47,15 +57,15 @@ export default function DirectoryPage() {
     fetchListings()
   }, [limit, offset, category, searchTerm])
 
-  useEffect(() => {
-    async function fetchCategories() {
-      const response = await fetch(`/api/category`)
-      const json = await response.json()
-      setAvailableCategories(json.data)
-    }
+  // useEffect(() => {
+  //   async function fetchCategories() {
+  //     const response = await fetch(`/api/category`)
+  //     const json = await response.json()
+  //     setAvailableCategories(json.data)
+  //   }
 
-    fetchCategories()
-  }, [])
+  //   fetchCategories()
+  // }, [])
 
   const handleChange = (event) => {
     setOffset(0)
@@ -223,3 +233,5 @@ export default function DirectoryPage() {
     </>
   )
 }
+
+export default DirectoryPage
