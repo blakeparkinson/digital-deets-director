@@ -33,6 +33,7 @@ function DirectoryPage({ availableCategories }) {
   const [category, setCategory] = useState("")
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
+  const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(20)
   const [offset, setOffset] = useState(0)
   const [searchTerm, setSearchTerm] = useState("")
@@ -44,18 +45,17 @@ function DirectoryPage({ availableCategories }) {
   useEffect(() => {
     async function fetchListings() {
       const queryString = new URLSearchParams({
-        Limit: limit,
-        Offset: offset,
         Categories: category,
         SearchTermA: searchTerm,
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
       const json = await response.json()
-      json.data ? setListings(json.data) : setListings([])
-      setPaginatorCount(Math.ceil(json.count / limit))
+      setListings(json.data)
+      setDisplayedListings(json.data.slice(offset, limit))
+      setPaginatorCount(Math.ceil(json.data.length / limit))
     }
     fetchListings()
-  }, [limit, offset, category, searchTerm])
+  }, [category, searchTerm])
 
   // useEffect(() => {
   //   async function fetchCategories() {
@@ -79,6 +79,10 @@ function DirectoryPage({ availableCategories }) {
   const handlePaging = (event, value) => {
     setPage(value)
     setOffset((value - 1) * limit)
+    const first = (value - 1) * limit
+    const second = (value - 1) * limit + limit
+
+    setDisplayedListings(listings.slice(first, second))
   }
 
   const handleListItemClick = (event, index) => {
@@ -102,11 +106,6 @@ function DirectoryPage({ availableCategories }) {
     boxShadow: 24,
     p: 4,
   }
-
-  const Paginator = styled.div`
-    display: flex;
-    justify-content: center;
-  `
 
   return (
     <>
@@ -187,7 +186,7 @@ function DirectoryPage({ availableCategories }) {
         </Grid>
         <Divider style={{ marginTop: "50px" }} />
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          {listings.map((listing, index) => {
+          {displayedListings.map((listing, index) => {
             return (
               <ListItemButton
                 key={index}
@@ -221,14 +220,14 @@ function DirectoryPage({ availableCategories }) {
             )
           })}
         </List>
-        <Paginator>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Pagination
             count={paginatorCount}
             color="secondary"
             onChange={handlePaging}
             page={page}
           />
-        </Paginator>
+        </div>
       </Box>
     </>
   )
