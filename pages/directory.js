@@ -77,6 +77,7 @@ function DirectoryPage({ availableCategories }) {
   }
 
   const handlePaging = (event, value) => {
+    if (!value) return
     setPage(value)
     setOffset((value - 1) * limit)
     const first = (value - 1) * limit
