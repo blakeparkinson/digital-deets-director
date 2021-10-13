@@ -92,6 +92,7 @@ function DirectoryPage({ availableCategories }) {
 
   const handleSearch = (term) => {
     setOffset(0)
+    setPage(1)
     setSearchTerm(term)
   }
 
