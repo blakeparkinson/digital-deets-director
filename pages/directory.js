@@ -214,10 +214,14 @@ function DirectoryPage({ availableCategories }) {
           <Grid
             container
             rowSpacing={1}
-            sx={{ backgroundColor: "rgb(25, 118, 210)" }}
+            sx={{
+              backgroundColor: "rgb(25, 118, 210)",
+              display: "flex",
+              alignItems: "center",
+            }}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
                   Categories
