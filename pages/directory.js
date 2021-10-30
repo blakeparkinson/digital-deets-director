@@ -17,7 +17,8 @@ import IconButton from "@mui/material/IconButton"
 import SearchIcon from "@mui/icons-material/Search"
 import Pagination from "@mui/material/Pagination"
 import Modal from "@mui/material/Modal"
-import styled from "styled-components"
+import CustomMap from "../components/custommap"
+import { styled, alpha } from "@mui/material/styles"
 
 export async function getServerSideProps() {
   const response = await fetch(`${process.env.API_URL}/api/category`)
@@ -27,6 +28,64 @@ export async function getServerSideProps() {
 
   // Pass data to the page via props
   return { props: { availableCategories } }
+}
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}))
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}))
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}))
+
+const SearchComponent = ({ searchTerm, handleSearch }) => {
+  return (
+    <Search>
+      <SearchIconWrapper>
+        <SearchIcon />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Search…"
+        value={searchTerm}
+        onChange={(e) => handleSearch(e)}
+        inputProps={{ "aria-label": "search" }}
+      />
+    </Search>
+  )
 }
 
 function DirectoryPage({ availableCategories }) {
@@ -91,7 +150,9 @@ function DirectoryPage({ availableCategories }) {
     setOpen(true)
   }
 
-  const handleSearch = (term) => {
+  const handleSearch = (event) => {
+    event.stopPropagation()
+    const term = event.target.value
     setOffset(0)
     setPage(1)
     setSearchTerm(term)
@@ -117,6 +178,7 @@ function DirectoryPage({ availableCategories }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        {/* <Box sx={{ display: 'flex' }}> */}
         <Box style={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {listings[selectedIndex]?.businessname}
@@ -147,90 +209,107 @@ function DirectoryPage({ availableCategories }) {
           </Typography>
         </Box>
       </Modal>
-      <Box sx={{ minWidth: 120, margin: "20px" }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={6}>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search Listings"
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              inputProps={{ "aria-label": "search categories" }}
-              style={{ width: "90%" }}
-            />
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Categories</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={category}
-                label="Categories"
-                onChange={handleChange}
-              >
-                {availableCategories.map((availableCategory) => {
-                  return (
-                    <MenuItem
-                      key={availableCategory.category}
-                      value={availableCategory.category}
-                    >
-                      {availableCategory.category}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <Divider style={{ marginTop: "50px" }} />
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          {displayedListings.map((listing, index) => {
-            return (
-              <ListItemButton
-                key={index}
-                alignItems="flex-start"
-                selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(event, index)}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    src={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
-                  >
-                    <a href={listing.website}></a>
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={listing.businessname}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
+      <Box sx={{ display: "flex", flexDirection: "roq" }}>
+        <Box sx={{ flex: 1 }}>
+          <Grid
+            container
+            rowSpacing={1}
+            sx={{ backgroundColor: "rgb(25, 118, 210)" }}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Categories
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={category}
+                  label="Categories"
+                  onChange={handleChange}
+                >
+                  {availableCategories.map((availableCategory) => {
+                    return (
+                      <MenuItem
+                        key={availableCategory.category}
+                        value={availableCategory.category}
                       >
-                        {listing.description}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItemButton>
-            )
-          })}
-        </List>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Pagination
-            count={paginatorCount}
-            color="secondary"
-            onChange={handlePaging}
-            page={page}
-          />
-        </div>
+                        {availableCategory.category}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              {/* <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search Listings"
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                inputProps={{ "aria-label": "search categories" }}
+                style={{ width: "60%" }}
+              />
+              <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+                <SearchIcon />
+              </IconButton> */}
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearch={handleSearch}
+              />
+            </Grid>
+          </Grid>
+          {/* <Divider style={{ marginTop: "50px" }} /> */}
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            {displayedListings.map((listing, index) => {
+              return (
+                <ListItemButton
+                  key={index}
+                  alignItems="flex-start"
+                  selected={selectedIndex === index}
+                  onClick={(event) => handleListItemClick(event, index)}
+                >
+                  <ListItemAvatar>
+                    <Avatar
+                      src={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
+                    >
+                      <a href={listing.website}></a>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${index + 1}. ${listing.businessname}`}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {listing.description}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItemButton>
+              )
+            })}
+          </List>
+        </Box>
+        <Box sx={{ flex: 1, marginTop: "-8px" }}>
+          <CustomMap locations={displayedListings} />
+        </Box>
       </Box>
+
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Pagination
+          count={paginatorCount}
+          color="secondary"
+          onChange={handlePaging}
+          page={page}
+        />
+      </div>
     </>
   )
 }

@@ -1,6 +1,9 @@
-let listings
+import data from "../../listings.json"
+
+// let listings
 
 export default async function handler(req, res) {
+  const listings = data
   if (!listings) {
     //we dont have listings so we need to hit the db
     const queryString = new URLSearchParams(req.query).toString()
@@ -11,6 +14,26 @@ export default async function handler(req, res) {
     // const dirResponseJson = await dirResponse.json()
     const countResponseJson = await countResponse.json()
     listings = countResponseJson
+    // for (const i in listings.data) {
+    //   if (
+    //     listings.data[i].streetaddress &&
+    //     listings.data[i].streetaddress.length &&
+    //     listings.data[i].city &&
+    //     listings.data[i].city.length &&
+    //     listings.data[i].state &&
+    //     listings.data[i].state.length
+    //   ) {
+    //     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${listings.data[i].streetaddress}&key=AIzaSyDwmj1y_jUUMEddwi4T0AydIoUKvb_Qz-8&city=${listings.data[i].city}&state=${listings.data[i].state}`
+
+    //     const markerResponse = await fetch(url)
+    //     const marker = await markerResponse.json()
+    //     if (marker.results.length) {
+    //       listings.data[i]["marker"] = marker.results[0].geometry.location
+    //     }
+    //   }
+
+    //   // listing.marker = marker
+    // }
     // dirResponseJson.count = countResponseJson.data.length
     res.status(200).json(listings)
   } else {
