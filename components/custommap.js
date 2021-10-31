@@ -43,6 +43,7 @@ function CustomMap({ google, locations = [] }) {
         if (location.marker) {
           return (
             <Marker
+              key={index}
               position={location.marker}
               name={location.businessname}
               label={location.pos.toString()}

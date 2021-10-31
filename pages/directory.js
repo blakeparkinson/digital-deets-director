@@ -5,7 +5,6 @@ import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import Grid from "@mui/material/Grid"
-import Divider from "@mui/material/Divider"
 import List from "@mui/material/List"
 import ListItemText from "@mui/material/ListItemText"
 import ListItemButton from "@mui/material/ListItemButton"
@@ -24,8 +23,6 @@ export async function getServerSideProps() {
   const response = await fetch(`${process.env.API_URL}/api/category`)
   const json = await response.json()
   const availableCategories = json.data
-  // setAvailableCategories(json.data)
-
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
@@ -89,7 +86,7 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
 }
 
 function DirectoryPage({ availableCategories }) {
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState(availableCategories[0])
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [displayedListings, setDisplayedListings] = useState([])
@@ -104,7 +101,7 @@ function DirectoryPage({ availableCategories }) {
   useEffect(() => {
     async function fetchListings() {
       const queryString = new URLSearchParams({
-        Categories: category,
+        Categories: category.category,
         SearchTermA: searchTerm,
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
@@ -129,6 +126,7 @@ function DirectoryPage({ availableCategories }) {
   const handleChange = (event) => {
     setOffset(0)
     setPage(1)
+    console.log(event.target)
     setCategory(event.target.value)
   }
   const handleClose = (event) => {
@@ -230,16 +228,17 @@ function DirectoryPage({ availableCategories }) {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={category}
-                  label="Categories"
+                  // defaultValue={availableCategories[0].label}
                   onChange={handleChange}
                 >
-                  {availableCategories.map((availableCategory) => {
+                  {availableCategories.map((availableCategory, index) => {
                     return (
                       <MenuItem
-                        key={availableCategory.category}
-                        value={availableCategory.category}
+                        key={index}
+                        value={availableCategory}
+                        name={availableCategory.label}
                       >
-                        {availableCategory.category}
+                        {availableCategory.label}
                       </MenuItem>
                     )
                   })}
