@@ -40,6 +40,7 @@ const Search = styled("div")(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: "auto",
   },
+  color: "white",
 }))
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -213,15 +214,22 @@ function DirectoryPage({ availableCategories }) {
             container
             rowSpacing={1}
             sx={{
-              backgroundColor: "rgb(25, 118, 210)",
+              backgroundColor: "#02779d",
               display: "flex",
               alignItems: "center",
             }}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            columnSpacing={{ xs: 2, sm: 4, md: 6 }}
           >
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+              <FormControl
+                fullWidth
+                variant="standard"
+                sx={{ color: "white", marginLeft: "24px" }}
+              >
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{ color: "white" }}
+                >
                   Categories
                 </InputLabel>
                 <Select
@@ -230,6 +238,7 @@ function DirectoryPage({ availableCategories }) {
                   value={category}
                   // defaultValue={availableCategories[0].label}
                   onChange={handleChange}
+                  style={{ color: "white" }}
                 >
                   {availableCategories.map((availableCategory, index) => {
                     return (
