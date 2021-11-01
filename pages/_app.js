@@ -1,12 +1,12 @@
-import React from "react"
-import { StyledEngineProvider } from "@mui/material/styles"
+import React from 'react'
+import { StyledEngineProvider } from '@mui/material/styles'
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <StyledEngineProvider injectFirst>
-      <Component {...pageProps} />
-    </StyledEngineProvider>
-  )
+	return (
+		<StyledEngineProvider injectFirst>
+			<Component {...pageProps} />
+		</StyledEngineProvider>
+	)
 }
 
 export default MyApp
