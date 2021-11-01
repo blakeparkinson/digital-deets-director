@@ -327,7 +327,8 @@ function DirectoryPage({ availableCategories }) {
                       image={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
                       onError={(e) => {
                         e.target.onerror = null
-                        e.target.src = "/placeholder.png"
+                        e.target.src =
+                          "https://blake-deets.s3.us-west-1.amazonaws.com/Placeholder.png"
                       }}
                     />
                     <CardContent>
