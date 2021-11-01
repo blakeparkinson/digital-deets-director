@@ -324,7 +324,13 @@ function DirectoryPage({ availableCategories }) {
                 //     }
                 //   />
                 // </ListItemButton>
-                <Grid item xs={6} md={4}>
+                <Grid
+                  sx={{ cursor: "pointer" }}
+                  item
+                  xs={6}
+                  md={4}
+                  onClick={(event) => handleListItemClick(event, index)}
+                >
                   <Card sx={{ maxWidth: 300 }}>
                     <CardMedia
                       component="img"
