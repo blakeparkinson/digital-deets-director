@@ -12,6 +12,10 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import Avatar from "@mui/material/Avatar"
 import Typography from "@mui/material/Typography"
 import InputBase from "@mui/material/InputBase"
+import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
+import CardMedia from "@mui/material/CardMedia"
 import IconButton from "@mui/material/IconButton"
 import SearchIcon from "@mui/icons-material/Search"
 import Pagination from "@mui/material/Pagination"
@@ -26,6 +30,9 @@ export async function getServerSideProps() {
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
+
+const DEFAULT_DESC =
+  " Add a description to your organization listing.  The online Community Catalog is available to the entire community of organizations and members.  Update your information anytime."
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -209,14 +216,16 @@ function DirectoryPage({ availableCategories }) {
         </Box>
       </Modal>
       <Box sx={{ display: "flex", flexDirection: "roq" }}>
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 2 }}>
           <Grid
             container
             rowSpacing={1}
             sx={{
               backgroundColor: "#02779d",
               display: "flex",
-              alignItems: "center",
+              alignItems: "baseline",
+              marginBottom: "20px",
+              paddingBottom: "10px",
             }}
             columnSpacing={{ xs: 2, sm: 4, md: 6 }}
           >
@@ -273,55 +282,90 @@ function DirectoryPage({ availableCategories }) {
             </Grid>
           </Grid>
           {/* <Divider style={{ marginTop: "50px" }} /> */}
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <Grid
+            sx={{ bgcolor: "background.paper" }}
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
             {displayedListings.map((listing, index) => {
               return (
-                <ListItemButton
-                  key={index}
-                  alignItems="flex-start"
-                  selected={selectedIndex === index}
-                  onClick={(event) => handleListItemClick(event, index)}
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      src={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
-                    >
-                      <a href={listing.website}></a>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={`${index + 1}. ${listing.businessname}`}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {listing.description}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItemButton>
+                // <ListItemButton
+                //   key={index}
+                //   alignItems="flex-start"
+                //   selected={selectedIndex === index}
+                //   onClick={(event) => handleListItemClick(event, index)}
+                // >
+                //   <ListItemAvatar>
+                //     <Avatar
+                //       src={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
+                //     >
+                //       <a href={listing.website}></a>
+                //     </Avatar>
+                //   </ListItemAvatar>
+                //   <ListItemText
+                //     primary={`${index + 1}. ${listing.businessname}`}
+                //     secondary={
+                //       <React.Fragment>
+                //         <Typography
+                //           sx={{ display: "inline" }}
+                //           component="span"
+                //           variant="body2"
+                //           color="text.primary"
+                //         >
+                //           {listing.description}
+                //         </Typography>
+                //       </React.Fragment>
+                //     }
+                //   />
+                // </ListItemButton>
+                <Grid item xs={6} md={4}>
+                  <Card sx={{ maxWidth: 300 }}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
+                      onError={(e) => {
+                        e.target.onerror = null
+                        e.target.src = "/placeholder.png"
+                      }}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {listing.businessname}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {listing.description
+                          ? listing.description
+                          : DEFAULT_DESC}
+                      </Typography>
+                    </CardContent>
+                    <CardActions></CardActions>
+                  </Card>
+                </Grid>
               )
             })}
-          </List>
+          </Grid>
         </Box>
         <Box sx={{ flex: 1, marginTop: "-8px" }}>
           <CustomMap locations={displayedListings} />
         </Box>
       </Box>
-
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Pagination
-          count={paginatorCount}
-          color="secondary"
-          onChange={handlePaging}
-          page={page}
-        />
-      </div>
+      {paginatorCount > 1 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            count={paginatorCount}
+            color="secondary"
+            onChange={handlePaging}
+            page={page}
+          />
+        </div>
+      )}
     </>
   )
 }

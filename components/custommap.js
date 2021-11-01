@@ -25,7 +25,7 @@ function CustomMap({ google, locations = [] }) {
       google={google}
       containerStyle={{
         position: "fixed",
-        width: "50%",
+        width: "40%",
         height: "100%",
         border: "1px solid black",
       }}
