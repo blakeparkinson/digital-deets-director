@@ -24,9 +24,24 @@ import CustomMap from "../components/custommap"
 import { styled, alpha } from "@mui/material/styles"
 
 export async function getServerSideProps() {
-  const response = await fetch(`${process.env.API_URL}/api/category`)
-  const json = await response.json()
-  const availableCategories = json.data
+  // const response = await fetch(`${process.env.API_URL}/api/category`)
+  // const json = await response.json()
+  const availableCategories = [
+    { category: "", label: "All Categories" },
+    { category: "AfterSchool-Academics", label: "After School-Academics" },
+    { category: "AfterSchool-Athletics", label: "After School-Athletics" },
+    { category: "AfterSchool-TheArts", label: "After School-TheArts" },
+    { category: "Auto Sales/Repairs", label: "Auto Sales/Repairs" },
+    { category: "Dentist/Orthodontist", label: "Dentist/Orthodontist" },
+    { category: "Family Fun", label: "Family Fun" },
+    { category: "Kids/Teen Retail", label: "Kids/Teen Retail" },
+    { category: "Lawyers", label: "Lawyers" },
+    { category: "Nonprofit", label: "Nonprofit" },
+    { category: "Realtors", label: "Realtors" },
+    { category: "Software", label: "Software" },
+    { category: "Virtual Camp", label: "Virtual Camp" },
+    { category: "k-12 Public School", label: "K-12 Public School" },
+  ]
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
@@ -120,16 +135,6 @@ function DirectoryPage({ availableCategories }) {
     }
     fetchListings()
   }, [category, searchTerm])
-
-  useEffect(() => {
-    async function fetchCategories() {
-      const response = await fetch(`/api/category`)
-      const json = await response.json()
-      setAvailableCategories(json.data)
-    }
-
-    fetchCategories()
-  }, [])
 
   const handleChange = (event) => {
     setOffset(0)
