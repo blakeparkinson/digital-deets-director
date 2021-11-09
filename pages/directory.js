@@ -338,7 +338,6 @@ function DirectoryPage({ availableCategories }) {
                   }}
                   item
                   md={4}
-                  onClick={(event) => handleListItemClick(event, index)}
                 >
                   <Card sx={{ maxWidth: 300 }}>
                     <CardMedia
@@ -351,7 +350,9 @@ function DirectoryPage({ availableCategories }) {
                           "https://blake-deets.s3.us-west-1.amazonaws.com/catalog_placeholder.png"
                       }}
                     />
-                    <CardContent>
+                    <CardContent
+                      onClick={(event) => handleListItemClick(event, index)}
+                    >
                       <Typography gutterBottom variant="h5" component="div">
                         {listing.businessname}
                       </Typography>
