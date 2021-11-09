@@ -372,6 +372,7 @@ function DirectoryPage({ availableCategories }) {
       </div>
       {paginatorCount > 1 && (
         <div
+          className="mt-8"
           style={{
             display: "flex",
             justifyContent: "center",
@@ -379,7 +380,8 @@ function DirectoryPage({ availableCategories }) {
         >
           <Pagination
             count={paginatorCount}
-            color="secondary"
+            color="primary"
+            variant="outlined"
             onChange={handlePaging}
             page={page}
           />
