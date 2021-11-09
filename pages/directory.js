@@ -12,6 +12,8 @@ import Grid from "@mui/material/Grid"
 // import Avatar from '@mui/material/Avatar'
 import Typography from "@mui/material/Typography"
 import InputBase from "@mui/material/InputBase"
+import Button from "@mui/material/Button"
+
 import Card from "@mui/material/Card"
 import CardActions from "@mui/material/CardActions"
 import CardContent from "@mui/material/CardContent"
@@ -359,7 +361,16 @@ function DirectoryPage({ availableCategories }) {
                           : DEFAULT_DESC}
                       </Typography>
                     </CardContent>
-                    <CardActions></CardActions>
+                    <CardActions>
+                      <a
+                        className="w-full"
+                        href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}
+                      >
+                        <Button className="w-full self-end bg-orange text-white">
+                          Signup up my organization
+                        </Button>
+                      </a>
+                    </CardActions>
                   </Card>
                 </Grid>
               )
