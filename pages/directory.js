@@ -220,7 +220,7 @@ function DirectoryPage({ availableCategories }) {
           </Typography>
         </Box>
       </Modal>
-      <Box sx={{ display: "flex", flexDirection: "roq" }}>
+      <div className="flex lg:flex-row flex-col">
         <Box sx={{ flex: 2 }}>
           <Grid
             container
@@ -232,7 +232,7 @@ function DirectoryPage({ availableCategories }) {
               marginBottom: "20px",
               paddingBottom: "10px",
             }}
-            columnSpacing={{ xs: 2, sm: 4, md: 6 }}
+            columnSpacing={{ xs: 1, sm: 2, md: 4 }}
           >
             <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
               <FormControl
@@ -288,7 +288,11 @@ function DirectoryPage({ availableCategories }) {
           </Grid>
           {/* <Divider style={{ marginTop: "50px" }} /> */}
           <Grid
-            sx={{ bgcolor: "background.paper" }}
+            sx={{
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+            }}
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
@@ -325,9 +329,12 @@ function DirectoryPage({ availableCategories }) {
                 //   />
                 // </ListItemButton>
                 <Grid
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                   item
-                  xs={6}
                   md={4}
                   onClick={(event) => handleListItemClick(event, index)}
                 >
@@ -339,7 +346,7 @@ function DirectoryPage({ availableCategories }) {
                       onError={(e) => {
                         e.target.onerror = null
                         e.target.src =
-                          "https://blake-deets.s3.us-west-1.amazonaws.com/Placeholder.png"
+                          "https://blake-deets.s3.us-west-1.amazonaws.com/catalog_placeholder.png"
                       }}
                     />
                     <CardContent>
@@ -362,7 +369,7 @@ function DirectoryPage({ availableCategories }) {
         <Box sx={{ flex: 1, marginTop: "-8px" }}>
           <CustomMap locations={displayedListings} />
         </Box>
-      </Box>
+      </div>
       {paginatorCount > 1 && (
         <div
           style={{

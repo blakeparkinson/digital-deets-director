@@ -23,16 +23,7 @@ function CustomMap({ google, locations = [] }) {
   return (
     <Map
       google={google}
-      containerStyle={{
-        position: "fixed",
-        width: "40%",
-        height: "100%",
-        border: "1px solid black",
-      }}
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
+      className="w-full lg:w-2/5 lg:fixed relative h-72 lg:h-full !important"
       center={getCenter()}
       initialCenter={getCenter()}
       zoom={5}
