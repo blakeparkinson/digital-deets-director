@@ -395,7 +395,7 @@ function DirectoryPage({ availableCategories }) {
         >
           <Pagination
             count={paginatorCount}
-            color="primary"
+            color="secondary"
             variant="outlined"
             onChange={handlePaging}
             page={page}
