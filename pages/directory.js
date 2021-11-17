@@ -367,7 +367,7 @@ function DirectoryPage({ availableCategories }) {
                         className="w-full"
                         href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}
                       >
-                        <Button className="w-full self-end bg-orange text-white">
+                        <Button className="w-full self-end bg-orange text-white capitalize">
                           Signup up my organization
                         </Button>
                       </a>
@@ -379,7 +379,10 @@ function DirectoryPage({ availableCategories }) {
           </Grid>
         </Box>
         <Box sx={{ flex: 1, marginTop: "-8px" }}>
-          <CustomMap locations={displayedListings} />
+          <CustomMap
+            locations={displayedListings}
+            google={{ zoomControl: true }}
+          />
         </Box>
       </div>
       {paginatorCount > 1 && (

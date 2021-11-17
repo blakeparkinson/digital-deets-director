@@ -20,14 +20,26 @@ function CustomMap({ google, locations = [] }) {
     setShowingInfoWindow(true)
   }
 
+  console.log(google)
+
   return (
     <Map
       google={google}
       className="w-full lg:w-2/5 lg:fixed relative h-72 lg:h-full !important"
-      center={getCenter()}
-      initialCenter={getCenter()}
       zoom={5}
-      disableDefaultUI={true}
+      gestureHandling={"cooperative"}
+      initialCenter={getCenter()}
+      streetViewControl={true}
+      streetViewControlOptions={{
+        position: google.maps.ControlPosition.LEFT_CENTER,
+      }}
+      zoomControlOptions={{ position: google.maps.ControlPosition.LEFT_BOTTOM }}
+      center={getCenter()}
+      zoomControl={true}
+      scaleControl={true}
+      scaleControlOptions={{
+        position: google.maps.ControlPosition.BOTTOM_LEFT,
+      }}
     >
       {locations.map((location, index) => {
         location.pos = index + 1
