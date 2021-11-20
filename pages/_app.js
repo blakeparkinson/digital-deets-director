@@ -1,6 +1,8 @@
 import React from "react"
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles"
 import { createTheme } from "@mui/material/styles"
+import { Header } from "../components"
+
 import "tailwindcss/tailwind.css"
 
 const theme = createTheme({
@@ -18,6 +20,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
+        <Header />
         <Component {...pageProps} />
       </ThemeProvider>
     </StyledEngineProvider>

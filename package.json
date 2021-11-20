@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.2",
+    "fs": "^0.0.1-security",
     "google-maps-react": "^2.0.6",
     "material-ui": "^0.20.2",
     "material-ui-search-bar": "^1.0.0",
@@ -20,16 +21,26 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "styled-components": "^5.3.1",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^2.2.19",
+    "twin.macro": "^2.8.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
+    "babel-plugin-macros": "^3.1.0",
+    "babel-plugin-styled-components": "^1.13.3",
+    "classnames": "^2.3.1",
     "eslint": "^7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
     "postcss": "^8.3.11",
-    "prettier": "2.4.1"
+    "prettier": "2.4.1",
+    "react-is": "^17.0.2"
+  },
+  "babelMacros": {
+    "twin": {
+      "preset": "styled-components"
+    }
   }
 }

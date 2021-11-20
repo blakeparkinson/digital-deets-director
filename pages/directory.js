@@ -222,7 +222,7 @@ function DirectoryPage({ availableCategories }) {
           </Typography>
         </Box>
       </Modal>
-      <div className="flex lg:flex-row flex-col">
+      <div className="flex lg:flex-row flex-col mt-20 xl:mt-0">
         <Box sx={{ flex: 2 }}>
           <Grid
             container
