@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.2",
+    "@tailwindcss/line-clamp": "^0.2.2",
     "fs": "^0.0.1-security",
     "google-maps-react": "^2.0.6",
     "material-ui": "^0.20.2",

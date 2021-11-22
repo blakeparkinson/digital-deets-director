@@ -21,9 +21,16 @@ import CardMedia from "@mui/material/CardMedia"
 // import IconButton from '@mui/material/IconButton'
 import SearchIcon from "@mui/icons-material/Search"
 import Pagination from "@mui/material/Pagination"
-import Modal from "@mui/material/Modal"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import CustomMap from "../components/custommap"
 import { styled, alpha } from "@mui/material/styles"
+import { useTheme } from "@mui/material/styles"
+import { Text } from "../components/text"
 
 export async function getServerSideProps() {
   // const response = await fetch(`${process.env.API_URL}/api/category`)
@@ -122,6 +129,10 @@ function DirectoryPage({ availableCategories }) {
   const [page, setPage] = React.useState(1)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
   const [open, setOpen] = React.useState(false)
+  const [seeMoreActive, setSeeMoreActive] = React.useState(true)
+  const theme = useTheme()
+
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
   useEffect(() => {
     async function fetchListings() {
@@ -141,7 +152,6 @@ function DirectoryPage({ availableCategories }) {
   const handleChange = (event) => {
     setOffset(0)
     setPage(1)
-    console.log(event.target)
     setCategory(event.target.value)
   }
   const handleClose = (event) => {
@@ -185,44 +195,47 @@ function DirectoryPage({ availableCategories }) {
 
   return (
     <>
-      <Modal
+      <Dialog
+        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         {/* <Box sx={{ display: 'flex' }}> */}
-        <Box style={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {listings[selectedIndex]?.businessname}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {listings[selectedIndex]?.description}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            <b>Category: </b> {listings[selectedIndex]?.category}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            <b>Website: </b>{" "}
-            <a href={listings[selectedIndex]?.website}>
-              {listings[selectedIndex]?.website}
-            </a>
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            <b>Facebook: </b>{" "}
-            <a href={listings[selectedIndex]?.facebookpage}>
-              {listings[selectedIndex]?.facebookpage}
-            </a>
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            <b>Telephone: </b> {listings[selectedIndex]?.phonenumber}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-            <b>Address: </b> {listings[selectedIndex]?.streetaddress}
-          </Typography>
-        </Box>
-      </Modal>
-      <div className="flex lg:flex-row flex-col">
+        <DialogTitle id="responsive-dialog-title">
+          {listings[selectedIndex]?.businessname}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {listings[selectedIndex]?.description}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <b>Category: </b> {listings[selectedIndex]?.category}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <b>Website: </b>{" "}
+              <a href={listings[selectedIndex]?.website} className="text-blue">
+                {listings[selectedIndex]?.website}
+              </a>
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <b>Facebook: </b>{" "}
+              <a href={listings[selectedIndex]?.facebookpage}>
+                {listings[selectedIndex]?.facebookpage}
+              </a>
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <b>Telephone: </b> {listings[selectedIndex]?.phonenumber}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <b>Address: </b> {listings[selectedIndex]?.streetaddress}
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+      <div className="flex lg:flex-row flex-col mt-20 xl:mt-0">
         <Box sx={{ flex: 2 }}>
           <Grid
             container
@@ -339,15 +352,17 @@ function DirectoryPage({ availableCategories }) {
                   item
                   md={4}
                 >
-                  <Card sx={{ maxWidth: 300 }}>
+                  <Card
+                    sx={{ maxWidth: 300 }}
+                    className="flex flex-col justify-between"
+                  >
                     <CardMedia
                       component="img"
                       height="140"
                       image={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
                       onError={(e) => {
                         e.target.onerror = null
-                        e.target.src =
-                          "https://blake-deets.s3.us-west-1.amazonaws.com/catalog_placeholder.png"
+                        e.target.style.display = "none"
                       }}
                     />
                     <CardContent
@@ -356,19 +371,30 @@ function DirectoryPage({ availableCategories }) {
                       <Typography gutterBottom variant="h5" component="div">
                         {listing.businessname}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        className="line-clamp-5 overflow-hidden h-[150px]"
+                      >
                         {listing.description
                           ? listing.description
                           : DEFAULT_DESC}
                       </Typography>
+                      <Text
+                        level="s"
+                        weight="normal"
+                        className="mt-2 text-blue text-end"
+                      >
+                        See More?
+                      </Text>
                     </CardContent>
                     <CardActions>
                       <a
                         className="w-full"
                         href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}
                       >
-                        <Button className="w-full self-end bg-orange text-white">
-                          Signup up my organization
+                        <Button className="w-full self-end bg-orange text-white normal-case">
+                          Signup my organization
                         </Button>
                       </a>
                     </CardActions>
@@ -379,7 +405,10 @@ function DirectoryPage({ availableCategories }) {
           </Grid>
         </Box>
         <Box sx={{ flex: 1, marginTop: "-8px" }}>
-          <CustomMap locations={displayedListings} />
+          <CustomMap
+            locations={displayedListings}
+            google={{ zoomControl: true }}
+          />
         </Box>
       </div>
       {paginatorCount > 1 && (
@@ -392,7 +421,7 @@ function DirectoryPage({ availableCategories }) {
         >
           <Pagination
             count={paginatorCount}
-            color="primary"
+            color="secondary"
             variant="outlined"
             onChange={handlePaging}
             page={page}
