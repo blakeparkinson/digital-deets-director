@@ -390,7 +390,7 @@ function DirectoryPage({ availableCategories }) {
                         weight="normal"
                         className="mt-2 text-blue text-end"
                       >
-                        See More?
+                        View full listing
                       </Text>
                     </CardContent>
                     <CardActions>
@@ -399,7 +399,7 @@ function DirectoryPage({ availableCategories }) {
                         href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}
                       >
                         <Button className="w-full self-end bg-orange text-white normal-case">
-                          Signup my organization
+                          Sign Up My Organization
                         </Button>
                       </a>
                     </CardActions>
