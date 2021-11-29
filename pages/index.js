@@ -279,9 +279,9 @@ function DirectoryPage({ availableCategories }) {
               >
                 <InputLabel
                   id="demo-simple-select-label"
-                  sx={{ color: 'white', fontSize: '12px' }}
+                  sx={{ color: 'white !important', fontSize: '12px' }}
                 >
-                  Categories
+                  Browse by category
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
