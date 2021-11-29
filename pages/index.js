@@ -1,101 +1,101 @@
-import React, { useEffect, useState } from "react"
-import Box from "@mui/material/Box"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import FormControl from "@mui/material/FormControl"
-import Select from "@mui/material/Select"
-import Grid from "@mui/material/Grid"
+import React, { useEffect, useState } from 'react'
+import Box from '@mui/material/Box'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import Grid from '@mui/material/Grid'
 // import List from '@mui/material/List'
 // import ListItemText from '@mui/material/ListItemText'
 // import ListItemButton from '@mui/material/ListItemButton'
 // import ListItemAvatar from '@mui/material/ListItemAvatar'
 // import Avatar from '@mui/material/Avatar'
-import Typography from "@mui/material/Typography"
-import InputBase from "@mui/material/InputBase"
-import Button from "@mui/material/Button"
+import Typography from '@mui/material/Typography'
+import InputBase from '@mui/material/InputBase'
+import Button from '@mui/material/Button'
 
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
 // import IconButton from '@mui/material/IconButton'
-import SearchIcon from "@mui/icons-material/Search"
-import Pagination from "@mui/material/Pagination"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
-import DialogTitle from "@mui/material/DialogTitle"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import CustomMap from "../components/custommap"
-import { styled, alpha } from "@mui/material/styles"
-import { useTheme } from "@mui/material/styles"
-import { Text } from "../components/text"
+import SearchIcon from '@mui/icons-material/Search'
+import Pagination from '@mui/material/Pagination'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import CustomMap from '../components/custommap'
+import { styled, alpha } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
+import { Text } from '../components/text'
 
 export async function getServerSideProps() {
   // const response = await fetch(`${process.env.API_URL}/api/category`)
   // const json = await response.json()
   const availableCategories = [
-    { category: "", label: "All Categories" },
-    { category: "AfterSchool-Academics", label: "After School-Academics" },
-    { category: "AfterSchool-Athletics", label: "After School-Athletics" },
-    { category: "AfterSchool-TheArts", label: "After School-TheArts" },
-    { category: "Auto Sales/Repairs", label: "Auto Sales/Repairs" },
-    { category: "Dentist/Orthodontist", label: "Dentist/Orthodontist" },
-    { category: "Family Fun", label: "Family Fun" },
-    { category: "Kids/Teen Retail", label: "Kids/Teen Retail" },
-    { category: "Lawyers", label: "Lawyers" },
-    { category: "Nonprofit", label: "Nonprofit" },
-    { category: "Realtors", label: "Realtors" },
-    { category: "Software", label: "Software" },
-    { category: "Virtual Camp", label: "Virtual Camp" },
-    { category: "k-12 Public School", label: "K-12 Public School" },
+    { category: '', label: 'All Categories' },
+    { category: 'AfterSchool-Academics', label: 'After School-Academics' },
+    { category: 'AfterSchool-Athletics', label: 'After School-Athletics' },
+    { category: 'AfterSchool-TheArts', label: 'After School-TheArts' },
+    { category: 'Auto Sales/Repairs', label: 'Auto Sales/Repairs' },
+    { category: 'Dentist/Orthodontist', label: 'Dentist/Orthodontist' },
+    { category: 'Family Fun', label: 'Family Fun' },
+    { category: 'Kids/Teen Retail', label: 'Kids/Teen Retail' },
+    { category: 'Lawyers', label: 'Lawyers' },
+    { category: 'Nonprofit', label: 'Nonprofit' },
+    { category: 'Realtors', label: 'Realtors' },
+    { category: 'Software', label: 'Software' },
+    { category: 'Virtual Camp', label: 'Virtual Camp' },
+    { category: 'k-12 Public School', label: 'K-12 Public School' },
   ]
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
 
 const DEFAULT_DESC =
-  " Add a description to your organization listing.  The online Community Catalog is available to the entire community of organizations and members.  Update your information anytime."
+  ' Add a description to your organization listing.  The online Community Catalog is available to the entire community of organizations and members.  Update your information anytime.'
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
+  '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
-    width: "auto",
+    width: 'auto',
   },
-  color: "white",
+  color: 'white',
 }))
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }))
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
+  color: 'inherit',
+  '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '40ch',
+      '&:focus': {
+        width: '50ch',
       },
     },
   },
@@ -111,7 +111,7 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
         placeholder="Search…"
         value={searchTerm}
         onChange={(e) => handleSearch(e)}
-        inputProps={{ "aria-label": "search" }}
+        inputProps={{ 'aria-label': 'search' }}
       />
     </Search>
   )
@@ -124,7 +124,7 @@ function DirectoryPage({ availableCategories }) {
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(20)
   const [offset, setOffset] = useState(0)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState('')
   const [paginatorCount, setPaginatorCount] = useState(0)
   const [page, setPage] = React.useState(1)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
@@ -132,7 +132,7 @@ function DirectoryPage({ availableCategories }) {
   const [seeMoreActive, setSeeMoreActive] = React.useState(true)
   const theme = useTheme()
 
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   useEffect(() => {
     async function fetchListings() {
@@ -182,13 +182,13 @@ function DirectoryPage({ availableCategories }) {
   }
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 600,
-    padding: "20px",
-    background: "#fff",
+    padding: '20px',
+    background: '#fff',
     boxShadow: 24,
     p: 4,
   }
@@ -215,13 +215,13 @@ function DirectoryPage({ availableCategories }) {
               <b>Category: </b> {listings[selectedIndex]?.category}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Website: </b>{" "}
+              <b>Website: </b>{' '}
               <a href={listings[selectedIndex]?.website} className="text-blue">
                 {listings[selectedIndex]?.website}
               </a>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Facebook: </b>{" "}
+              <b>Facebook: </b>{' '}
               <a href={listings[selectedIndex]?.facebookpage}>
                 {listings[selectedIndex]?.facebookpage}
               </a>
@@ -241,49 +241,15 @@ function DirectoryPage({ availableCategories }) {
             container
             rowSpacing={1}
             sx={{
-              backgroundColor: "#02779d",
-              display: "flex",
-              alignItems: "baseline",
-              marginBottom: "20px",
-              paddingBottom: "10px",
+              backgroundColor: '#02779d',
+              display: 'flex',
+              alignItems: 'baseline',
+              marginBottom: '20px',
+              paddingBottom: '10px',
             }}
             columnSpacing={{ xs: 1, sm: 2, md: 4 }}
           >
-            <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
-              <FormControl
-                fullWidth
-                variant="standard"
-                sx={{ color: "white", marginLeft: "24px" }}
-              >
-                <InputLabel
-                  id="demo-simple-select-label"
-                  sx={{ color: "white" }}
-                >
-                  Categories
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={category}
-                  // defaultValue={availableCategories[0].label}
-                  onChange={handleChange}
-                  style={{ color: "white" }}
-                >
-                  {availableCategories.map((availableCategory, index) => {
-                    return (
-                      <MenuItem
-                        key={index}
-                        value={availableCategory}
-                        name={availableCategory.label}
-                      >
-                        {availableCategory.label}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item>
+            <Grid item sx={{ display: 'flex' }}>
               {/* <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search Listings"
@@ -300,13 +266,52 @@ function DirectoryPage({ availableCategories }) {
                 handleSearch={handleSearch}
               />
             </Grid>
+            <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
+              <FormControl
+                fullWidth
+                variant="standard"
+                sx={{
+                  color: 'white',
+                  marginLeft: '24px',
+                  fontSize: '12px',
+                  marginTop: '5px',
+                }}
+              >
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{ color: 'white', fontSize: '12px' }}
+                >
+                  Categories
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={category}
+                  // defaultValue={availableCategories[0].label}
+                  onChange={handleChange}
+                  style={{ color: 'white', fontSize: '14px' }}
+                >
+                  {availableCategories.map((availableCategory, index) => {
+                    return (
+                      <MenuItem
+                        key={index}
+                        value={availableCategory}
+                        name={availableCategory.label}
+                      >
+                        {availableCategory.label}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           {/* <Divider style={{ marginTop: "50px" }} /> */}
           <Grid
             sx={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
             }}
             container
             spacing={{ xs: 2, md: 3 }}
@@ -345,9 +350,9 @@ function DirectoryPage({ availableCategories }) {
                 // </ListItemButton>
                 <Grid
                   sx={{
-                    cursor: "pointer",
-                    display: "flex",
-                    justifyContent: "center",
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'center',
                   }}
                   item
                   md={4}
@@ -362,7 +367,7 @@ function DirectoryPage({ availableCategories }) {
                       image={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
                       onError={(e) => {
                         e.target.onerror = null
-                        e.target.style.display = "none"
+                        e.target.style.display = 'none'
                       }}
                     />
                     <CardContent
@@ -404,7 +409,7 @@ function DirectoryPage({ availableCategories }) {
             })}
           </Grid>
         </Box>
-        <Box sx={{ flex: 1, marginTop: "-8px" }}>
+        <Box sx={{ flex: 1, marginTop: '-8px' }}>
           <CustomMap
             locations={displayedListings}
             google={{ zoomControl: true }}
@@ -415,8 +420,8 @@ function DirectoryPage({ availableCategories }) {
         <div
           className="mt-8"
           style={{
-            display: "flex",
-            justifyContent: "center",
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <Pagination
