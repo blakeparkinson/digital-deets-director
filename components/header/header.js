@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import Link from "next/link"
-import { Text } from "../text"
-import { HamburgerIcon, CloseIcon } from "../icons"
-import cx from "classnames"
-import styled from "styled-components"
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { Text } from '../text'
+import { HamburgerIcon, CloseIcon } from '../icons'
+import cx from 'classnames'
+import styled from 'styled-components'
 
 const MenuLink = styled.div`
   .dropdown-menu {
@@ -17,58 +17,68 @@ const MenuLink = styled.div`
 `
 const navigation = [
   {
-    name: "For Fundraisers",
+    name: 'For Fundraisers',
     items: [
-      { text: "Schools", href: "https://digitaldeets.com/schools" },
-      { text: "Nonprofits", href: "https://digitaldeets.com/nonprofits" },
+      { text: 'Schools', href: 'https://digitaldeets.com/schools' },
+      { text: 'Nonprofits', href: 'https://digitaldeets.com/nonprofits' },
       {
-        text: "School Fundraising Ideas",
-        href: "https://digitaldeets.com/school-fundraising-ideas",
+        text: 'School Fundraising Ideas',
+        href: 'https://digitaldeets.com/school-fundraising-ideas',
       },
     ],
   },
   {
-    name: "For Businesses",
+    name: 'For Businesses',
     items: [
       {
-        text: "Kid-Friendly Businesses",
-        href: "https://digitaldeets.com/kid-friendly-businesses",
+        text: 'Kid-Friendly Businesses',
+        href: 'https://digitaldeets.com/kid-friendly-businesses',
       },
       {
-        text: "Local Businesses",
-        href: "https://digitaldeets.com/small-and-local-businesses/",
+        text: 'Local Businesses',
+        href: 'https://digitaldeets.com/small-and-local-businesses/',
       },
       {
-        text: "Advertise Your Business",
-        href: "https://digitaldeets.com/small-and-local-businesses/advertising",
+        text: 'Advertise Your Business',
+        href: 'https://digitaldeets.com/small-and-local-businesses/advertising',
       },
     ],
   },
   {
-    name: "Ways to Use",
+    name: 'Ways to Use',
     items: [
       {
-        text: "List, Promote, and Sponsor",
-        href: "https://digitaldeets.com/list-sponsor-and-promote/",
+        text: 'List, Promote, and Sponsor',
+        href: 'https://digitaldeets.com/list-sponsor-and-promote/',
       },
-      { text: "Fundraise" },
-      { text: "Communicate" },
+      {
+        text: 'Fundraise',
+        href: 'https://digitaldeets.com/fundraising/',
+      },
+      {
+        text: 'Communicate',
+        href: 'https://digitaldeets.com/communicate/',
+      },
+      {
+        text: 'Deets Digest',
+        href: 'https://digitaldeets.com/deets-digest/',
+      },
     ],
   },
   {
-    name: "Learn More",
+    name: 'Learn More',
     items: [
       {
-        text: "About Us",
-        href: "https://digitaldeets.com/small-and-local-businesses/about-us",
+        text: 'About Us',
+        href: 'https://digitaldeets.com/small-and-local-businesses/about-us',
       },
       {
-        text: "Training",
-        href: "https://digitaldeets.com/small-and-local-businesses/training",
+        text: 'Training',
+        href: 'https://digitaldeets.com/small-and-local-businesses/training',
       },
       {
-        text: "Blog",
-        href: "https://digitaldeets.com/small-and-local-businesses/blog",
+        text: 'Blog',
+        href: 'https://digitaldeets.com/small-and-local-businesses/blog',
       },
     ],
   },
@@ -102,7 +112,7 @@ export const Header = () => {
               return (
                 <MenuLink>
                   <div className="flex items-center mx-4 my-2  hover:opacity-70">
-                    <Text weight={"normal"} level="s">
+                    <Text weight={'normal'} level="s">
                       {nav.name}
                     </Text>
                   </div>
@@ -149,7 +159,7 @@ export const Header = () => {
       </div>
       <div
         className={cx(
-          "mobile-menu xl:hidden flex flex-col md:flex-row md:items-center justify-between mt-12",
+          'mobile-menu xl:hidden flex flex-col md:flex-row md:items-center justify-between mt-12',
           {
             hidden: !hamburgerOpen,
           }
