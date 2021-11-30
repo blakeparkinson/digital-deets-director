@@ -307,6 +307,15 @@ function DirectoryPage({ availableCategories }) {
             </Grid>
           </Grid>
           {/* <Divider style={{ marginTop: "50px" }} /> */}
+          <div className="my-4 ml-4">
+            Can't find your listing? Submit it{' '}
+            <a
+              className="text-blue"
+              href="https://zfrmz.com/aLhAfKDxfbYtVbnmdOWo"
+            >
+              here
+            </a>
+          </div>
           <Grid
             sx={{
               cursor: 'pointer',
