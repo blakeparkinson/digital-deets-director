@@ -31,6 +31,7 @@ import CustomMap from '../components/custommap'
 import { styled, alpha } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
+import { FaPhone, FaSearchLocation } from 'react-icons/fa'
 
 export async function getServerSideProps() {
   // const response = await fetch(`${process.env.API_URL}/api/category`)
@@ -115,6 +116,15 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
       />
     </Search>
   )
+}
+
+function formatPhoneNumber(phoneNumberString) {
+  var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  if (match) {
+    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  }
+  return null
 }
 
 function DirectoryPage({ availableCategories }) {
@@ -401,6 +411,24 @@ function DirectoryPage({ availableCategories }) {
                       >
                         View full listing
                       </Text>
+                      <Text
+                        level="xs"
+                        weight="normal"
+                        className="mt-2 flex text-grey-300 items-center"
+                      >
+                        <FaPhone className="mr-2" />
+                        {formatPhoneNumber(listing.phonenumber)}
+                      </Text>
+                      {listing.streetaddress && (
+                        <Text
+                          level="xs"
+                          weight="normal"
+                          className="mt-2 flex text-grey-300 items-center"
+                        >
+                          <FaSearchLocation className="mr-2" />
+                          {`${listing.streetaddress}, ${listing.city}, ${listing.state}`}
+                        </Text>
+                      )}
                     </CardContent>
                     <CardActions>
                       <a
