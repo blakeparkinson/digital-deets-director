@@ -45,6 +45,10 @@ const navigation = [
     ],
   },
   {
+    name: 'Community Catalog',
+    active: true,
+  },
+  {
     name: 'Ways to Use',
     items: [
       {
@@ -112,7 +116,13 @@ export const Header = () => {
               return (
                 <MenuLink>
                   <div className="flex items-center mx-4 my-2  hover:opacity-70">
-                    <Text weight={'normal'} level="s">
+                    <Text
+                      weight={'normal'}
+                      level="s"
+                      className={cx({
+                        'text-blue': nav.active,
+                      })}
+                    >
                       {nav.name}
                     </Text>
                   </div>
@@ -170,7 +180,13 @@ export const Header = () => {
             return (
               <li key={nav.name}>
                 <div className="flex pr-2 py-4 items-center">
-                  <Text level="m" weight="bold">
+                  <Text
+                    level="m"
+                    weight="bold"
+                    className={cx({
+                      'text-blue': nav.active,
+                    })}
+                  >
                     {nav.name}
                     <ul>
                       {nav.items &&
