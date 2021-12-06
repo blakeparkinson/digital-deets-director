@@ -4,6 +4,7 @@ import { Text } from '../text'
 import { HamburgerIcon, CloseIcon } from '../icons'
 import cx from 'classnames'
 import styled from 'styled-components'
+import { FaChevronDown } from 'react-icons/fa'
 
 const MenuLink = styled.div`
   .dropdown-menu {
@@ -52,20 +53,16 @@ const navigation = [
     name: 'Ways to Use',
     items: [
       {
+        text: 'Deets Digest',
+        href: 'https://digitaldeets.com/deets-digest/',
+      },
+      {
         text: 'List, Promote, and Sponsor',
         href: 'https://digitaldeets.com/list-sponsor-and-promote/',
       },
       {
         text: 'Fundraise',
         href: 'https://digitaldeets.com/fundraising/',
-      },
-      {
-        text: 'Communicate',
-        href: 'https://digitaldeets.com/communicate/',
-      },
-      {
-        text: 'Deets Digest',
-        href: 'https://digitaldeets.com/deets-digest/',
       },
     ],
   },
@@ -101,12 +98,12 @@ export const Header = () => {
 
   return (
     <div className="z-20 bg-white border-b items-center xl:px-28 lg:px-16 px-8 py-4 fixed xl:sticky w-full top-0">
-      <div className="justify-between flex">
+      <div className="justify-center flex">
         <div className="flex">
           <Link href={`https://digitaldeets.com/`}>
-            <a className="mr-4 cursor-pointer">
+            <a className="mr-20 cursor-pointer">
               <img
-                className="w-12"
+                className="w-24"
                 src="https://digitaldeets.com/wp-content/uploads/2021/10/Digital-Deets-logo_new.png"
               />
             </a>
@@ -115,9 +112,9 @@ export const Header = () => {
             {navigation.map((nav) => {
               return (
                 <MenuLink>
-                  <div className="flex items-center mx-4 my-2  hover:opacity-70">
+                  <div className="flex items-center mx-4 my-2  opacity-60 hover:opacity-40">
                     <Text
-                      weight={'normal'}
+                      weight={'bold'}
                       level="s"
                       className={cx({
                         'text-blue': nav.active,
@@ -125,14 +122,15 @@ export const Header = () => {
                     >
                       {nav.name}
                     </Text>
+                    {nav.items && <FaChevronDown className="ml-1 text-xs" />}
                   </div>
-                  <ul class="dropdown-menu absolute text-gray-700 pt-1">
+                  <ul className="dropdown-menu absolute text-gray-700 pt-1 w-[240px] border-t-2 border-blue ">
                     {nav.items &&
                       nav.items.map((item) => {
                         return (
                           <li class="">
                             <a
-                              class="rounded-t bg-gray-100 hover:bg-gray-200 py-2 px-4 block whitespace-no-wrap"
+                              className="bg-white hover:bg-gray-200 block whitespace-no-wrap py-2 px-8 text-sm"
                               href={item.href}
                             >
                               {item.text}
@@ -147,13 +145,10 @@ export const Header = () => {
           </nav>
         </div>
         <div className="hidden xl:flex items-center">
-          <Text level="s" weight="normal" className="mr-1">
-            Already a member?
-          </Text>
           <Link href="https://app.digitaldeets.com">
             <a>
               <Text level="s" weight="bold" className="mr-8">
-                Login
+                Log in
               </Text>
             </a>
           </Link>
