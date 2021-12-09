@@ -179,6 +179,9 @@ function DirectoryPage({ availableCategories }) {
   }
 
   const handleListItemClick = (event, index) => {
+    analytics.track('Catalog Item Clicked', {
+      listing: displayedListings[index],
+    })
     setSelectedIndex(index)
     setOpen(true)
   }
