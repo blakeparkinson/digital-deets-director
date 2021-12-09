@@ -5,11 +5,6 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import Grid from '@mui/material/Grid'
-// import List from '@mui/material/List'
-// import ListItemText from '@mui/material/ListItemText'
-// import ListItemButton from '@mui/material/ListItemButton'
-// import ListItemAvatar from '@mui/material/ListItemAvatar'
-// import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
 import Button from '@mui/material/Button'
@@ -18,7 +13,6 @@ import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
-// import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import Pagination from '@mui/material/Pagination'
 import Dialog from '@mui/material/Dialog'
@@ -96,7 +90,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
       width: '40ch',
       '&:focus': {
-        width: '50ch',
+        width: '45ch',
       },
     },
   },
@@ -109,10 +103,10 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search…"
+        placeholder="Find my listing"
         value={searchTerm}
         onChange={(e) => handleSearch(e)}
-        inputProps={{ 'aria-label': 'search' }}
+        inputProps={{ 'aria-label': 'find my listing' }}
       />
     </Search>
   )
@@ -326,7 +320,7 @@ function DirectoryPage({ availableCategories }) {
               className="text-blue"
               href="https://zfrmz.com/aLhAfKDxfbYtVbnmdOWo"
             >
-              here
+              here.
             </a>
           </div>
           <Grid
@@ -419,7 +413,7 @@ function DirectoryPage({ availableCategories }) {
                         weight="normal"
                         className="mt-2 flex text-grey-300 items-center"
                       >
-                        <FaPhone className="mr-2" />
+                        <FaPhone className="mr-2 text-blue" />
                         {formatPhoneNumber(listing.phonenumber)}
                       </Text>
                       {listing.streetaddress && (
@@ -428,7 +422,7 @@ function DirectoryPage({ availableCategories }) {
                           weight="normal"
                           className="mt-2 flex text-grey-300 items-center"
                         >
-                          <FaSearchLocation className="mr-2" />
+                          <FaSearchLocation className="mr-2 text-blue" />
                           {`${listing.streetaddress}, ${listing.city}, ${listing.state}`}
                         </Text>
                       )}
