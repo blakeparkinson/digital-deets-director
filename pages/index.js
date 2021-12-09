@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
 import Button from '@mui/material/Button'
+import { useRouter } from 'next/router'
 
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
@@ -16,7 +17,6 @@ import CardMedia from '@mui/material/CardMedia'
 import SearchIcon from '@mui/icons-material/Search'
 import Pagination from '@mui/material/Pagination'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -26,6 +26,8 @@ import { styled, alpha } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
 import { FaPhone, FaSearchLocation } from 'react-icons/fa'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 
 export async function getServerSideProps() {
   // const response = await fetch(`${process.env.API_URL}/api/category`)
@@ -113,8 +115,8 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
 }
 
 function formatPhoneNumber(phoneNumberString) {
-  var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
-  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
   if (match) {
     return '(' + match[1] + ') ' + match[2] + '-' + match[3]
   }
@@ -122,7 +124,19 @@ function formatPhoneNumber(phoneNumberString) {
 }
 
 function DirectoryPage({ availableCategories }) {
-  const [category, setCategory] = useState(availableCategories[0])
+  const router = useRouter()
+  const { categoryType } = router.query
+  const match = availableCategories.find((availableCategory) => {
+    if (categoryType) {
+      return (
+        availableCategory.category.toLowerCase().replace(/\s/g, '') ==
+        categoryType.toLowerCase().replace(/\s/g, '')
+      )
+    }
+  })
+  const [category, setCategory] = useState(
+    match ? match : availableCategories[0]
+  )
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [displayedListings, setDisplayedListings] = useState([])
@@ -205,11 +219,19 @@ function DirectoryPage({ availableCategories }) {
       <Dialog
         fullScreen={fullScreen}
         open={open}
+        className="text-grey"
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {/* <Box sx={{ display: 'flex' }}> */}
+        <IconButton
+          color="inherit"
+          onClick={handleClose}
+          aria-label="close"
+          className="flex self-end m-4"
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogTitle id="responsive-dialog-title">
           {listings[selectedIndex]?.businessname}
         </DialogTitle>
@@ -234,7 +256,8 @@ function DirectoryPage({ availableCategories }) {
               </a>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Telephone: </b> {listings[selectedIndex]?.phonenumber}
+              <b>Telephone: </b>{' '}
+              {formatPhoneNumber(listings[selectedIndex]?.phonenumber)}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
               <b>Address: </b> {listings[selectedIndex]?.streetaddress}
@@ -242,7 +265,7 @@ function DirectoryPage({ availableCategories }) {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-      <div className="flex lg:flex-row flex-col mt-20 xl:mt-0">
+      <div className="flex lg:flex-row flex-col mt-20 xl:mt-0 text-grey">
         <Box sx={{ flex: 2 }}>
           <Grid
             container
@@ -375,7 +398,7 @@ function DirectoryPage({ availableCategories }) {
                 >
                   <Card
                     sx={{ maxWidth: 300 }}
-                    className="flex flex-col justify-between"
+                    className="flex flex-col justify-between text-grey"
                   >
                     <CardMedia
                       component="img"
@@ -402,16 +425,9 @@ function DirectoryPage({ availableCategories }) {
                           : DEFAULT_DESC}
                       </Typography>
                       <Text
-                        level="s"
-                        weight="normal"
-                        className="mt-2 text-blue text-end"
-                      >
-                        View full listing
-                      </Text>
-                      <Text
                         level="xs"
                         weight="normal"
-                        className="mt-2 flex text-grey-300 items-center"
+                        className="mt-2 flex text-grey items-center"
                       >
                         <FaPhone className="mr-2 text-blue" />
                         {formatPhoneNumber(listing.phonenumber)}
@@ -420,14 +436,23 @@ function DirectoryPage({ availableCategories }) {
                         <Text
                           level="xs"
                           weight="normal"
-                          className="mt-2 flex text-grey-300 items-center"
+                          className="mt-2 flex text-grey"
                         >
                           <FaSearchLocation className="mr-2 text-blue" />
                           {`${listing.streetaddress}, ${listing.city}, ${listing.state}`}
                         </Text>
                       )}
                     </CardContent>
-                    <CardActions>
+                    <CardActions className="flex flex-col">
+                      <div className="flex w-full justify-end mr-2">
+                        <Text
+                          level="s"
+                          weight="normal"
+                          className="mt-2 text-blue text-end"
+                        >
+                          View full listing
+                        </Text>
+                      </div>
                       <a
                         className="w-full"
                         href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}

@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         orange: '#ee6c34',
         blue: '#02779d',
+        grey: '#626565',
       },
       fontFamily: {
         sans: ['Karla', 'Inter var', ...defaultTheme.fontFamily.sans],
