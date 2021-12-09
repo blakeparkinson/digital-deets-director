@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Text } from '../text'
 import { HamburgerIcon, CloseIcon } from '../icons'
@@ -95,15 +95,36 @@ export const Header = () => {
     setAnchorEl(null)
   }
   const open = Boolean(anchorEl)
+  const [small, setSmall] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {
+        setSmall(window.pageYOffset > 200)
+      })
+    }
+  }, [])
 
   return (
-    <div className="z-20 bg-white border-b items-center xl:px-28 lg:px-16 px-8 py-4 fixed xl:sticky w-full top-0">
+    <div
+      className={cx(
+        'z-20 bg-white border-b border-sand-30 items-center xl:px-28 lg:px-16 px-8 xl:sticky fixed w-full top-0 transform duration-300',
+        {
+          'py-2': small,
+          'py-4': !small,
+        }
+      )}
+    >
+      {' '}
       <div className="justify-center flex">
         <div className="flex">
           <Link href={`https://digitaldeets.com/`}>
             <a className="mr-20 cursor-pointer">
               <img
-                className="w-24"
+                className={cx({
+                  'w-24': !small,
+                  'w-16': small,
+                })}
                 src="https://digitaldeets.com/wp-content/uploads/2021/10/Digital-Deets-logo_new.png"
               />
             </a>
