@@ -160,9 +160,9 @@ function DirectoryPage({ availableCategories }) {
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
       const json = await response.json()
-      setListings(json.data)
-      setDisplayedListings(json.data.slice(offset, limit))
-      setPaginatorCount(Math.ceil(json.data.length / limit))
+      setListings(json)
+      setDisplayedListings(json.slice(offset, limit))
+      setPaginatorCount(Math.ceil(json.length / limit))
     }
     fetchListings()
   }, [category, searchTerm])
