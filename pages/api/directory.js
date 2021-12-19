@@ -5,7 +5,6 @@ export default async function handler(req, res) {
   if (!listings) {
     //we dont have listings so we need to hit the db
     const [countResponse] = await Promise.all([
-      // fetch(`https://dittofi.com/409/iapi/v1/SearchDirectory2?${queryString}`),
       fetch(
         `https://app.digitaldeets.com/api_catalog/organizations?page_limit=15000&page=0`
       ),
