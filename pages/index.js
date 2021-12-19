@@ -31,8 +31,8 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export async function getServerSideProps() {
   const response = await fetch(`${process.env.API_URL}/api/category`)
-  const availableCategories = await response.json()
-  console.log('avvv: ', availableCategories)
+  const result = await response.json()
+  const availableCategories = result.data
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
