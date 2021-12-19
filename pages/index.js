@@ -112,6 +112,7 @@ function DirectoryPage({ availableCategories = [] }) {
   const router = useRouter()
   const { categoryType } = router.query
   let match
+  console.log('avss: ', availableCategories)
   if (availableCategories && availableCategories.length) {
     match = availableCategories.find((availableCategory) => {
       if (categoryType) {
