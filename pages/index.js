@@ -111,7 +111,7 @@ function DirectoryPage({ availableCategories }) {
   const router = useRouter()
   const { categoryType } = router.query
   let match
-  if (availableCategories) {
+  if (availableCategories && availableCategories.length) {
     match = availableCategories.find((availableCategory) => {
       if (categoryType) {
         return (
