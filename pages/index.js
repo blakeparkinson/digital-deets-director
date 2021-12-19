@@ -30,9 +30,11 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
 export async function getServerSideProps() {
-  const response = await fetch(`${process.env.API_URL}/api/category`)
+  const response = await fetch(
+    'https://app.digitaldeets.com/api_catalog/categories'
+  )
   const result = await response.json()
-  const availableCategories = result.data
+  const availableCategories = result.categories
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
