@@ -30,24 +30,8 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
 export async function getServerSideProps() {
-  // const response = await fetch(`${process.env.API_URL}/api/category`)
-  // const json = await response.json()
-  const availableCategories = [
-    { category: '', label: 'All Categories' },
-    { category: 'AfterSchool-Academics', label: 'After School-Academics' },
-    { category: 'AfterSchool-Athletics', label: 'After School-Athletics' },
-    { category: 'AfterSchool-TheArts', label: 'After School-TheArts' },
-    { category: 'Auto Sales/Repairs', label: 'Auto Sales/Repairs' },
-    { category: 'Dentist/Orthodontist', label: 'Dentist/Orthodontist' },
-    { category: 'Family Fun', label: 'Family Fun' },
-    { category: 'Kids/Teen Retail', label: 'Kids/Teen Retail' },
-    { category: 'Lawyers', label: 'Lawyers' },
-    { category: 'Nonprofit', label: 'Nonprofit' },
-    { category: 'Realtors', label: 'Realtors' },
-    { category: 'Software', label: 'Software' },
-    { category: 'Virtual Camp', label: 'Virtual Camp' },
-    { category: 'k-12 Public School', label: 'K-12 Public School' },
-  ]
+  const response = await fetch(`${process.env.API_URL}/api/category`)
+  const availableCategories = await response.json()
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
@@ -129,14 +113,12 @@ function DirectoryPage({ availableCategories }) {
   const match = availableCategories.find((availableCategory) => {
     if (categoryType) {
       return (
-        availableCategory.category.toLowerCase().replace(/\s/g, '') ==
+        availableCategory.toLowerCase().replace(/\s/g, '') ==
         categoryType.toLowerCase().replace(/\s/g, '')
       )
     }
   })
-  const [category, setCategory] = useState(
-    match ? match : availableCategories[0]
-  )
+  const [category, setCategory] = useState(match ? match : '')
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [displayedListings, setDisplayedListings] = useState([])
@@ -155,14 +137,14 @@ function DirectoryPage({ availableCategories }) {
   useEffect(() => {
     async function fetchListings() {
       const queryString = new URLSearchParams({
-        Categories: category.category,
+        Categories: category,
         SearchTermA: searchTerm,
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
       const json = await response.json()
-      setListings(json)
-      setDisplayedListings(json.slice(offset, limit))
-      setPaginatorCount(Math.ceil(json.length / limit))
+      setListings(json.data)
+      setDisplayedListings(json.data.slice(offset, limit))
+      setPaginatorCount(Math.ceil(json.data.length / limit))
     }
     fetchListings()
   }, [category, searchTerm])
@@ -326,9 +308,9 @@ function DirectoryPage({ availableCategories }) {
                       <MenuItem
                         key={index}
                         value={availableCategory}
-                        name={availableCategory.label}
+                        name={availableCategory}
                       >
-                        {availableCategory.label}
+                        {availableCategory}
                       </MenuItem>
                     )
                   })}
@@ -358,35 +340,6 @@ function DirectoryPage({ availableCategories }) {
           >
             {displayedListings.map((listing, index) => {
               return (
-                // <ListItemButton
-                //   key={index}
-                //   alignItems="flex-start"
-                //   selected={selectedIndex === index}
-                //   onClick={(event) => handleListItemClick(event, index)}
-                // >
-                //   <ListItemAvatar>
-                //     <Avatar
-                //       src={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
-                //     >
-                //       <a href={listing.website}></a>
-                //     </Avatar>
-                //   </ListItemAvatar>
-                //   <ListItemText
-                //     primary={`${index + 1}. ${listing.businessname}`}
-                //     secondary={
-                //       <React.Fragment>
-                //         <Typography
-                //           sx={{ display: "inline" }}
-                //           component="span"
-                //           variant="body2"
-                //           color="text.primary"
-                //         >
-                //           {listing.description}
-                //         </Typography>
-                //       </React.Fragment>
-                //     }
-                //   />
-                // </ListItemButton>
                 <Grid
                   sx={{
                     cursor: 'pointer',

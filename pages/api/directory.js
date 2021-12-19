@@ -1,9 +1,7 @@
 // import data from '../../listings.json'
-
-// let listings
+let listings
 
 export default async function handler(req, res) {
-  let listings = undefined
   if (!listings) {
     //we dont have listings so we need to hit the db
     const [countResponse] = await Promise.all([
@@ -14,7 +12,6 @@ export default async function handler(req, res) {
     ])
     // const dirResponseJson = await dirResponse.json()
     const countResponseJson = await countResponse.json()
-    console.log(countResponseJson)
     listings = countResponseJson
     // for (const i in listings.data) {
     //   if (
@@ -37,10 +34,10 @@ export default async function handler(req, res) {
     //   // listing.marker = marker
     // }
     // dirResponseJson.count = countResponseJson.data.length
-    res.status(200).json(listings.organizations)
+    res.status(200).json({ data: listings.organizations })
   } else {
     const results = filter(
-      listings.data,
+      listings.organizations,
       req.query.SearchTermA,
       req.query.Categories
     )
@@ -53,7 +50,7 @@ const filter = (listings, searchTerm, category) => {
   for (let i = 0; i < listings.length; i++) {
     if (category && category.length) {
       if (isStringMatch(searchTerm, listings[i])) {
-        if (listings[i].category === category) {
+        if (listings[i].categories.includes(category)) {
           results.push(listings[i])
         }
       }

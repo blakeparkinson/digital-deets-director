@@ -1,5 +1,5 @@
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react"
-import React, { useState } from "react"
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react'
+import React, { useState } from 'react'
 
 function CustomMap({ google, locations = [] }) {
   const [activeMarker, setActiveMarker] = useState(undefined)
@@ -20,14 +20,12 @@ function CustomMap({ google, locations = [] }) {
     setShowingInfoWindow(true)
   }
 
-  console.log(google)
-
   return (
     <Map
       google={google}
       className="w-full lg:w-2/5 lg:fixed relative h-72 lg:h-full !important"
       zoom={5}
-      gestureHandling={"cooperative"}
+      gestureHandling={'cooperative'}
       initialCenter={getCenter()}
       streetViewControl={true}
       streetViewControlOptions={{
@@ -66,5 +64,5 @@ function CustomMap({ google, locations = [] }) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDwmj1y_jUUMEddwi4T0AydIoUKvb_Qz-8",
+  apiKey: 'AIzaSyDwmj1y_jUUMEddwi4T0AydIoUKvb_Qz-8',
 })(CustomMap)
