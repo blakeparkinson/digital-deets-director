@@ -33,7 +33,7 @@ export async function getServerSideProps() {
   const response = await fetch(`${process.env.API_URL}/api/category`)
   const availableCategories = await response.json()
   // Pass data to the page via props
-  return { props: { availableCategories } }
+  return { props: {} }
 }
 
 const DEFAULT_DESC =
