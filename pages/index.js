@@ -33,7 +33,7 @@ export async function getServerSideProps() {
   const response = await fetch(`${process.env.API_URL}/api/category`)
   const availableCategories = await response.json()
   // Pass data to the page via props
-  return { props: {} }
+  return { props: { availableCategories } }
 }
 
 const DEFAULT_DESC =
@@ -110,14 +110,17 @@ function formatPhoneNumber(phoneNumberString) {
 function DirectoryPage({ availableCategories }) {
   const router = useRouter()
   const { categoryType } = router.query
-  const match = availableCategories.find((availableCategory) => {
-    if (categoryType) {
-      return (
-        availableCategory.toLowerCase().replace(/\s/g, '') ==
-        categoryType.toLowerCase().replace(/\s/g, '')
-      )
-    }
-  })
+  let match
+  if (availableCategories) {
+    match = availableCategories.find((availableCategory) => {
+      if (categoryType) {
+        return (
+          availableCategory.toLowerCase().replace(/\s/g, '') ==
+          categoryType.toLowerCase().replace(/\s/g, '')
+        )
+      }
+    })
+  }
   const [category, setCategory] = useState(match ? match : '')
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
