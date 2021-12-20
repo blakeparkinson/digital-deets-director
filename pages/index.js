@@ -114,7 +114,6 @@ function DirectoryPage({ availableCategories = [] }) {
   const router = useRouter()
   const { categoryType } = router.query
   let match
-  console.log('avss: ', availableCategories)
   if (availableCategories && availableCategories.length) {
     match = availableCategories.find((availableCategory) => {
       if (categoryType) {
@@ -222,34 +221,38 @@ function DirectoryPage({ availableCategories = [] }) {
           <CloseIcon />
         </IconButton>
         <DialogTitle id="responsive-dialog-title">
-          {listings[selectedIndex]?.businessname}
+          {displayedListings[selectedIndex]?.businessname}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {listings[selectedIndex]?.description}
+              {displayedListings[selectedIndex]?.description}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Category: </b> {listings[selectedIndex]?.category}
+              <b>Category: </b>{' '}
+              {displayedListings[selectedIndex]?.categories[0]}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
               <b>Website: </b>{' '}
-              <a href={listings[selectedIndex]?.website} className="text-blue">
-                {listings[selectedIndex]?.website}
+              <a
+                href={displayedListings[selectedIndex]?.website}
+                className="text-blue"
+              >
+                {displayedListings[selectedIndex]?.website}
               </a>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
               <b>Facebook: </b>{' '}
-              <a href={listings[selectedIndex]?.facebookpage}>
-                {listings[selectedIndex]?.facebookpage}
+              <a href={displayedListings[selectedIndex]?.facebookpage}>
+                {displayedListings[selectedIndex]?.facebookpage}
               </a>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
               <b>Telephone: </b>{' '}
-              {formatPhoneNumber(listings[selectedIndex]?.phonenumber)}
+              {formatPhoneNumber(displayedListings[selectedIndex]?.phonenumber)}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Address: </b> {listings[selectedIndex]?.streetaddress}
+              <b>Address: </b> {displayedListings[selectedIndex]?.streetaddress}
             </Typography>
           </DialogContentText>
         </DialogContent>
@@ -363,7 +366,7 @@ function DirectoryPage({ availableCategories = [] }) {
                     <CardMedia
                       component="img"
                       height="140"
-                      image={`https://dittofi.com/409/iapi/v1/PromoImage/${listing.id}/`}
+                      image={listing.logo}
                       onError={(e) => {
                         e.target.onerror = null
                         e.target.style.display = 'none'
@@ -404,7 +407,10 @@ function DirectoryPage({ availableCategories = [] }) {
                       )}
                     </CardContent>
                     <CardActions className="flex flex-col">
-                      <div className="flex w-full justify-end mr-2">
+                      <div
+                        className="flex w-full justify-end mr-2"
+                        onClick={(event) => handleListItemClick(event, index)}
+                      >
                         <Text
                           level="s"
                           weight="normal"
