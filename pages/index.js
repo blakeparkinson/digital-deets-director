@@ -402,7 +402,7 @@ function DirectoryPage({ availableCategories = [] }) {
                           className="mt-2 flex text-grey"
                         >
                           <FaSearchLocation className="mr-2 text-blue" />
-                          {`${listing.streetaddress}, ${listing.city}, ${listing.state}`}
+                          {`${listing.streetaddress}, ${listing.city}, ${listing.state}, ${listing.zipcode}`}
                         </Text>
                       )}
                     </CardContent>
