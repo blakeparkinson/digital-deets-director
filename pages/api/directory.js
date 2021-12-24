@@ -72,7 +72,8 @@ const isStringMatch = (term, listing) => {
       (listing.description &&
         listing.description.toLowerCase().includes(trimmed)) ||
       (listing.city && listing.city.toLowerCase().includes(trimmed)) ||
-      (listing.state && listing.state.toLowerCase().includes(trimmed))
+      (listing.state && listing.state.toLowerCase().includes(trimmed)) ||
+      (listing.zipcode && listing.zipcode.toLowerCase().includes(trimmed))
     ) {
       return true
     } else {
