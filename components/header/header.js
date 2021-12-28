@@ -116,7 +116,7 @@ export const Header = () => {
       )}
     >
       {' '}
-      <div className="justify-center flex">
+      <div className="xl:justify-center justify-between flex">
         <div className="flex">
           <Link href={`https://digitaldeets.com/`}>
             <a className="mr-20 cursor-pointer">
