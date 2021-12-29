@@ -31,7 +31,7 @@ function CustomMap({ google, locations = [] }) {
       streetViewControlOptions={{
         position: google.maps.ControlPosition.LEFT_CENTER,
       }}
-      zoomControlOptions={{ position: google.maps.ControlPosition.LEFT_BOTTOM }}
+      zoomControlOptions={{ position: google.maps.ControlPosition.LEFT_CENTER }}
       center={getCenter()}
       zoomControl={true}
       scaleControl={true}
