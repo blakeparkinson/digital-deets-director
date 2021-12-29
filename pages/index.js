@@ -51,10 +51,8 @@ const Search = styled('div')(({ theme }) => ({
   },
   marginLeft: 0,
   width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
+  marginLeft: theme.spacing(1),
+  width: 'auto',
   color: 'white',
 }))
 
@@ -257,11 +255,9 @@ function DirectoryPage({ availableCategories = [] }) {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-      <div className="flex lg:flex-row flex-col mt-20 xl:mt-0 text-grey">
+      <div className="flex lg:flex-row flex-col mt-24 xl:mt-0 text-grey">
         <Box sx={{ flex: 2 }}>
           <Grid
-            container
-            rowSpacing={1}
             sx={{
               backgroundColor: '#02779d',
               display: 'flex',
@@ -269,10 +265,9 @@ function DirectoryPage({ availableCategories = [] }) {
               marginBottom: '20px',
               paddingBottom: '10px',
             }}
-            columnSpacing={{ xs: 1, sm: 2, md: 4 }}
           >
-            <Grid item sx={{ display: 'flex' }}>
-              {/* <InputBase
+            {/* <Grid item sx={{ display: 'flex' }}> */}
+            {/* <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search Listings"
                 value={searchTerm}
@@ -283,11 +278,11 @@ function DirectoryPage({ availableCategories = [] }) {
               <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
                 <SearchIcon />
               </IconButton> */}
-              <SearchComponent
-                searchTerm={searchTerm}
-                handleSearch={handleSearch}
-              />
-            </Grid>
+            <SearchComponent
+              searchTerm={searchTerm}
+              handleSearch={handleSearch}
+            />
+            {/* </Grid> */}
             <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
               <FormControl
                 fullWidth
