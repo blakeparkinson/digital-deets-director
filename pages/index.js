@@ -421,7 +421,7 @@ function DirectoryPage({ availableCategories = [] }) {
                       </div>
                       <a
                         className="w-full"
-                        href={`https://community.digitaldeets.com/home?communityId=${listing.id}`}
+                        href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
                       >
                         <Button className="w-full self-end bg-orange text-white normal-case">
                           Sign Up My Organization
