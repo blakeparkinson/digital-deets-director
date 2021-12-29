@@ -373,7 +373,7 @@ function DirectoryPage({ availableCategories = [] }) {
                       <Typography gutterBottom variant="h5" component="div">
                         {listing.businessname}
                       </Typography>
-                      <Typography
+                      {/* <Typography
                         variant="body2"
                         color="text.secondary"
                         className="line-clamp-5 overflow-hidden h-[150px]"
@@ -381,7 +381,7 @@ function DirectoryPage({ availableCategories = [] }) {
                         {listing.description
                           ? listing.description
                           : DEFAULT_DESC}
-                      </Typography>
+                      </Typography> */}
                       <Text
                         level="xs"
                         weight="normal"
