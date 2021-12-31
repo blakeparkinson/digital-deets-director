@@ -157,6 +157,8 @@ function DirectoryPage({ availableCategories = [] }) {
   const handleChange = (event) => {
     setOffset(0)
     setPage(1)
+    router.query.categoryType = event.target.value
+    router.push(router)
     setCategory(event.target.value)
   }
   const handleClose = (event) => {
