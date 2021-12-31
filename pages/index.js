@@ -35,6 +35,7 @@ export async function getServerSideProps() {
   )
   const result = await response.json()
   const availableCategories = result.categories
+  availableCategories.unshift('All Categories')
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
@@ -122,7 +123,7 @@ function DirectoryPage({ availableCategories = [] }) {
       }
     })
   }
-  const [category, setCategory] = useState(match ? match : '')
+  const [category, setCategory] = useState(match ? match : 'All Categories')
   // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [displayedListings, setDisplayedListings] = useState([])

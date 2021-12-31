@@ -44,6 +44,9 @@ export default async function handler(req, res) {
 }
 
 const filter = (listings, searchTerm, category) => {
+  if (category == 'All Categories') {
+    category = ''
+  }
   const results = []
   for (let i = 0; i < listings.length; i++) {
     if (category && category.length) {
