@@ -100,7 +100,12 @@ export const Header = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
-        setSmall(window.pageYOffset > 200)
+        if (window.pageYOffset > 220) {
+          setSmall(true)
+        }
+        if (window.pageYOffset < 180) {
+          setSmall(false)
+        }
       })
     }
   }, [])
@@ -110,8 +115,8 @@ export const Header = () => {
       className={cx(
         'z-20 bg-white border-b border-sand-30 items-center xl:px-28 lg:px-16 px-8 xl:sticky fixed w-full top-0 transform duration-300',
         {
-          'py-2': small,
-          'py-4': !small,
+          'py-small': small,
+          'py-large': !small,
         }
       )}
     >

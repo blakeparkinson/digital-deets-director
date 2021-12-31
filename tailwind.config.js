@@ -10,6 +10,14 @@ module.exports = {
         blue: '#02779d',
         grey: '#626565',
       },
+      padding: {
+        large: '30px',
+        small: '20px',
+      },
+      paddingBottom: {
+        large: '30px',
+        small: '20px',
+      },
       fontFamily: {
         sans: ['Karla', 'Inter var', ...defaultTheme.fontFamily.sans],
       },
