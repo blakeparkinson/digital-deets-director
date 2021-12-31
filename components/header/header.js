@@ -147,9 +147,9 @@ export const Header = () => {
                   </div>
                   <ul className="dropdown-menu absolute text-gray-700 pt-1 w-[240px] border-t-2 border-blue ">
                     {nav.items &&
-                      nav.items.map((item) => {
+                      nav.items.map((item, index) => {
                         return (
-                          <li class="">
+                          <li key={index}>
                             <a
                               className="bg-white hover:bg-gray-200 block whitespace-no-wrap py-2 px-8 text-sm"
                               href={item.href}
@@ -192,9 +192,9 @@ export const Header = () => {
         )}
       >
         <ul className="mb-4 md:mb-0">
-          {navigation.map((nav) => {
+          {navigation.map((nav, index) => {
             return (
-              <li key={nav.name}>
+              <li key={index}>
                 <div className="flex pr-2 py-4 items-center">
                   <Text
                     level="m"
@@ -206,11 +206,11 @@ export const Header = () => {
                     {nav.name}
                     <ul>
                       {nav.items &&
-                        nav.items.map((item) => {
+                        nav.items.map((item, index) => {
                           return (
-                            <li class="">
+                            <li key={index}>
                               <a
-                                class="rounded-t  hover:bg-gray-100 py-2 px-4 block whitespace-no-wrap"
+                                className="rounded-t  hover:bg-gray-100 py-2 px-4 block whitespace-no-wrap"
                                 href={item.href}
                               >
                                 {item.text}

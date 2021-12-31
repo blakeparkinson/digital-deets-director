@@ -349,6 +349,7 @@ function DirectoryPage({ availableCategories = [] }) {
             {displayedListings.map((listing, index) => {
               return (
                 <Grid
+                  key={index}
                   sx={{
                     cursor: 'pointer',
                     display: 'flex',
