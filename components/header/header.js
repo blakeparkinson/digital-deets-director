@@ -130,9 +130,9 @@ export const Header = () => {
             </a>
           </Link>
           <nav className="xl:flex hidden items-center">
-            {navigation.map((nav) => {
+            {navigation.map((nav, index) => {
               return (
-                <MenuLink>
+                <MenuLink key={index}>
                   <div className="flex items-center mx-4 my-2  opacity-60 hover:opacity-40">
                     <Text
                       weight={'bold'}
