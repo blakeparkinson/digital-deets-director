@@ -221,6 +221,10 @@ function DirectoryPage({ availableCategories = [] }) {
         >
           <CloseIcon />
         </IconButton>
+        <img
+          src={displayedListings[selectedIndex]?.spotlight_photo}
+          className="w-auto self-center"
+        />
         <DialogTitle id="responsive-dialog-title">
           {displayedListings[selectedIndex]?.businessname}
         </DialogTitle>
