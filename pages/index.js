@@ -25,7 +25,13 @@ import CustomMap from '../components/custommap'
 import { styled, alpha } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
-import { FaPhone, FaSearchLocation } from 'react-icons/fa'
+import {
+  FaPhone,
+  FaSearchLocation,
+  FaFacebookF,
+  FaPhoneAlt,
+  FaWindowMaximize,
+} from 'react-icons/fa'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
@@ -221,8 +227,9 @@ function DirectoryPage({ availableCategories = [] }) {
         >
           <CloseIcon />
         </IconButton>
+        <div className="min-w-modal"></div>
         <img
-          src={displayedListings[selectedIndex]?.spotlight_photo}
+          src={displayedListings[selectedIndex]?.logo}
           className="w-auto self-center"
         />
         <DialogTitle id="responsive-dialog-title">
@@ -233,32 +240,67 @@ function DirectoryPage({ availableCategories = [] }) {
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {displayedListings[selectedIndex]?.description}
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Category: </b>{' '}
-              {displayedListings[selectedIndex]?.categories[0]}
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Website: </b>{' '}
-              <a
-                href={displayedListings[selectedIndex]?.website}
-                className="text-blue"
+            <div className="flex justify-center my-2">
+              <img
+                src={displayedListings[selectedIndex]?.spotlight_photo}
+                className="w-auto self-center"
+              />
+            </div>
+            {displayedListings[selectedIndex]?.categories[0] && (
+              <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+                <b>Category: </b>{' '}
+                {displayedListings[selectedIndex]?.categories[0]}
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.website && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
               >
-                {displayedListings[selectedIndex]?.website}
-              </a>
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Facebook: </b>{' '}
-              <a href={displayedListings[selectedIndex]?.facebookpage}>
-                {displayedListings[selectedIndex]?.facebookpage}
-              </a>
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Telephone: </b>{' '}
-              {formatPhoneNumber(displayedListings[selectedIndex]?.phonenumber)}
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-              <b>Address: </b> {displayedListings[selectedIndex]?.streetaddress}
-            </Typography>
+                <FaWindowMaximize className="mr-2" />
+                <a
+                  href={displayedListings[selectedIndex]?.website}
+                  className="text-blue"
+                >
+                  {displayedListings[selectedIndex]?.website}
+                </a>
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.facebookpage && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <FaFacebookF className="mr-2" />
+                <a href={displayedListings[selectedIndex]?.facebookpage}>
+                  {displayedListings[selectedIndex]?.facebookpage}
+                </a>
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.phonenumber && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <FaPhone className="mr-2" />
+                {formatPhoneNumber(
+                  displayedListings[selectedIndex]?.phonenumber
+                )}
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.streetaddress && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <FaSearchLocation className="mr-2" />
+                {displayedListings[selectedIndex]?.streetaddress}
+              </Typography>
+            )}
           </DialogContentText>
         </DialogContent>
       </Dialog>

@@ -18,6 +18,9 @@ module.exports = {
         large: '30px',
         small: '20px',
       },
+      minWidth: {
+        modal: '350px',
+      },
       fontFamily: {
         sans: ['Karla', 'Inter var', ...defaultTheme.fontFamily.sans],
       },
