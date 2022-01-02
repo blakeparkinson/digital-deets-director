@@ -1,7 +1,7 @@
-let listings
+var cache = require('memory-cache')
 
 export default async function handler(req, res) {
-  if (!listings) {
+  if (!cache.get('listings')) {
     //we dont have listings so we need to hit the db
     const [countResponse] = await Promise.all([
       fetch(
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     ])
     // const dirResponseJson = await dirResponse.json()
     const countResponseJson = await countResponse.json()
-    listings = countResponseJson
+    cache.put('listings', countResponseJson)
     // for (const i in listings.data) {
     //   if (
     //     listings.data[i].streetaddress &&
@@ -32,8 +32,9 @@ export default async function handler(req, res) {
     //   // listing.marker = marker
     // }
     // dirResponseJson.count = countResponseJson.data.length
-    res.status(200).json({ data: listings.organizations })
+    res.status(200).json({ data: countResponseJson.organizations })
   } else {
+    const listings = cache.get('listings')
     const results = filter(
       listings.organizations,
       req.query.SearchTermA,
