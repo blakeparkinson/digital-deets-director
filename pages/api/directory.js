@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     ])
     // const dirResponseJson = await dirResponse.json()
     const countResponseJson = await countResponse.json()
-    cache.put('listings', countResponseJson)
+    cache.put('listings', countResponseJson, 50000)
     // for (const i in listings.data) {
     //   if (
     //     listings.data[i].streetaddress &&
