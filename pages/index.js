@@ -304,7 +304,7 @@ function DirectoryPage({ availableCategories = [] }) {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-      <div className="flex lg:flex-row flex-col mt-24 xl:mt-0 text-grey">
+      <div className="flex lg:flex-row flex-col mt-32 xl:mt-0 text-grey">
         <Box sx={{ flex: 2 }}>
           <Grid
             sx={{
