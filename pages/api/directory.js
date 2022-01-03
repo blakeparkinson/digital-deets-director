@@ -10,33 +10,31 @@ export default async function handler(req, res) {
     ])
     // const dirResponseJson = await dirResponse.json()
     const countResponseJson = await countResponse.json()
-    cache.put('listings', countResponseJson, 50000)
-    // for (const i in listings.data) {
-    //   if (
-    //     listings.data[i].streetaddress &&
-    //     listings.data[i].streetaddress.length &&
-    //     listings.data[i].city &&
-    //     listings.data[i].city.length &&
-    //     listings.data[i].state &&
-    //     listings.data[i].state.length
-    //   ) {
-    //     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${listings.data[i].streetaddress}&key=AIzaSyDwmj1y_jUUMEddwi4T0AydIoUKvb_Qz-8&city=${listings.data[i].city}&state=${listings.data[i].state}`
+    const withDescription = []
+    const withoutDescription = []
+    countResponseJson.organizations.forEach((org) => {
+      if (org.description.length) {
+        withDescription.push(org)
+      } else {
+        withoutDescription.push(org)
+      }
+    })
+    countResponseJson.sortedOrganizations = [
+      ...withDescription,
+      ...withoutDescription,
+    ]
 
-    //     const markerResponse = await fetch(url)
-    //     const marker = await markerResponse.json()
-    //     if (marker.results.length) {
-    //       listings.data[i]["marker"] = marker.results[0].geometry.location
-    //     }
-    //   }
-
-    //   // listing.marker = marker
-    // }
-    // dirResponseJson.count = countResponseJson.data.length
-    res.status(200).json({ data: countResponseJson.organizations })
+    cache.put('listings', countResponseJson, 5000)
+    const results = filter(
+      countResponseJson.sortedOrganizations,
+      req.query.SearchTermA,
+      req.query.Categories
+    )
+    res.status(200).json({ data: results })
   } else {
     const listings = cache.get('listings')
     const results = filter(
-      listings.organizations,
+      listings.sortedOrganizations,
       req.query.SearchTermA,
       req.query.Categories
     )
