@@ -252,6 +252,12 @@ function DirectoryPage({ availableCategories = [] }) {
                 {displayedListings[selectedIndex]?.categories[0]}
               </Typography>
             )}
+            {displayedListings[selectedIndex]?.promocode && (
+              <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+                <b>Promotion Code: </b>{' '}
+                {displayedListings[selectedIndex]?.promocode}
+              </Typography>
+            )}
             {displayedListings[selectedIndex]?.website && (
               <Typography
                 id="modal-modal-description"
@@ -432,14 +438,16 @@ function DirectoryPage({ availableCategories = [] }) {
                           ? listing.description
                           : DEFAULT_DESC}
                       </Typography> */}
-                      <Text
-                        level="xs"
-                        weight="normal"
-                        className="mt-2 flex text-grey items-center"
-                      >
-                        <FaPhone className="mr-2 text-blue" />
-                        {formatPhoneNumber(listing.phonenumber)}
-                      </Text>
+                      {listing.phonenumber && (
+                        <Text
+                          level="xs"
+                          weight="normal"
+                          className="mt-2 flex text-grey items-center"
+                        >
+                          <FaPhone className="mr-2 text-blue" />
+                          {formatPhoneNumber(listing.phonenumber)}
+                        </Text>
+                      )}
                       {listing.streetaddress && (
                         <Text
                           level="xs"
