@@ -150,12 +150,13 @@ function DirectoryPage({ availableCategories = [] }) {
       const queryString = new URLSearchParams({
         Categories: category,
         SearchTermA: searchTerm,
+        offset: offset,
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
       const json = await response.json()
       setListings(json.data)
-      setDisplayedListings(json.data.slice(offset, limit))
-      setPaginatorCount(Math.ceil(json.data.length / limit))
+      setDisplayedListings(json.data)
+      setPaginatorCount(Math.ceil(json.count / limit))
     }
     fetchListings()
   }, [category, searchTerm])
@@ -171,14 +172,21 @@ function DirectoryPage({ availableCategories = [] }) {
     setOpen(false)
   }
 
-  const handlePaging = (event, value) => {
+  const handlePaging = async (event, value) => {
     if (!value) return
     setPage(value)
     setOffset((value - 1) * limit)
     const first = (value - 1) * limit
     const second = (value - 1) * limit + limit
+    const queryString = new URLSearchParams({
+      Categories: category,
+      SearchTermA: searchTerm,
+      offset: (value - 1) * limit,
+    }).toString()
+    const response = await fetch(`/api/directory?${queryString}`)
+    const json = await response.json()
 
-    setDisplayedListings(listings.slice(first, second))
+    setDisplayedListings(json.data)
   }
 
   const handleListItemClick = (event, index) => {

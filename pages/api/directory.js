@@ -30,7 +30,11 @@ export default async function handler(req, res) {
       req.query.SearchTermA,
       req.query.Categories
     )
-    res.status(200).json({ data: results })
+
+    res.status(200).json({
+      data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
+      count: results.length,
+    })
   } else {
     const listings = cache.get('listings')
     const results = filter(
@@ -38,7 +42,10 @@ export default async function handler(req, res) {
       req.query.SearchTermA,
       req.query.Categories
     )
-    res.status(200).json({ data: results })
+    res.status(200).json({
+      data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
+      count: results.length,
+    })
   }
 }
 
