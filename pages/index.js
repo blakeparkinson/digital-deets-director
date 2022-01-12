@@ -190,11 +190,29 @@ function DirectoryPage({ availableCategories = [] }) {
   }
 
   const handleListItemClick = (event, index) => {
-    analytics.track('Catalog Item Clicked', {
+    analytics.identify('123', {
       listing: displayedListings[index],
+      firstName: 'Blake',
+      lastName: 'PPPP',
+      email: 'blaketest@gmail.com',
+      phoneNumber: '415-205-0841',
+      districtUrl: 'blakes district',
+      action: 'Catalog Item Clicked',
     })
     setSelectedIndex(index)
     setOpen(true)
+  }
+
+  const handleSignUpClick = (event, index) => {
+    analytics.identify('123', {
+      listing: displayedListings[index],
+      firstName: 'Blake',
+      lastName: 'PPPP',
+      email: 'blaketest@gmail.com',
+      phoneNumber: '415-205-0841',
+      districtUrl: 'blakes district',
+      action: 'Signup Button Clicked',
+    })
   }
 
   const handleSearch = (event) => {
@@ -481,6 +499,7 @@ function DirectoryPage({ availableCategories = [] }) {
                         </Text>
                       </div>
                       <a
+                        onClick={(event) => handleSignUpClick(event, index)}
                         className="w-full"
                         href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
                       >
