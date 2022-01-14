@@ -193,11 +193,9 @@ function DirectoryPage({ availableCategories = [] }) {
     analytics.identify('123', {
       listing: displayedListings[index],
       firstName: 'Blake',
-      lastName: 'PPPP',
-      email: 'blaketest@gmail.com',
-      phoneNumber: '415-205-0841',
-      districtUrl: 'blakes district',
-      action: 'Catalog Item Clicked',
+      lastName: 'yyy',
+      email: 'blaketest5@gmail.com',
+      activationsequence: 'Catalog Item Clicked',
     })
     setSelectedIndex(index)
     setOpen(true)
@@ -207,11 +205,9 @@ function DirectoryPage({ availableCategories = [] }) {
     analytics.identify('123', {
       listing: displayedListings[index],
       firstName: 'Blake',
-      lastName: 'PPPP',
-      email: 'blaketest@gmail.com',
-      phoneNumber: '415-205-0841',
-      districtUrl: 'blakes district',
-      action: 'Signup Button Clicked',
+      lastName: 'yyy',
+      email: 'blaketest5@gmail.com',
+      activationsequence: 'Signup Button Clicked',
     })
   }
 
