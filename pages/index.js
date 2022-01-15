@@ -117,7 +117,8 @@ function formatPhoneNumber(phoneNumberString) {
 
 function DirectoryPage({ availableCategories = [] }) {
   const router = useRouter()
-  const { categoryType } = router.query
+  const { categoryType, email, orgID, fName, lName } = router.query
+
   let match
   if (availableCategories && availableCategories.length) {
     match = availableCategories.find((availableCategory) => {
@@ -130,7 +131,6 @@ function DirectoryPage({ availableCategories = [] }) {
     })
   }
   const [category, setCategory] = useState(match ? match : 'All Categories')
-  // const [availableCategories, setAvailableCategories] = useState([])
   const [listings, setListings] = useState([])
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(20)
@@ -190,24 +190,24 @@ function DirectoryPage({ availableCategories = [] }) {
   }
 
   const handleListItemClick = (event, index) => {
-    analytics.identify('123', {
+    analytics.identify({
       listing: displayedListings[index],
-      firstName: 'Blake',
-      lastName: 'yyy',
-      email: 'blaketest5@gmail.com',
-      activationsequence: 'Catalog Item Clicked',
+      firstName: fName,
+      lastName: lName,
+      email: email,
+      LISTVIEW: true,
     })
     setSelectedIndex(index)
     setOpen(true)
   }
 
   const handleSignUpClick = (event, index) => {
-    analytics.identify('123', {
+    analytics.identify({
       listing: displayedListings[index],
-      firstName: 'Blake',
-      lastName: 'yyy',
-      email: 'blaketest5@gmail.com',
-      activationsequence: 'Signup Button Clicked',
+      firstName: fName,
+      lastName: lName,
+      email: email,
+      SIGNUP: true,
     })
   }
 
