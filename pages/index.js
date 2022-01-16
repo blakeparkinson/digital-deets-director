@@ -34,6 +34,7 @@ import {
 } from 'react-icons/fa'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import { RouterTwoTone } from '@mui/icons-material'
 
 export async function getServerSideProps() {
   const response = await fetch(
@@ -151,6 +152,7 @@ function DirectoryPage({ availableCategories = [] }) {
         Categories: category,
         SearchTermA: searchTerm,
         offset: offset,
+        orgID: orgID,
       }).toString()
       const response = await fetch(`/api/directory?${queryString}`)
       const json = await response.json()
@@ -165,6 +167,7 @@ function DirectoryPage({ availableCategories = [] }) {
     setOffset(0)
     setPage(1)
     router.query.categoryType = event.target.value
+    router.query.orgID = ''
     router.push(router)
     setCategory(event.target.value)
   }
@@ -496,12 +499,22 @@ function DirectoryPage({ availableCategories = [] }) {
                       </div>
                       <a
                         onClick={(event) => handleSignUpClick(event, index)}
-                        className="w-full"
+                        className="w-full flex justify-end"
                         href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
                       >
-                        <Button className="w-full self-end bg-orange text-white normal-case">
-                          Sign Up My Organization
-                        </Button>
+                        {listing.status != 'complete' ? (
+                          <Button className="w-full self-end bg-orange text-white normal-case">
+                            Sign Up My Organization
+                          </Button>
+                        ) : (
+                          <a
+                            onClick={(event) => handleSignUpClick(event, index)}
+                            className="self-end text-blue"
+                            href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
+                          >
+                            Join this organization
+                          </a>
+                        )}
                       </a>
                     </CardActions>
                   </Card>

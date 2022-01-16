@@ -25,27 +25,48 @@ export default async function handler(req, res) {
     ]
 
     cache.put('listings', countResponseJson, 5000)
-    const results = filter(
-      countResponseJson.sortedOrganizations,
-      req.query.SearchTermA,
-      req.query.Categories
-    )
+    if (req.query.orgID != 'undefined' && req.query.orgID.length) {
+      const org = countResponseJson.sortedOrganizations.find(
+        (listing) => listing.id == req.query.orgID
+      )
+      res.status(200).json({
+        data: org ? [org] : [],
+        count: 1,
+      })
+    } else {
+      const results = filter(
+        countResponseJson.sortedOrganizations,
+        req.query.SearchTermA,
+        req.query.Categories
+      )
 
-    res.status(200).json({
-      data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
-      count: results.length,
-    })
+      res.status(200).json({
+        data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
+        count: results.length,
+      })
+    }
   } else {
     const listings = cache.get('listings')
-    const results = filter(
-      listings.sortedOrganizations,
-      req.query.SearchTermA,
-      req.query.Categories
-    )
-    res.status(200).json({
-      data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
-      count: results.length,
-    })
+
+    if (req.query.orgID != 'undefined' && req.query.orgID.length) {
+      const org = listings.find((listing) => {
+        listing.id == req.query.orgID
+      })
+      res.status(200).json({
+        data: org ? [org] : [],
+        count: 1,
+      })
+    } else {
+      const results = filter(
+        listings.sortedOrganizations,
+        req.query.SearchTermA,
+        req.query.Categories
+      )
+      res.status(200).json({
+        data: results.slice(req.query.offset, parseInt(req.query.offset) + 20),
+        count: results.length,
+      })
+    }
   }
 }
 
