@@ -25,7 +25,11 @@ export default async function handler(req, res) {
     ]
 
     cache.put('listings', countResponseJson, 5000)
-    if (req.query.orgID != 'undefined' && req.query.orgID.length) {
+    if (
+      req.query.orgID &&
+      req.query.orgID != 'undefined' &&
+      req.query.orgID.length
+    ) {
       const org = countResponseJson.sortedOrganizations.find(
         (listing) => listing.id == req.query.orgID
       )
@@ -48,7 +52,11 @@ export default async function handler(req, res) {
   } else {
     const listings = cache.get('listings')
 
-    if (req.query.orgID != 'undefined' && req.query.orgID.length) {
+    if (
+      req.query.orgID &&
+      req.query.orgID != 'undefined' &&
+      req.query.orgID.length
+    ) {
       const org = listings.find((listing) => {
         listing.id == req.query.orgID
       })
