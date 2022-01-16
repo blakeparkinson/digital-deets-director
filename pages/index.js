@@ -161,7 +161,27 @@ function DirectoryPage({ availableCategories = [] }) {
       setPaginatorCount(Math.ceil(json.count / limit))
     }
     fetchListings()
-  }, [category, searchTerm])
+  }, [category])
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      async function fetchListings() {
+        const queryString = new URLSearchParams({
+          Categories: category,
+          SearchTermA: searchTerm,
+          offset: offset,
+          orgID: orgID,
+        }).toString()
+        const response = await fetch(`/api/directory?${queryString}`)
+        const json = await response.json()
+        setListings(json.data)
+        setDisplayedListings(json.data)
+        setPaginatorCount(Math.ceil(json.count / limit))
+      }
+      fetchListings()
+    }, 1000)
+
+    return () => clearTimeout(delayDebounceFn)
+  }, [searchTerm])
 
   const handleChange = (event) => {
     setOffset(0)
