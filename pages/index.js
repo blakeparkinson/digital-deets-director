@@ -29,6 +29,7 @@ import {
   FaPhone,
   FaSearchLocation,
   FaFacebookF,
+  FaEnvelope,
   FaPhoneAlt,
   FaWindowMaximize,
 } from 'react-icons/fa'
@@ -312,6 +313,7 @@ function DirectoryPage({ availableCategories = [] }) {
                 <FaWindowMaximize className="mr-2" />
                 <a
                   href={displayedListings[selectedIndex]?.website}
+                  target="_blank"
                   className="text-blue"
                 >
                   {displayedListings[selectedIndex]?.website}
@@ -325,7 +327,11 @@ function DirectoryPage({ availableCategories = [] }) {
                 className="flex items-center"
               >
                 <FaFacebookF className="mr-2" />
-                <a href={displayedListings[selectedIndex]?.facebookpage}>
+                <a
+                  href={displayedListings[selectedIndex]?.facebookpage}
+                  target="_blank"
+                  className="text-blue"
+                >
                   {displayedListings[selectedIndex]?.facebookpage}
                 </a>
               </Typography>
@@ -340,6 +346,16 @@ function DirectoryPage({ availableCategories = [] }) {
                 {formatPhoneNumber(
                   displayedListings[selectedIndex]?.phonenumber
                 )}
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.email && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <FaEnvelope className="mr-2" />
+                {displayedListings[selectedIndex]?.email}
               </Typography>
             )}
             {displayedListings[selectedIndex]?.streetaddress && (
