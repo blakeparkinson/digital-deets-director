@@ -369,6 +369,27 @@ function DirectoryPage({ availableCategories = [] }) {
               </Typography>
             )}
           </DialogContentText>
+          <div className="flex items-end">
+            <a
+              onClick={(event) => handleSignUpClick(event, selectedIndex)}
+              className="w-full flex justify-end"
+              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}`}
+            >
+              {displayedListings[selectedIndex]?.status != 'complete' ? (
+                <Button className="w-full self-end bg-orange text-white normal-case">
+                  Sign Up My Organization
+                </Button>
+              ) : (
+                <a
+                  onClick={(event) => handleSignUpClick(event, selectedIndex)}
+                  className="self-end text-blue"
+                  href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}`}
+                >
+                  Join this organization
+                </a>
+              )}
+            </a>
+          </div>
         </DialogContent>
       </Dialog>
       <div className="flex lg:flex-row flex-col mt-32 xl:mt-0 text-grey">
