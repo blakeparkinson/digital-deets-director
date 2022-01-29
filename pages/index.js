@@ -134,6 +134,7 @@ function DirectoryPage({ availableCategories = [] }) {
   }
   const [category, setCategory] = useState(match ? match : 'All Categories')
   const [listings, setListings] = useState([])
+  const [queryParams, setQueryParams] = useState('')
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(20)
   const [offset, setOffset] = useState(0)
@@ -146,6 +147,14 @@ function DirectoryPage({ availableCategories = [] }) {
   const theme = useTheme()
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const makeQueryParamString = (params) => {
+    return Object.keys(params)
+      .map((key) => key + '=' + params[key])
+      .join('&')
+  }
+  useEffect(() => {
+    setQueryParams(makeQueryParamString(router.query))
+  }, [])
 
   useEffect(() => {
     async function fetchListings() {
@@ -373,7 +382,7 @@ function DirectoryPage({ availableCategories = [] }) {
             <a
               onClick={(event) => handleSignUpClick(event, selectedIndex)}
               className="w-full flex justify-end"
-              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}`}
+              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
             >
               {displayedListings[selectedIndex]?.status != 'complete' ? (
                 <Button className="w-full self-end bg-orange text-white normal-case">
@@ -383,7 +392,7 @@ function DirectoryPage({ availableCategories = [] }) {
                 <a
                   onClick={(event) => handleSignUpClick(event, selectedIndex)}
                   className="self-end text-blue"
-                  href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}`}
+                  href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
                 >
                   Join this organization
                 </a>
@@ -557,7 +566,7 @@ function DirectoryPage({ availableCategories = [] }) {
                       <a
                         onClick={(event) => handleSignUpClick(event, index)}
                         className="w-full flex justify-end"
-                        href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
+                        href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
                       >
                         {listing.status != 'complete' ? (
                           <Button className="w-full self-end bg-orange text-white normal-case">
@@ -567,7 +576,7 @@ function DirectoryPage({ availableCategories = [] }) {
                           <a
                             onClick={(event) => handleSignUpClick(event, index)}
                             className="self-end text-blue"
-                            href={`https://community.digitaldeets.com/onboarding/${listing.id}`}
+                            href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
                           >
                             Join this organization
                           </a>
