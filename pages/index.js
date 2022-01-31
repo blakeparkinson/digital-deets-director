@@ -99,7 +99,7 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Find my listing"
+        placeholder="Find my organization"
         value={searchTerm}
         onChange={(e) => handleSearch(e)}
         inputProps={{ 'aria-label': 'find my listing' }}
