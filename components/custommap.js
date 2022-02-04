@@ -24,7 +24,7 @@ function CustomMap({ google, locations = [] }) {
     <Map
       google={google}
       className="w-full lg:w-2/5 lg:fixed relative h-72 lg:h-full !important"
-      zoom={5}
+      zoom={7}
       gestureHandling={'cooperative'}
       initialCenter={getCenter()}
       streetViewControl={true}
