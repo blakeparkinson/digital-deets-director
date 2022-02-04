@@ -304,7 +304,7 @@ function DirectoryPage({ availableCategories = [] }) {
             {displayedListings[selectedIndex]?.categories[0] && (
               <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                 <b>Category: </b>{' '}
-                {displayedListings[selectedIndex]?.categories.map(category => <span>{category}<br /></span>)}
+                {displayedListings[selectedIndex]?.categories.join(', ')}
               </Typography>
             )}
             {displayedListings[selectedIndex]?.promocode && (
