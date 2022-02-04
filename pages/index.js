@@ -304,13 +304,14 @@ function DirectoryPage({ availableCategories = [] }) {
             {displayedListings[selectedIndex]?.categories[0] && (
               <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                 <b>Category: </b>{' '}
-                {displayedListings[selectedIndex]?.categories[0]}
+                {displayedListings[selectedIndex]?.categories.map(category => <span>{category}<br /></span>)}
               </Typography>
             )}
             {displayedListings[selectedIndex]?.promocode && (
               <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                 <b>Promotion Code: </b>{' '}
                 {displayedListings[selectedIndex]?.promocode}
+                <p>{displayedListings[selectedIndex]?.promocode_description}</p>                
               </Typography>
             )}
             {displayedListings[selectedIndex]?.website && (
@@ -364,7 +365,13 @@ function DirectoryPage({ availableCategories = [] }) {
                 className="flex items-center"
               >
                 <FaEnvelope className="mr-2" />
-                {displayedListings[selectedIndex]?.email}
+                <a
+                  href={`mailto:${displayedListings[selectedIndex]?.email}`}
+                  target="_blank"
+                  className="text-blue"
+                >{displayedListings[selectedIndex]?.email}
+                </a>
+                
               </Typography>
             )}
             {displayedListings[selectedIndex]?.streetaddress && (
@@ -374,7 +381,7 @@ function DirectoryPage({ availableCategories = [] }) {
                 className="flex items-center"
               >
                 <FaSearchLocation className="mr-2" />
-                {displayedListings[selectedIndex]?.streetaddress}
+                {displayedListings[selectedIndex]?.streetaddress}, {displayedListings[selectedIndex]?.state}, {displayedListings[selectedIndex]?.zipcode}
               </Typography>
             )}
           </DialogContentText>
