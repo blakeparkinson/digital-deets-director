@@ -1,15 +1,19 @@
 var cache = require('memory-cache')
+import listings from '../../listings.json'
 
 export default async function handler(req, res) {
   if (!cache.get('listings')) {
-    //we dont have listings so we need to hit the db
-    const [countResponse] = await Promise.all([
-      fetch(
-        `https://app.digitaldeets.com/api_catalog/organizations?page_limit=15000&page=0`
-      ),
-    ])
-    // const dirResponseJson = await dirResponse.json()
-    const countResponseJson = await countResponse.json()
+    // we dont have listings so we need to hit the db
+    // const [countResponse] = await Promise.all([
+    //   fetch(
+    //     `https://app.digitaldeets.com/api_catalog/organizations?page_limit=15000&page=0`
+    //   ),
+    // ])
+    // const countResponseJson = await countResponse.json()
+    // console.log('crr: ', countResponseJson)
+    const countResponseJson = {}
+    countResponseJson['organizations'] = listings.data
+
     const withDescription = []
     const withoutDescription = []
     countResponseJson.organizations.forEach((org) => {

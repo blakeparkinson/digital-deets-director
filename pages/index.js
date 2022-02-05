@@ -311,7 +311,7 @@ function DirectoryPage({ availableCategories = [] }) {
               <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                 <b>Promotion Code: </b>{' '}
                 {displayedListings[selectedIndex]?.promocode}
-                <p>{displayedListings[selectedIndex]?.promocode_description}</p>                
+                <p>{displayedListings[selectedIndex]?.promocode_description}</p>
               </Typography>
             )}
             {displayedListings[selectedIndex]?.website && (
@@ -369,9 +369,9 @@ function DirectoryPage({ availableCategories = [] }) {
                   href={`mailto:${displayedListings[selectedIndex]?.email}`}
                   target="_blank"
                   className="text-blue"
-                >{displayedListings[selectedIndex]?.email}
+                >
+                  {displayedListings[selectedIndex]?.email}
                 </a>
-                
               </Typography>
             )}
             {displayedListings[selectedIndex]?.streetaddress && (
@@ -381,7 +381,9 @@ function DirectoryPage({ availableCategories = [] }) {
                 className="flex items-center"
               >
                 <FaSearchLocation className="mr-2" />
-                {displayedListings[selectedIndex]?.streetaddress}, {displayedListings[selectedIndex]?.state}, {displayedListings[selectedIndex]?.zipcode}
+                {displayedListings[selectedIndex]?.streetaddress},{' '}
+                {displayedListings[selectedIndex]?.state},{' '}
+                {displayedListings[selectedIndex]?.zipcode}
               </Typography>
             )}
           </DialogContentText>
