@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       ...withoutDescription,
     ]
 
-    cache.put('listings', countResponseJson, 5000)
+    // cache.put('listings', countResponseJson, 5000)
     if (
       req.query.orgID &&
       req.query.orgID != 'undefined' &&
