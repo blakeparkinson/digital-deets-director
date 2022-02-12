@@ -1,4 +1,4 @@
-var cache = require('memory-cache')
+/*var cache = require('memory-cache')
 import listings from '../../listings.json'
 
 export default async function handler(req, res) {
@@ -123,3 +123,4 @@ const isStringMatch = (term, listing) => {
     }
   }
 }
+*/

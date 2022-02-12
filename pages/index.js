@@ -25,6 +25,7 @@ import CustomMap from '../components/custommap'
 import { styled, alpha } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
+import Head from 'next/head'
 import {
   FaPhone,
   FaSearchLocation,
@@ -36,6 +37,7 @@ import {
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import { RouterTwoTone } from '@mui/icons-material'
+import { isForwardRef } from 'react-is'
 
 export async function getServerSideProps() {
   const response = await fetch(
@@ -132,18 +134,21 @@ function DirectoryPage({ availableCategories = [] }) {
       }
     })
   }
+
+  let search_str = (orgID != 'undefined' && orgID) ? orgID : ''
+
   const [category, setCategory] = useState(match ? match : 'All Categories')
   const [listings, setListings] = useState([])
   const [queryParams, setQueryParams] = useState('')
   const [displayedListings, setDisplayedListings] = useState([])
-  const [limit, setLimit] = useState(20)
+  const [limit, setLimit] = useState(21)
   const [offset, setOffset] = useState(0)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState(search_str)
   const [paginatorCount, setPaginatorCount] = useState(0)
   const [page, setPage] = React.useState(1)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
   const [open, setOpen] = React.useState(false)
-  const [seeMoreActive, setSeeMoreActive] = React.useState(true)
+  //const [seeMoreActive, setSeeMoreActive] = React.useState(true)
   const theme = useTheme()
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -156,7 +161,7 @@ function DirectoryPage({ availableCategories = [] }) {
     setQueryParams(makeQueryParamString(router.query))
   }, [])
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function fetchListings() {
       const queryString = new URLSearchParams({
         Categories: category,
@@ -191,13 +196,59 @@ function DirectoryPage({ availableCategories = [] }) {
     }, 1000)
 
     return () => clearTimeout(delayDebounceFn)
+  }, [searchTerm])*/
+
+   useEffect(() => {
+    async function fetchListings() {
+      const queryString = new URLSearchParams({
+        category: (category == 'All Categories') ? 'all_organizations' : category,
+        search: searchTerm,
+        page_limit: limit,
+        page: page
+      }).toString()
+      const response = await fetch(`https://app.digitaldeets.com/api_catalog/organizations?${queryString}`)
+      const json = await response.json()
+      setListings(json.organizations)
+      setDisplayedListings(json.organizations)
+      setPaginatorCount(Math.ceil(json.total / limit))
+    }
+      fetchListings()
+  }, [category])
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      async function fetchListings() {
+        const queryString = new URLSearchParams({
+          category: (category == 'All Categories') ? 'all_organizations' : category,
+          search: searchTerm,
+          page_limit: limit,
+          page: page
+        }).toString()
+        const response = await fetch(`https://app.digitaldeets.com/api_catalog/organizations?${queryString}`)
+        const json = await response.json()
+        setListings(json.organizations)
+        setDisplayedListings(json.organizations)
+        setPaginatorCount(Math.ceil(json.total / limit))
+      }
+
+      if(orgID != searchTerm || (!router.query.orgID && orgID == searchTerm)){
+        fetchListings()
+      }
+    }, 1000)
+
+    return () => clearTimeout(delayDebounceFn)
   }, [searchTerm])
 
   const handleChange = (event) => {
     setOffset(0)
     setPage(1)
     router.query.categoryType = event.target.value
-    router.query.orgID = ''
+    if(router.query.orgID){
+      router.query.orgID = ''
+      if(orgID == searchTerm){
+        setSearchTerm('')
+      }
+    }
     router.push(router)
     setCategory(event.target.value)
   }
@@ -205,7 +256,7 @@ function DirectoryPage({ availableCategories = [] }) {
     setOpen(false)
   }
 
-  const handlePaging = async (event, value) => {
+  /*const handlePaging = async (event, value) => {
     if (!value) return
     setPage(value)
     setOffset((value - 1) * limit)
@@ -220,6 +271,28 @@ function DirectoryPage({ availableCategories = [] }) {
     const json = await response.json()
 
     setDisplayedListings(json.data)
+  }*/
+
+  const handlePaging = async (event, value) => {
+    if (!value) return
+    setPage(value)
+    setOffset((value - 1) * limit)
+    const first = (value - 1) * limit
+    const second = (value - 1) * limit + limit
+    const queryString = new URLSearchParams({
+      category: (category == 'All Categories') ? 'all_organizations' : category,
+      search: searchTerm,
+      page_limit: limit,
+      page: value
+    }).toString()
+    const response = await fetch(`https://app.digitaldeets.com/api_catalog/organizations?${queryString}`)
+    const json = await response.json()
+    setDisplayedListings(json.organizations)
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   const handleListItemClick = (event, index) => {
@@ -266,6 +339,9 @@ function DirectoryPage({ availableCategories = [] }) {
 
   return (
     <>
+      <Head>
+        <title>Digital Deets - Community Catalog</title>
+      </Head>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -309,7 +385,7 @@ function DirectoryPage({ availableCategories = [] }) {
             )}
             {displayedListings[selectedIndex]?.promocode && (
               <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-                <b>Promotion Code: </b>{' '}
+                <b>Deal/Offer: </b>{' '}
                 {displayedListings[selectedIndex]?.promocode}
                 <p>{displayedListings[selectedIndex]?.promocode_description}</p>
               </Typography>
@@ -388,25 +464,25 @@ function DirectoryPage({ availableCategories = [] }) {
             )}
           </DialogContentText>
           <div className="flex items-end">
-            <a
-              onClick={(event) => handleSignUpClick(event, selectedIndex)}
-              className="w-full flex justify-end"
-              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-            >
-              {displayedListings[selectedIndex]?.status != 'complete' ? (
+            
+            {displayedListings[selectedIndex]?.status != 'complete' ? (
+              <a
+                onClick={(event) => handleSignUpClick(event, selectedIndex)}
+                className="w-full flex justify-end"
+                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+              >
                 <Button className="w-full self-end bg-orange text-white normal-case">
                   Sign Up My Organization
                 </Button>
-              ) : (
-                <a
-                  onClick={(event) => handleSignUpClick(event, selectedIndex)}
-                  className="self-end text-blue"
-                  href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-                >
-                  Join this organization
-                </a>
-              )}
-            </a>
+              </a>
+            ) : (
+              <a
+                onClick={(event) => handleSignUpClick(event, selectedIndex)}
+                className="w-full flex justify-end text-blue"
+                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+              >Join this Organization</a>
+            )}
+            
           </div>
         </DialogContent>
       </Dialog>
@@ -571,26 +647,24 @@ function DirectoryPage({ availableCategories = [] }) {
                         >
                           View full listing
                         </Text>
-                      </div>
-                      <a
+                      </div>                      
+                      {listing.status != 'complete' ? (
+                        <a
                         onClick={(event) => handleSignUpClick(event, index)}
                         className="w-full flex justify-end"
                         href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
                       >
-                        {listing.status != 'complete' ? (
                           <Button className="w-full self-end bg-orange text-white normal-case">
                             Sign Up My Organization
                           </Button>
-                        ) : (
-                          <a
-                            onClick={(event) => handleSignUpClick(event, index)}
-                            className="self-end text-blue"
-                            href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
-                          >
-                            Join this organization
-                          </a>
-                        )}
-                      </a>
+                        </a>
+                      ) : (
+                        <a
+                        onClick={(event) => handleSignUpClick(event, selectedIndex)}
+                        className="w-full flex justify-end text-blue"
+                        href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+                      >Join this Organization</a>
+                      )}                      
                     </CardActions>
                   </Card>
                 </Grid>
