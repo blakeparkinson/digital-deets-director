@@ -487,7 +487,7 @@ function DirectoryPage({ availableCategories = [] }) {
         </DialogContent>
       </Dialog>
       <div className="flex lg:flex-row flex-col mt-32 xl:mt-0 text-grey">
-        <Box sx={{ flex: 2 }}>
+        <Box className="mb-4" sx={{ flex: 2 }}>
           <Grid
             sx={{
               backgroundColor: '#02779d',
@@ -587,7 +587,7 @@ function DirectoryPage({ availableCategories = [] }) {
                   md={4}
                 >
                   <Card
-                    sx={{ maxWidth: 300 }}
+                    sx={{ width: 300 }}
                     className="flex flex-col justify-between text-grey"
                   >
                     <CardMedia
@@ -681,7 +681,7 @@ function DirectoryPage({ availableCategories = [] }) {
       </div>
       {paginatorCount > 1 && (
         <div
-          className="mt-8"
+          className="mt-4 mb-4"
           style={{
             display: 'flex',
             justifyContent: 'center',
