@@ -215,6 +215,7 @@ function DirectoryPage({ availableCategories = [] }) {
   }, [category])
 
   useEffect(() => {
+    if (!searchTerm.length) return
     const delayDebounceFn = setTimeout(() => {
       async function fetchListings() {
         const queryString = new URLSearchParams({
