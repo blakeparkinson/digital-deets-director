@@ -662,7 +662,7 @@ function DirectoryPage({ availableCategories = [] }) {
                         <a
                         onClick={(event) => handleSignUpClick(event, selectedIndex)}
                         className="w-full flex justify-end text-blue"
-                        href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+                        href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
                       >Join this Organization</a>
                       )}                      
                     </CardActions>
