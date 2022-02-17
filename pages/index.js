@@ -26,6 +26,7 @@ import { styled, alpha } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
 import Head from 'next/head'
+import Script from 'next/script'
 import {
   FaPhone,
   FaSearchLocation,
@@ -105,6 +106,105 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
       />
     </Search>
   )
+}
+
+const ListingComponent = ({ listing, index, queryParams, first_block, handleListItemClick, handleSignUpClick }) => {
+
+  let blocks_in_row = 3
+  if(window.innerWidth < 900){
+    blocks_in_row = 2
+  }
+
+  let show_block = (first_block && index < blocks_in_row) || (!first_block && index >= blocks_in_row)
+  
+  return show_block ? (
+    <Grid
+      sx={{
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+      item
+      md={4}
+    >
+      <Card
+        sx={{ width:310 }}
+        className="flex flex-col justify-between text-grey"
+      >
+        <CardMedia
+          component="img"
+          height="140"
+          image={listing.logo}
+          onError={(e) => {
+            e.target.onerror = null
+            e.target.style.display = 'none'
+          }}
+        />
+        <CardContent
+          onClick={(event) => handleListItemClick(event, index)}
+        >
+          <Typography gutterBottom variant="h5" component="div">
+            {listing.businessname}
+          </Typography>
+          {listing.phonenumber && (
+            <Text
+              level="xs"
+              weight="normal"
+              className="mt-2 flex text-grey items-center"
+            >
+              <FaPhone className="mr-2 text-blue" />
+              {formatPhoneNumber(listing.phonenumber)}
+            </Text>
+          )}
+          {listing.streetaddress && (
+            <Text
+              level="xs"
+              weight="normal"
+              className="mt-2 flex text-grey"
+            >
+              <FaSearchLocation className="mr-2 text-blue" />
+              {`${listing.streetaddress}, ${listing.city}, ${listing.state}, ${listing.zipcode}`}
+            </Text>
+          )}
+        </CardContent>
+        <CardActions className="flex flex-col">
+          <div
+            className="flex w-full justify-end mr-2"
+            onClick={(event) => handleListItemClick(event, index)}
+          >
+            <Text
+              level="s"
+              weight="normal"
+              className="mt-2 text-blue text-end"
+            >
+              View full listing
+            </Text>
+          </div>
+          {listing.status != 'complete' ? (
+            <a
+              onClick={(event) => handleSignUpClick(event, index)}
+              className="w-full flex justify-end"
+              href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
+            >
+              <Button className="w-full self-end bg-orange text-white normal-case">
+                Sign Up My Organization
+              </Button>
+            </a>
+          ) : (
+            <a
+              onClick={(event) =>
+                handleSignUpClick(event, index)
+              }
+              className="w-full flex justify-end text-blue"
+              href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
+            >
+              Join this Organization
+            </a>
+          )}
+        </CardActions>
+      </Card>
+    </Grid>
+  ) : ''
 }
 
 function formatPhoneNumber(phoneNumberString) {
@@ -475,7 +575,7 @@ function DirectoryPage({ availableCategories = [] }) {
                 className="w-full flex justify-end"
                 href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
               >
-                <Button className="w-full self-end bg-orange text-white normal-case">
+                <Button className="w-full self-end bg-orange text-white normal-case mt-2">
                   Sign Up My Organization
                 </Button>
               </a>
@@ -578,107 +678,35 @@ function DirectoryPage({ availableCategories = [] }) {
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
+            className="pl-1 pr-1"
           >
             {displayedListings.map((listing, index) => {
               return (
-                <Grid
-                  key={index}
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                  item
-                  md={4}
-                >
-                  <Card
-                    sx={{ width: 300 }}
-                    className="flex flex-col justify-between text-grey"
-                  >
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={listing.logo}
-                      onError={(e) => {
-                        e.target.onerror = null
-                        e.target.style.display = 'none'
-                      }}
-                    />
-                    <CardContent
-                      onClick={(event) => handleListItemClick(event, index)}
-                    >
-                      <Typography gutterBottom variant="h5" component="div">
-                        {listing.businessname}
-                      </Typography>
-                      {/* <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        className="line-clamp-5 overflow-hidden h-[150px]"
-                      >
-                        {listing.description
-                          ? listing.description
-                          : DEFAULT_DESC}
-                      </Typography> */}
-                      {listing.phonenumber && (
-                        <Text
-                          level="xs"
-                          weight="normal"
-                          className="mt-2 flex text-grey items-center"
-                        >
-                          <FaPhone className="mr-2 text-blue" />
-                          {formatPhoneNumber(listing.phonenumber)}
-                        </Text>
-                      )}
-                      {listing.streetaddress && (
-                        <Text
-                          level="xs"
-                          weight="normal"
-                          className="mt-2 flex text-grey"
-                        >
-                          <FaSearchLocation className="mr-2 text-blue" />
-                          {`${listing.streetaddress}, ${listing.city}, ${listing.state}, ${listing.zipcode}`}
-                        </Text>
-                      )}
-                    </CardContent>
-                    <CardActions className="flex flex-col">
-                      <div
-                        className="flex w-full justify-end mr-2"
-                        onClick={(event) => handleListItemClick(event, index)}
-                      >
-                        <Text
-                          level="s"
-                          weight="normal"
-                          className="mt-2 text-blue text-end"
-                        >
-                          View full listing
-                        </Text>
-                      </div>
-                      {listing.status != 'complete' ? (
-                        <a
-                          onClick={(event) => handleSignUpClick(event, index)}
-                          className="w-full flex justify-end"
-                          href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
-                        >
-                          <Button className="w-full self-end bg-orange text-white normal-case">
-                            Sign Up My Organization
-                          </Button>
-                        </a>
-                      ) : (
-                        <a
-                          onClick={(event) =>
-                            handleSignUpClick(event, selectedIndex)
-                          }
-                          className="w-full flex justify-end text-blue"
-                          href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
-                        >
-                          Join this Organization
-                        </a>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
+              <ListingComponent
+               key={index}
+               listing={listing}
+               index={index}
+               first_block={true}
+               queryParams={queryParams}
+               handleListItemClick={handleListItemClick}
+               handleSignUpClick={handleSignUpClick}               
+              />
               )
-            })}
+            })} 
+            <div id="digitaldeets_promotions_widget"></div>
+            {displayedListings.map((listing, index) => {
+              return (
+              <ListingComponent
+               key={index}
+               listing={listing}
+               index={index}
+               first_block={false}
+               queryParams={queryParams}
+               handleListItemClick={handleListItemClick}
+               handleSignUpClick={handleSignUpClick}               
+              />
+              )
+            })}            
           </Grid>
         </Box>
         <Box sx={{ flex: 1, marginTop: '-8px' }}>
@@ -705,6 +733,18 @@ function DirectoryPage({ availableCategories = [] }) {
           />
         </div>
       )}
+      <Script id="show-digitaldeets_promotions_widget">
+        {`
+        if (!window.DigitalDeets) window.DigitalDeets = {};
+        DigitalDeets.promotionsLimit = 3;
+        setTimeout(function(){ 
+          if(!document.getElementById('digitaldeets_promotions_widget').childNodes.length){
+            DigitalDeets.loadPromotionsWidget();
+          }
+         }, 3000)
+        `}
+      </Script>
+      <Script src="https://api.digitaldeets.com/dd_widget/promotions.js"/>
     </>
   )
 }
