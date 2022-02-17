@@ -40,7 +40,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { RouterTwoTone } from '@mui/icons-material'
 import { isForwardRef } from 'react-is'
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const response = await fetch(
     'https://app.digitaldeets.com/api_catalog/categories'
   )
@@ -108,15 +108,23 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
   )
 }
 
-const ListingComponent = ({ listing, index, queryParams, first_block, handleListItemClick, handleSignUpClick }) => {
-
+const ListingComponent = ({
+  listing,
+  index,
+  queryParams,
+  first_block,
+  handleListItemClick,
+  handleSignUpClick,
+}) => {
   let blocks_in_row = 3
-  if(window.innerWidth < 900){
+  if (window.innerWidth < 900) {
     blocks_in_row = 2
   }
 
-  let show_block = (first_block && index < blocks_in_row) || (!first_block && index >= blocks_in_row)
-  
+  let show_block =
+    (first_block && index < blocks_in_row) ||
+    (!first_block && index >= blocks_in_row)
+
   return show_block ? (
     <Grid
       sx={{
@@ -128,7 +136,7 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
       md={4}
     >
       <Card
-        sx={{ width:310 }}
+        sx={{ width: 310 }}
         className="flex flex-col justify-between text-grey"
       >
         <CardMedia
@@ -140,9 +148,7 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
             e.target.style.display = 'none'
           }}
         />
-        <CardContent
-          onClick={(event) => handleListItemClick(event, index)}
-        >
+        <CardContent onClick={(event) => handleListItemClick(event, index)}>
           <Typography gutterBottom variant="h5" component="div">
             {listing.businessname}
           </Typography>
@@ -157,11 +163,7 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
             </Text>
           )}
           {listing.streetaddress && (
-            <Text
-              level="xs"
-              weight="normal"
-              className="mt-2 flex text-grey"
-            >
+            <Text level="xs" weight="normal" className="mt-2 flex text-grey">
               <FaSearchLocation className="mr-2 text-blue" />
               {`${listing.streetaddress}, ${listing.city}, ${listing.state}, ${listing.zipcode}`}
             </Text>
@@ -172,11 +174,7 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
             className="flex w-full justify-end mr-2"
             onClick={(event) => handleListItemClick(event, index)}
           >
-            <Text
-              level="s"
-              weight="normal"
-              className="mt-2 text-blue text-end"
-            >
+            <Text level="s" weight="normal" className="mt-2 text-blue text-end">
               View full listing
             </Text>
           </div>
@@ -192,9 +190,7 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
             </a>
           ) : (
             <a
-              onClick={(event) =>
-                handleSignUpClick(event, index)
-              }
+              onClick={(event) => handleSignUpClick(event, index)}
               className="w-full flex justify-end text-blue"
               href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
             >
@@ -204,7 +200,9 @@ const ListingComponent = ({ listing, index, queryParams, first_block, handleList
         </CardActions>
       </Card>
     </Grid>
-  ) : ''
+  ) : (
+    ''
+  )
 }
 
 function formatPhoneNumber(phoneNumberString) {
@@ -682,31 +680,31 @@ function DirectoryPage({ availableCategories = [] }) {
           >
             {displayedListings.map((listing, index) => {
               return (
-              <ListingComponent
-               key={index}
-               listing={listing}
-               index={index}
-               first_block={true}
-               queryParams={queryParams}
-               handleListItemClick={handleListItemClick}
-               handleSignUpClick={handleSignUpClick}               
-              />
+                <ListingComponent
+                  key={index}
+                  listing={listing}
+                  index={index}
+                  first_block={true}
+                  queryParams={queryParams}
+                  handleListItemClick={handleListItemClick}
+                  handleSignUpClick={handleSignUpClick}
+                />
               )
-            })} 
+            })}
             <div id="digitaldeets_promotions_widget"></div>
             {displayedListings.map((listing, index) => {
               return (
-              <ListingComponent
-               key={index}
-               listing={listing}
-               index={index}
-               first_block={false}
-               queryParams={queryParams}
-               handleListItemClick={handleListItemClick}
-               handleSignUpClick={handleSignUpClick}               
-              />
+                <ListingComponent
+                  key={index}
+                  listing={listing}
+                  index={index}
+                  first_block={false}
+                  queryParams={queryParams}
+                  handleListItemClick={handleListItemClick}
+                  handleSignUpClick={handleSignUpClick}
+                />
               )
-            })}            
+            })}
           </Grid>
         </Box>
         <Box sx={{ flex: 1, marginTop: '-8px' }}>
@@ -744,7 +742,7 @@ function DirectoryPage({ availableCategories = [] }) {
          }, 3000)
         `}
       </Script>
-      <Script src="https://api.digitaldeets.com/dd_widget/promotions.js"/>
+      <Script src="https://api.digitaldeets.com/dd_widget/promotions.js" />
     </>
   )
 }
