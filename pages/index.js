@@ -306,6 +306,13 @@ function DirectoryPage({ availableCategories = [] }) {
       email: email,
       LISTVIEW: true,
     })
+    analytics.track('Catalog listing clicked', {
+      ...displayedListings[index],
+      firstName: fName,
+      lastName: lName,
+      email: email,
+      LISTVIEW: true,
+    })
     setSelectedIndex(index)
     setOpen(true)
   }
@@ -317,6 +324,13 @@ function DirectoryPage({ availableCategories = [] }) {
       lastName: lName,
       email: email,
       SIGNUP: true,
+    })
+    analytics.track('Catalog signup clicked', {
+      ...displayedListings[index],
+      firstName: fName,
+      lastName: lName,
+      email: email,
+      LISTVIEW: true,
     })
   }
 
