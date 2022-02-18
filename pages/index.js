@@ -40,7 +40,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { RouterTwoTone } from '@mui/icons-material'
 import { isForwardRef } from 'react-is'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const response = await fetch(
     'https://app.digitaldeets.com/api_catalog/categories'
   )
@@ -313,7 +313,7 @@ function DirectoryPage({ availableCategories = [] }) {
   }, [category])
 
   useEffect(() => {
-    if (!searchTerm.length) return
+    //if (!searchTerm.length) return
     const delayDebounceFn = setTimeout(() => {
       async function fetchListings() {
         const queryString = new URLSearchParams({
