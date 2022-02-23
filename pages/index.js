@@ -32,21 +32,20 @@ import {
   FaSearchLocation,
   FaFacebookF,
   FaEnvelope,
-  FaPhoneAlt,
   FaWindowMaximize,
 } from 'react-icons/fa'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
-import { RouterTwoTone } from '@mui/icons-material'
-import { isForwardRef } from 'react-is'
 
 export async function getServerSideProps() {
+  console.log('here')
   const response = await fetch(
     'https://app.digitaldeets.com/api_catalog/categories'
   )
   const result = await response.json()
   const availableCategories = result.categories
   availableCategories.unshift('All Categories')
+  console.log('there')
   // Pass data to the page via props
   return { props: { availableCategories } }
 }
@@ -256,43 +255,6 @@ function DirectoryPage({ availableCategories = [] }) {
     setQueryParams(makeQueryParamString(router.query))
   }, [])
 
-  /*useEffect(() => {
-    async function fetchListings() {
-      const queryString = new URLSearchParams({
-        Categories: category,
-        SearchTermA: searchTerm,
-        offset: offset,
-        orgID: orgID,
-      }).toString()
-      const response = await fetch(`/api/directory?${queryString}`)
-      const json = await response.json()
-      setListings(json.data)
-      setDisplayedListings(json.data)
-      setPaginatorCount(Math.ceil(json.count / limit))
-    }
-    fetchListings()
-  }, [category])
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      async function fetchListings() {
-        const queryString = new URLSearchParams({
-          Categories: category,
-          SearchTermA: searchTerm,
-          offset: offset,
-          orgID: orgID,
-        }).toString()
-        const response = await fetch(`/api/directory?${queryString}`)
-        const json = await response.json()
-        setListings(json.data)
-        setDisplayedListings(json.data)
-        setPaginatorCount(Math.ceil(json.count / limit))
-      }
-      fetchListings()
-    }, 1000)
-
-    return () => clearTimeout(delayDebounceFn)
-  }, [searchTerm])*/
-
   useEffect(() => {
     async function fetchListings() {
       const queryString = new URLSearchParams({
@@ -356,23 +318,6 @@ function DirectoryPage({ availableCategories = [] }) {
   const handleClose = (event) => {
     setOpen(false)
   }
-
-  /*const handlePaging = async (event, value) => {
-    if (!value) return
-    setPage(value)
-    setOffset((value - 1) * limit)
-    const first = (value - 1) * limit
-    const second = (value - 1) * limit + limit
-    const queryString = new URLSearchParams({
-      Categories: category,
-      SearchTermA: searchTerm,
-      offset: (value - 1) * limit,
-    }).toString()
-    const response = await fetch(`/api/directory?${queryString}`)
-    const json = await response.json()
-
-    setDisplayedListings(json.data)
-  }*/
 
   const handlePaging = async (event, value) => {
     if (!value) return
@@ -600,18 +545,6 @@ function DirectoryPage({ availableCategories = [] }) {
               paddingBottom: '10px',
             }}
           >
-            {/* <Grid item sx={{ display: 'flex' }}> */}
-            {/* <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search Listings"
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                inputProps={{ "aria-label": "search categories" }}
-                style={{ width: "60%" }}
-              />
-              <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-                <SearchIcon />
-              </IconButton> */}
             <SearchComponent
               searchTerm={searchTerm}
               handleSearch={handleSearch}
