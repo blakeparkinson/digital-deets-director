@@ -37,19 +37,6 @@ import {
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-export async function getServerSideProps() {
-  console.log('here')
-  const response = await fetch(
-    'https://app.digitaldeets.com/api_catalog/categories'
-  )
-  const result = await response.json()
-  const availableCategories = result.categories
-  availableCategories.unshift('All Categories')
-  console.log('there')
-  // Pass data to the page via props
-  return { props: { availableCategories } }
-}
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -213,26 +200,16 @@ function formatPhoneNumber(phoneNumberString) {
   return null
 }
 
-function DirectoryPage({ availableCategories = [] }) {
+function DirectoryPage() {
   const router = useRouter()
   const { categoryType, email, orgID, fName, lName } = router.query
 
-  let match
-  if (availableCategories && availableCategories.length) {
-    match = availableCategories.find((availableCategory) => {
-      if (categoryType) {
-        return (
-          availableCategory.toLowerCase().replace(/\s/g, '') ==
-          categoryType.toLowerCase().replace(/\s/g, '')
-        )
-      }
-    })
-  }
-
   let search_str = orgID != 'undefined' && orgID ? orgID : ''
+  let match
 
   const [category, setCategory] = useState(match ? match : 'All Categories')
   const [listings, setListings] = useState([])
+  const [availableCategories, setAvailableCategories] = useState([])
   const [queryParams, setQueryParams] = useState('')
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(21)
@@ -253,7 +230,30 @@ function DirectoryPage({ availableCategories = [] }) {
   }
   useEffect(() => {
     setQueryParams(makeQueryParamString(router.query))
+    async function fetchCategories() {
+      const response = await fetch(
+        'https://app.digitaldeets.com/api_catalog/categories'
+      )
+      const result = await response.json()
+      const categories = result.categories
+      categories.unshift('All Categories')
+      setAvailableCategories(categories)
+    }
+    fetchCategories()
   }, [])
+
+  useEffect(() => {
+    if (availableCategories && availableCategories.length) {
+      match = availableCategories.find((availableCategory) => {
+        if (categoryType) {
+          return (
+            availableCategory.toLowerCase().replace(/\s/g, '') ==
+            categoryType.toLowerCase().replace(/\s/g, '')
+          )
+        }
+      })
+    }
+  }, [availableCategories])
 
   useEffect(() => {
     async function fetchListings() {
