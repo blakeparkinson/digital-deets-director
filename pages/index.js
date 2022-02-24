@@ -202,23 +202,23 @@ function formatPhoneNumber(phoneNumberString) {
 
 function DirectoryPage() {
   const router = useRouter()
-  const { categoryType, email, orgID, fName, lName } = router.query
 
-  let search_str = orgID != 'undefined' && orgID ? orgID : ''
-  let match
-
-  const [category, setCategory] = useState(match ? match : 'All Categories')
+  const [category, setCategory] = useState('')
   const [listings, setListings] = useState([])
   const [availableCategories, setAvailableCategories] = useState([])
   const [queryParams, setQueryParams] = useState('')
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(21)
   const [offset, setOffset] = useState(0)
-  const [searchTerm, setSearchTerm] = useState(search_str)
+  const [org, setOrg] = useState('')
+
+  const [searchTerm, setSearchTerm] = useState(null)
   const [paginatorCount, setPaginatorCount] = useState(0)
   const [page, setPage] = React.useState(1)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
   const [open, setOpen] = React.useState(false)
+  const [hasQueryParams, sethasQueryParams] = React.useState(false)
+
   //const [seeMoreActive, setSeeMoreActive] = React.useState(true)
   const theme = useTheme()
 
@@ -243,6 +243,17 @@ function DirectoryPage() {
   }, [])
 
   useEffect(() => {
+    const { orgID = '', categoryType = '' } = router.query
+
+    if (Object.keys(router.query).length) {
+      setOrg(orgID)
+      sethasQueryParams(true)
+    }
+    handleCategories(categoryType)
+  }, [router.query])
+
+  const handleCategories = (categoryType) => {
+    let match
     if (availableCategories && availableCategories.length) {
       match = availableCategories.find((availableCategory) => {
         if (categoryType) {
@@ -253,35 +264,20 @@ function DirectoryPage() {
         }
       })
     }
-  }, [availableCategories])
-
-  useEffect(() => {
-    async function fetchListings() {
-      const queryString = new URLSearchParams({
-        category: category == 'All Categories' ? 'all_organizations' : category,
-        search: searchTerm,
-        page_limit: limit,
-        page: page,
-      }).toString()
-      const response = await fetch(
-        `https://app.digitaldeets.com/api_catalog/organizations?${queryString}`
-      )
-      const json = await response.json()
-      setListings(json.organizations)
-      setDisplayedListings(json.organizations)
-      setPaginatorCount(Math.ceil(json.total / limit))
+    if (match) {
+      setCategory(match)
+    } else {
+      setCategory('All Categories')
     }
-    fetchListings()
-  }, [category])
+  }
 
   useEffect(() => {
-    //if (!searchTerm.length) return
-    const delayDebounceFn = setTimeout(() => {
+    if (category.length) {
       async function fetchListings() {
         const queryString = new URLSearchParams({
           category:
             category == 'All Categories' ? 'all_organizations' : category,
-          search: searchTerm,
+          search: org,
           page_limit: limit,
           page: page,
         }).toString()
@@ -293,13 +289,43 @@ function DirectoryPage() {
         setDisplayedListings(json.organizations)
         setPaginatorCount(Math.ceil(json.total / limit))
       }
+      fetchListings()
+      setOrg('')
+    }
+  }, [category, hasQueryParams])
 
-      if (orgID != searchTerm || (!router.query.orgID && orgID == searchTerm)) {
-        fetchListings()
-      }
-    }, 1000)
+  useEffect(() => {
+    if (searchTerm !== null) {
+      const { orgID } = router.query
 
-    return () => clearTimeout(delayDebounceFn)
+      const delayDebounceFn = setTimeout(() => {
+        async function fetchListings() {
+          const queryString = new URLSearchParams({
+            category:
+              category == 'All Categories' ? 'all_organizations' : category,
+            search: searchTerm,
+            page_limit: limit,
+            page: page,
+          }).toString()
+          const response = await fetch(
+            `https://app.digitaldeets.com/api_catalog/organizations?${queryString}`
+          )
+          const json = await response.json()
+          setListings(json.organizations)
+          setDisplayedListings(json.organizations)
+          setPaginatorCount(Math.ceil(json.total / limit))
+        }
+
+        if (
+          orgID != searchTerm ||
+          (!router.query.orgID && orgID == searchTerm)
+        ) {
+          fetchListings()
+        }
+      }, 1000)
+
+      return () => clearTimeout(delayDebounceFn)
+    }
   }, [searchTerm])
 
   const handleChange = (event) => {
@@ -308,7 +334,7 @@ function DirectoryPage() {
     router.query.categoryType = event.target.value
     if (router.query.orgID) {
       router.query.orgID = ''
-      if (orgID == searchTerm) {
+      if (org == searchTerm) {
         setSearchTerm('')
       }
     }
