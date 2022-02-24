@@ -271,11 +271,13 @@ function DirectoryPage() {
 
   useEffect(() => {
     if (category.length) {
+      let search_string = org ? org : (searchTerm !== null ? searchTerm : '')
+
       async function fetchListings() {
         let apiQueryString = new URLSearchParams({
           category:
             category == 'All Categories' ? 'all_organizations' : category,
-          search: org,
+          search: search_string,
           page_limit: limit,
           page: page,
         }).toString()
@@ -346,15 +348,17 @@ function DirectoryPage() {
   const handlePaging = async (event, value) => {
     if (!value) return
     setPage(value)
-    setOffset((value - 1) * limit)
-    const queryString = new URLSearchParams({
+    
+    let search_string = searchTerm !== null ? searchTerm : ''
+
+    const apiQueryString = new URLSearchParams({
       category: category == 'All Categories' ? 'all_organizations' : category,
-      search: searchTerm,
+      search: search_string,
       page_limit: limit,
       page: value,
     }).toString()
     const response = await fetch(
-      `https://app.digitaldeets.com/api_catalog/organizations?${queryString}`
+      `https://app.digitaldeets.com/api_catalog/organizations?${apiQueryString}`
     )
     const json = await response.json()
     setDisplayedListings(json.organizations)
