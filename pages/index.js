@@ -36,6 +36,7 @@ import {
 } from 'react-icons/fa'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import Swal from 'sweetalert2'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -255,8 +256,7 @@ function DirectoryPage() {
       const { orgID = '', categoryType = ''} = router.query
 
       setQueryParams(makeQueryParamString(router.query))
-  
-      console.log(orgID);
+
       if (orgID) {
         setOrg(orgID)
       }
@@ -453,15 +453,28 @@ function DirectoryPage() {
     fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', requestOptions)
       .then(response => response.json())
       .then(data => {
-        if(catalog_listing_status == 'approved'){
-          //TODO: open popup
-          setOrg(orgID)
-          handleClose()
-        }else if(catalog_listing_status == 'request_edits'){
-          window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
-        }else if(catalog_listing_status == 'removed'){
-          window.location.href = 'https://digitaldeets.com/not-now-thank-you/'
-        } 
+        if(data.response == 1){
+          if(catalog_listing_status == 'approved'){
+            handleClose()
+            Swal.fire({
+              html: data.message,
+              icon:'success',
+              timer: 2500,
+              showConfirmButton: false
+            }) 
+            setOrg(orgID)
+          }else if(catalog_listing_status == 'request_edits'){
+            window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
+          }else if(catalog_listing_status == 'removed'){
+            window.location.href = 'https://digitaldeets.com/not-now-thank-you/'
+          } 
+        }else{
+          Swal.fire({
+            html: data.message,
+            icon:'error',
+            showConfirmButton: true
+          }) 
+        }
       }) 
       .catch((error) => {
         console.error(error)
@@ -486,7 +499,8 @@ function DirectoryPage() {
         className="text-grey"
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-describedby="modal-modal-description" 
+        style={{zIndex:1000}}
       >
         <IconButton
           color="inherit"
