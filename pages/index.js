@@ -441,28 +441,65 @@ function DirectoryPage() {
     const { email = '', fName = '', lName = '' } = router.query
     const orgID = displayedListings[index].id
     
-    const requestOptions = {
+    fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         organization_id: orgID,
         catalog_listing_status: catalog_listing_status,
       })
-    }
-
-    fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', requestOptions)
-      .then(response => response.json())
+    }).then(response => response.json())
       .then(data => {
         if(data.response == 1){
           if(catalog_listing_status == 'approved'){
             handleClose()
-            Swal.fire({
-              html: data.message,
-              icon:'success',
-              timer: 2500,
-              showConfirmButton: false
-            }) 
             setOrg(orgID)
+
+            if(!email){
+              Swal.fire({
+                html: data.message,
+                icon:'success',
+                timer: 2500,
+                showConfirmButton: false
+              }) 
+            }else{
+              Swal.fire({
+                  html: data.question,
+                  icon:'question',
+                  showCancelButton: true,
+                  showConfirmButton: true,
+                  confirmButtonText: "Add it now",
+                  confirmButtonColor: "#0D779B"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=redirect_catalog_listing', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      organization_id: orgID,
+                      email: email,
+                      first_name: fName,
+                      last_name: lName
+                    })
+                  }).then(response => response.json())
+                    .then(data => {
+                      if(data.response == 1){
+                        window.location.href = data.redirect_url;
+                      }else{
+                        Swal.fire({
+                          html: data.message,
+                          icon:'error',
+                          showConfirmButton: true,
+                          confirmButtonColor: "#0D779B"
+                        }) 
+                      }
+                    }) 
+                    .catch((error) => {
+                      console.error(error)
+                    })
+                }
+              }) 
+            }            
           }else if(catalog_listing_status == 'request_edits'){
             window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
           }else if(catalog_listing_status == 'removed'){
@@ -472,13 +509,14 @@ function DirectoryPage() {
           Swal.fire({
             html: data.message,
             icon:'error',
-            showConfirmButton: true
+            showConfirmButton: true,
+            confirmButtonColor: "#0D779B"
           }) 
         }
       }) 
       .catch((error) => {
         console.error(error)
-      });
+      })
   }
 
   const handleSearch = (event) => {
