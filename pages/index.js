@@ -218,6 +218,7 @@ function formatPhoneNumber(phoneNumberString) {
 function DirectoryPage() {
   const router = useRouter()
 
+  const [APIurl, setAPIurl] = useState('https://app.digitaldeets.com')
   const [category, setCategory] = useState('')
   const [availableCategories, setAvailableCategories] = useState([])
   const [queryParams, setQueryParams] = useState('')
@@ -239,9 +240,13 @@ function DirectoryPage() {
       .join('&')
   }
   useEffect(() => {
+
+    const API_url = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'https://dev3.digitaldeets.com'; 
+    setAPIurl(API_url);
+    
     async function fetchCategories() {
       const response = await fetch(
-        'https://app.digitaldeets.com/api_catalog/categories'
+        API_url + '/api_catalog/categories'
       )
       const result = await response.json()
       const categories = result.categories
@@ -288,7 +293,7 @@ function DirectoryPage() {
     if (org) {
        async function fetchListings() {
         const response = await fetch(
-          `https://app.digitaldeets.com/api_catalog/organization/${org}`
+          `${APIurl}/api_catalog/organization/${org}`
         )
         const json = await response.json()
         if(json.response == 1){
@@ -319,7 +324,7 @@ function DirectoryPage() {
           page: page,
         }).toString()
         const response = await fetch(
-          `https://app.digitaldeets.com/api_catalog/organizations?${apiQueryString}`
+          `${APIurl}/api_catalog/organizations?${apiQueryString}`
         )
         const json = await response.json()
         setDisplayedListings(json.organizations)
@@ -341,7 +346,7 @@ function DirectoryPage() {
             page: page,
           }).toString()
           const response = await fetch(
-            `https://app.digitaldeets.com/api_catalog/organizations?${apiQueryString}`
+            `${APIurl}/api_catalog/organizations?${apiQueryString}`
           )
           const json = await response.json()
           setDisplayedListings(json.organizations)
@@ -383,7 +388,7 @@ function DirectoryPage() {
       page: value,
     }).toString()
     const response = await fetch(
-      `https://app.digitaldeets.com/api_catalog/organizations?${apiQueryString}`
+      `${APIurl}/api_catalog/organizations?${apiQueryString}`
     )
     const json = await response.json()
     setDisplayedListings(json.organizations)
@@ -441,7 +446,7 @@ function DirectoryPage() {
     const { email = '', fName = '', lName = '' } = router.query
     const orgID = displayedListings[index].id
     
-    fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', {
+    fetch(APIurl + '/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -472,7 +477,7 @@ function DirectoryPage() {
                   confirmButtonColor: "#0D779B"
               }).then((result) => {
                 if (result.isConfirmed) {
-                  fetch('https://app.digitaldeets.com/wp-content/themes/sdthm/sdexe/api_catalog.php?request=redirect_catalog_listing', {
+                  fetch(APIurl + '/wp-content/themes/sdthm/sdexe/api_catalog.php?request=redirect_catalog_listing', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
