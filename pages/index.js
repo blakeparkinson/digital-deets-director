@@ -653,6 +653,7 @@ function DirectoryPage() {
               >
                 <FaSearchLocation className="mr-2" />
                 {displayedListings[selectedIndex]?.streetaddress},{' '}
+                {displayedListings[selectedIndex]?.city},{' '}
                 {displayedListings[selectedIndex]?.state},{' '}
                 {displayedListings[selectedIndex]?.zipcode}
               </Typography>
