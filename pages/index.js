@@ -301,7 +301,8 @@ function DirectoryPage() {
           setPaginatorCount(1)
 
           if(!json.organization.use_catalog){
-            handleListItemClick(0)
+            setSelectedIndex(0)
+            setOpen(true)
           }
         }
       }
@@ -399,24 +400,56 @@ function DirectoryPage() {
     })
   }
 
+  const setAnalyticsIdentify = (analytics_data, additional_data) => {
+    if(additional_data.firstName){
+      analytics_data.firstName = additional_data.firstName
+    }
+    
+    if(additional_data.lastName){
+      analytics_data.lastName = additional_data.lastName
+    }
+
+    analytics.identify(analytics_data)
+  }
+
+  const setAnalyticsTrack = (event, analytics_data, additional_data) => {
+    
+    if(additional_data.firstName){
+      analytics_data.firstName = additional_data.firstName
+    }
+    
+    if(additional_data.lastName){
+      analytics_data.lastName = additional_data.lastName
+    }
+
+    analytics.track(event, analytics_data)
+  }
+
   const handleListItemClick = (index) => {
 
     const { email = '', fName = '', lName = '' } = router.query
 
-    analytics.identify({
-      listing: displayedListings[index],
-      firstName: fName,
-      lastName: lName,
-      email: email,
-      LISTVIEW: true,
-    })
-    analytics.track('Catalog listing clicked', {
-      ...displayedListings[index],
-      firstName: fName,
-      lastName: lName,
-      email: email,
-      LISTVIEW: true,
-    })
+    if(email){
+      let identify_data = {
+        listing: displayedListings[index],
+        email: email,
+        LISTVIEW: true,
+      }
+  
+      let analytics_data = {
+        ...displayedListings[index],
+        email: email,
+        LISTVIEW: true,
+      }
+
+      let additional_data = {
+        firstName: fName,
+        lastName: lName
+      }
+      
+      setAnalyticsIdentify(identify_data, additional_data)
+      setAnalyticsTrack('Catalog listing clicked', analytics_data, additional_data)
+    }
     setSelectedIndex(index)
     setOpen(true)
   }
@@ -425,20 +458,27 @@ function DirectoryPage() {
 
     const { email = '', fName = '', lName = '' } = router.query
 
-    analytics.identify({
-      listing: displayedListings[index],
-      firstName: fName,
-      lastName: lName,
-      email: email,
-      SIGNUP: true,
-    })
-    analytics.track('Catalog signup clicked', {
-      ...displayedListings[index],
-      firstName: fName,
-      lastName: lName,
-      email: email,
-      LISTVIEW: true,
-    })
+    if(email){
+      let identify_data = {
+        listing: displayedListings[index],
+        email: email,
+        SIGNUP: true,
+      }
+  
+      let analytics_data = {
+        ...displayedListings[index],
+        email: email,
+        SIGNUP: true,
+      }
+
+      let additional_data = {
+        firstName: fName,
+        lastName: lName
+      }
+
+      setAnalyticsIdentify(identify_data, additional_data)
+      setAnalyticsTrack('Catalog signup clicked', analytics_data, additional_data)
+    }
   }
 
   const changeCatalogListingStatus = (index, catalog_listing_status) => {
@@ -456,6 +496,40 @@ function DirectoryPage() {
     }).then(response => response.json())
       .then(data => {
         if(data.response == 1){
+
+          let redirect_timeout = 10
+
+          if(email){
+            redirect_timeout = 500
+
+            let identify_data = {
+              listing: displayedListings[index],
+              email: email
+            }
+        
+            let analytics_data = {
+              ...displayedListings[index],
+              email: email
+            }
+      
+            let additional_data = {
+              firstName: fName,
+              lastName: lName
+            }
+
+            let analytics_event = ''
+            if(catalog_listing_status == 'approved'){
+              analytics_event = 'Catalog Confirmed'
+            }else if(catalog_listing_status == 'request_edits'){
+              analytics_event = 'Edits Requested'
+            }else if(catalog_listing_status == 'removed'){
+              analytics_event = 'Closed Lost Future Opp'
+            }
+
+            setAnalyticsIdentify(identify_data, additional_data)
+            setAnalyticsTrack(analytics_event, analytics_data, additional_data)
+          }
+
           if(catalog_listing_status == 'approved'){
             handleClose()
             setOrg(orgID)
@@ -489,7 +563,7 @@ function DirectoryPage() {
                   }).then(response => response.json())
                     .then(data => {
                       if(data.response == 1){
-                        window.location.href = data.redirect_url;
+                          window.location.href = data.redirect_url
                       }else{
                         Swal.fire({
                           html: data.message,
@@ -505,10 +579,14 @@ function DirectoryPage() {
                 }
               }) 
             }            
-          }else if(catalog_listing_status == 'request_edits'){
-            window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
+          }else if(catalog_listing_status == 'request_edits'){           
+            setTimeout(function(){
+              window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
+            }, redirect_timeout)
           }else if(catalog_listing_status == 'removed'){
-            window.location.href = 'https://digitaldeets.com/not-now-thank-you/'
+            setTimeout(function(){
+              window.location.href = 'https://digitaldeets.com/not-now-thank-you/'
+            }, redirect_timeout)
           } 
         }else{
           Swal.fire({
