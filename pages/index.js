@@ -836,7 +836,7 @@ function DirectoryPage() {
             Can't find your organization? Submit it{' '}
             <a
               className="text-blue"
-              href="https://zfrmz.com/aLhAfKDxfbYtVbnmdOWo"
+              href="https://zfrmz.com/FsmjxMy4ow0X1XG0S0X5"
             >
               here.
             </a>
