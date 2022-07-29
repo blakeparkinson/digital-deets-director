@@ -64,6 +64,10 @@ const navigation = [
         text: 'Fundraise',
         href: 'https://digitaldeets.com/fundraising/',
       },
+      {
+        text: 'Communicate',
+        href: 'https://digitaldeets.com/communication/',
+      },
     ],
   },
   {
@@ -72,6 +76,10 @@ const navigation = [
       {
         text: 'About Us',
         href: 'https://digitaldeets.com/small-and-local-businesses/about-us',
+      },
+      {
+        text: 'FAQ',
+        href: 'https://digitaldeets.com/faq-2/',
       },
       {
         text: 'Training',
