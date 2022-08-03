@@ -20,8 +20,18 @@ const navigation = [
   {
     name: 'For Fundraisers',
     items: [
-      { text: 'Schools', href: 'https://digitaldeets.com/schools' },
-      { text: 'Nonprofits', href: 'https://digitaldeets.com/nonprofits' },
+      { 
+        text: 'Schools', 
+        href: 'https://digitaldeets.com/schools' 
+      },
+      { 
+        text: 'Athletics', 
+        href: 'https://digitaldeets.com/athletics' 
+      },
+      { 
+        text: 'Nonprofits',
+        href: 'https://digitaldeets.com/nonprofits' 
+      },
       {
         text: 'School Fundraising Ideas',
         href: 'https://digitaldeets.com/school-fundraising-ideas',
