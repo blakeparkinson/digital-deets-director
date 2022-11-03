@@ -241,7 +241,7 @@ function DirectoryPage() {
   }
   useEffect(() => {
 
-    const API_url = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'https://dev3.digitaldeets.com'; 
+    const API_url = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'http://digitaldeets.local'; 
     setAPIurl(API_url);
     
     async function fetchCategories() {
@@ -581,7 +581,7 @@ function DirectoryPage() {
             }            
           }else if(catalog_listing_status == 'request_edits'){           
             setTimeout(function(){
-              window.location.href =  'https://zfrmz.com/f63N7NEeklWBXhPuV9il'
+              window.location.href =  'https://zfrmz.com/aLhAfKDxfbYtVbnmdOWo'
             }, redirect_timeout)
           }else if(catalog_listing_status == 'removed'){
             setTimeout(function(){
