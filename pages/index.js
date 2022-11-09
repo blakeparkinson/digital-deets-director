@@ -581,7 +581,7 @@ function DirectoryPage() {
             }            
           }else if(catalog_listing_status == 'request_edits'){           
             setTimeout(function(){
-              window.location.href =  'https://zfrmz.com/aLhAfKDxfbYtVbnmdOWo'
+              window.location.href =  data.redirect_url;
             }, redirect_timeout)
           }else if(catalog_listing_status == 'removed'){
             setTimeout(function(){
