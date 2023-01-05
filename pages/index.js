@@ -31,9 +31,13 @@ import {
   FaPhone,
   FaSearchLocation,
   FaFacebookF,
+  FaTwitter,
   FaEnvelope,
   FaWindowMaximize,
 } from 'react-icons/fa'
+import {
+  GrInstagram,
+} from 'react-icons/gr'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
@@ -679,7 +683,7 @@ function DirectoryPage() {
                 </a>
               </Typography>
             )}
-            {displayedListings[selectedIndex]?.facebookpage && (
+            {displayedListings[selectedIndex]?.facebook && (
               <Typography
                 id="modal-modal-description"
                 sx={{ mt: 1 }}
@@ -687,11 +691,43 @@ function DirectoryPage() {
               >
                 <FaFacebookF className="mr-2" />
                 <a
-                  href={displayedListings[selectedIndex]?.facebookpage}
+                  href={displayedListings[selectedIndex]?.facebook}
                   target="_blank"
                   className="text-blue"
                 >
-                  {displayedListings[selectedIndex]?.facebookpage}
+                  {displayedListings[selectedIndex]?.facebook}
+                </a>
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.instagram && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <GrInstagram className="mr-2" />
+                <a
+                  href={displayedListings[selectedIndex]?.instagram}
+                  target="_blank"
+                  className="text-blue"
+                >
+                  {displayedListings[selectedIndex]?.instagram}
+                </a>
+              </Typography>
+            )}
+            {displayedListings[selectedIndex]?.twitter && (
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+                className="flex items-center"
+              >
+                <FaTwitter className="mr-2" />
+                <a
+                  href={displayedListings[selectedIndex]?.twitter}
+                  target="_blank"
+                  className="text-blue"
+                >
+                  {displayedListings[selectedIndex]?.twitter}
                 </a>
               </Typography>
             )}
