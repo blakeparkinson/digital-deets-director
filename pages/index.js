@@ -30,6 +30,7 @@ import Script from 'next/script'
 import {
   FaPhone,
   FaSearchLocation,
+  FaGlobe,
   FaFacebookF,
   FaTwitter,
   FaEnvelope,
@@ -645,7 +646,7 @@ function DirectoryPage() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Typography sx={{ mt: 2 }}>
               {displayedListings[selectedIndex]?.description}
             </Typography>
             <div className="flex justify-center my-2">
@@ -655,97 +656,68 @@ function DirectoryPage() {
               />
             </div>
             {displayedListings[selectedIndex]?.categories[0] && (
-              <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <Typography sx={{ mt: 1 }}>
                 <b>Category: </b>{' '}
                 {displayedListings[selectedIndex]?.categories.join(', ')}
               </Typography>
             )}
             {displayedListings[selectedIndex]?.promocode && (
-              <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              <Typography sx={{ mt: 1 }}>
                 <b>Deal/Offer: </b>{' '}
-                {displayedListings[selectedIndex]?.promocode}
-                <p>{displayedListings[selectedIndex]?.promocode_description}</p>
+                {displayedListings[selectedIndex]?.promocode}<br />
+                {displayedListings[selectedIndex]?.promocode_description}
               </Typography>
             )}
+            <Typography sx={{ mt: 1 }}>
             {displayedListings[selectedIndex]?.website && (
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <FaWindowMaximize className="mr-2" />
                 <a
                   href={displayedListings[selectedIndex]?.website}
                   target="_blank"
-                  className="text-blue"
                 >
-                  {displayedListings[selectedIndex]?.website}
+                  <FaGlobe className="mr-3 inline-block" />
                 </a>
-              </Typography>
             )}
+
             {displayedListings[selectedIndex]?.facebook && (
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <FaFacebookF className="mr-2" />
                 <a
                   href={displayedListings[selectedIndex]?.facebook}
                   target="_blank"
-                  className="text-blue"
                 >
-                  {displayedListings[selectedIndex]?.facebook}
+                  <FaFacebookF className="mr-3 inline-block" />
                 </a>
-              </Typography>
             )}
+
             {displayedListings[selectedIndex]?.instagram && (
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <GrInstagram className="mr-2" />
                 <a
                   href={displayedListings[selectedIndex]?.instagram}
                   target="_blank"
-                  className="text-blue"
                 >
-                  {displayedListings[selectedIndex]?.instagram}
+                  <GrInstagram className="mr-3 inline-block" />
                 </a>
-              </Typography>
             )}
             {displayedListings[selectedIndex]?.twitter && (
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <FaTwitter className="mr-2" />
                 <a
                   href={displayedListings[selectedIndex]?.twitter}
                   target="_blank"
-                  className="text-blue"
                 >
-                  {displayedListings[selectedIndex]?.twitter}
+                  <FaTwitter className="mr-3 inline-block" />
                 </a>
-              </Typography>
             )}
+            </Typography>
+
             {displayedListings[selectedIndex]?.phonenumber && (
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
+               <Typography
+               sx={{ mt: 1 }}
+               className="flex items-center"
+             >
                 <FaPhone className="mr-2" />
                 {formatPhoneNumber(
                   displayedListings[selectedIndex]?.phonenumber
                 )}
-              </Typography>
+                </Typography>
             )}
             {displayedListings[selectedIndex]?.email && (
               <Typography
-                id="modal-modal-description"
                 sx={{ mt: 1 }}
                 className="flex items-center"
               >
@@ -753,7 +725,6 @@ function DirectoryPage() {
                 <a
                   href={`mailto:${displayedListings[selectedIndex]?.email}`}
                   target="_blank"
-                  className="text-blue"
                 >
                   {displayedListings[selectedIndex]?.email}
                 </a>
@@ -761,7 +732,6 @@ function DirectoryPage() {
             )}
             {displayedListings[selectedIndex]?.streetaddress && (
               <Typography
-                id="modal-modal-description"
                 sx={{ mt: 1 }}
                 className="flex items-center"
               >
