@@ -106,7 +106,6 @@ const ListingComponent = ({
   queryParams,
   first_block,
   handleListItemClick,
-  handleSignUpClick,
   changeCatalogListingStatus,
 }) => {
   let blocks_in_row = 3
@@ -184,7 +183,6 @@ const ListingComponent = ({
             <div>
             {listing.status != 'complete' ? (
               <a
-                onClick={(event) => handleSignUpClick(index)}
                 className="w-full flex justify-end"
                 href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
               >
@@ -194,7 +192,6 @@ const ListingComponent = ({
               </a>
             ) : (
               <a
-                onClick={(event) => handleSignUpClick(index)}
                 className="w-full flex justify-end text-blue"
                 href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
               >
@@ -405,85 +402,9 @@ function DirectoryPage() {
     })
   }
 
-  const setAnalyticsIdentify = (analytics_data, additional_data) => {
-    if(additional_data.firstName){
-      analytics_data.firstName = additional_data.firstName
-    }
-    
-    if(additional_data.lastName){
-      analytics_data.lastName = additional_data.lastName
-    }
-
-    analytics.identify(analytics_data)
-  }
-
-  const setAnalyticsTrack = (event, analytics_data, additional_data) => {
-    
-    if(additional_data.firstName){
-      analytics_data.firstName = additional_data.firstName
-    }
-    
-    if(additional_data.lastName){
-      analytics_data.lastName = additional_data.lastName
-    }
-
-    analytics.track(event, analytics_data)
-  }
-
   const handleListItemClick = (index) => {
-
-    const { email = '', fName = '', lName = '' } = router.query
-
-    if(email){
-      let identify_data = {
-        listing: displayedListings[index],
-        email: email,
-        LISTVIEW: true,
-      }
-  
-      let analytics_data = {
-        ...displayedListings[index],
-        email: email,
-        LISTVIEW: true,
-      }
-
-      let additional_data = {
-        firstName: fName,
-        lastName: lName
-      }
-      
-      setAnalyticsIdentify(identify_data, additional_data)
-      setAnalyticsTrack('Catalog listing clicked', analytics_data, additional_data)
-    }
     setSelectedIndex(index)
     setOpen(true)
-  }
-
-  const handleSignUpClick = (index) => {
-
-    const { email = '', fName = '', lName = '' } = router.query
-
-    if(email){
-      let identify_data = {
-        listing: displayedListings[index],
-        email: email,
-        SIGNUP: true,
-      }
-  
-      let analytics_data = {
-        ...displayedListings[index],
-        email: email,
-        SIGNUP: true,
-      }
-
-      let additional_data = {
-        firstName: fName,
-        lastName: lName
-      }
-
-      setAnalyticsIdentify(identify_data, additional_data)
-      setAnalyticsTrack('Catalog signup clicked', analytics_data, additional_data)
-    }
   }
 
   const changeCatalogListingStatus = (index, catalog_listing_status) => {
@@ -503,37 +424,6 @@ function DirectoryPage() {
         if(data.response == 1){
 
           let redirect_timeout = 10
-
-          if(email){
-            redirect_timeout = 500
-
-            let identify_data = {
-              listing: displayedListings[index],
-              email: email
-            }
-        
-            let analytics_data = {
-              ...displayedListings[index],
-              email: email
-            }
-      
-            let additional_data = {
-              firstName: fName,
-              lastName: lName
-            }
-
-            let analytics_event = ''
-            if(catalog_listing_status == 'approved'){
-              analytics_event = 'Catalog Confirmed'
-            }else if(catalog_listing_status == 'request_edits'){
-              analytics_event = 'Edits Requested'
-            }else if(catalog_listing_status == 'removed'){
-              analytics_event = 'Closed Lost Future Opp'
-            }
-
-            setAnalyticsIdentify(identify_data, additional_data)
-            setAnalyticsTrack(analytics_event, analytics_data, additional_data)
-          }
 
           if(catalog_listing_status == 'approved'){
             handleClose()
@@ -645,7 +535,7 @@ function DirectoryPage() {
           {displayedListings[selectedIndex]?.businessname}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <div>
             <Typography sx={{ mt: 2 }}>
               {displayedListings[selectedIndex]?.description}
             </Typography>
@@ -742,7 +632,7 @@ function DirectoryPage() {
                 {displayedListings[selectedIndex]?.zipcode}
               </Typography>
             )}
-          </DialogContentText>
+          </div>
           {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
               <div>
                 <div>
@@ -760,7 +650,6 @@ function DirectoryPage() {
           <div className="flex items-end">
             {displayedListings[selectedIndex]?.status != 'complete' ? (
               <a
-                onClick={(event) => handleSignUpClick(selectedIndex)}
                 className="w-full flex justify-end"
                 href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
               >
@@ -769,8 +658,7 @@ function DirectoryPage() {
                 </Button>
               </a>
             ) : (
-              <a
-                onClick={(event) => handleSignUpClick(selectedIndex)}
+              <a 
                 className="w-full flex justify-end text-blue"
                 href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
               >
@@ -867,7 +755,6 @@ function DirectoryPage() {
                   first_block={true}
                   queryParams={queryParams}
                   handleListItemClick={handleListItemClick}
-                  handleSignUpClick={handleSignUpClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
                 />
               )
@@ -882,7 +769,6 @@ function DirectoryPage() {
                   first_block={false}
                   queryParams={queryParams}
                   handleListItemClick={handleListItemClick}
-                  handleSignUpClick={handleSignUpClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
                 />
               )
