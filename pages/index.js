@@ -92,7 +92,7 @@ const SearchComponent = ({ searchTerm, handleSearch }) => {
       </SearchIconWrapper>
       <StyledInputBase
         placeholder="Find my organization"
-        value={searchTerm}
+        value={(searchTerm != null ? searchTerm : '')}
         onChange={(e) => handleSearch(e)}
         inputProps={{ 'aria-label': 'find my listing' }}
       />
@@ -227,6 +227,7 @@ function DirectoryPage() {
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(21)
   const [org, setOrg] = useState('')
+  const [sponsors_org, setSponsorsOrg] = useState('')
 
   const [searchTerm, setSearchTerm] = useState(null)
   const [paginatorCount, setPaginatorCount] = useState(0)
@@ -260,11 +261,13 @@ function DirectoryPage() {
 
   useEffect(() => {
     if(availableCategories && availableCategories.length){
-      const { orgID = '', categoryType = ''} = router.query
+      const { orgID = '', categoryType = '', sponsors_org = ''} = router.query
 
       setQueryParams(makeQueryParamString(router.query))
 
-      if (orgID) {
+      if(sponsors_org){
+        setSponsorsOrg(sponsors_org)
+      }else if (orgID) {
         setOrg(orgID)
       }
       
@@ -320,6 +323,7 @@ function DirectoryPage() {
 
       async function fetchListings() {
         let apiQueryString = new URLSearchParams({
+          sponsors_org_id: sponsors_org,
           category:
             category == 'All Categories' ? 'all_organizations' : category,
           search: search_string,
@@ -342,6 +346,7 @@ function DirectoryPage() {
       const delayDebounceFn = setTimeout(() => {
         async function fetchListings() {
           let apiQueryString = new URLSearchParams({
+            sponsors_org_id: sponsors_org,
             category:
               category == 'All Categories' ? 'all_organizations' : category,
             search: searchTerm,
@@ -385,6 +390,7 @@ function DirectoryPage() {
     let search_string = searchTerm !== null ? searchTerm : ''
 
     const apiQueryString = new URLSearchParams({
+      sponsors_org_id: sponsors_org,
       category: category == 'All Categories' ? 'all_organizations' : category,
       search: search_string,
       page_limit: limit,
