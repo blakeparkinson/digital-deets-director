@@ -11,8 +11,8 @@ module.exports = {
         grey: '#626565',
       },
       padding: {
-        large: '30px',
-        small: '20px',
+        large: '15px',
+        small: '10px',
       },
       paddingBottom: {
         large: '30px',

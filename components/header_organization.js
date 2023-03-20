@@ -26,9 +26,22 @@ export default function HeaderOrganization({ logo = '', name = '' }) {
   };
 
   const [small, setSmall] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      if (window.innerWidth < 640) {
+        setIsMobile(true)
+      }
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth < 640) {
+          setIsMobile(true)
+        }else{
+          setIsMobile(false)
+        }
+      })
+
       window.addEventListener('scroll', () => {
         if (window.pageYOffset > 220) {
           setSmall(true)
@@ -43,25 +56,26 @@ export default function HeaderOrganization({ logo = '', name = '' }) {
   return (
     <div
         className={cx(
-          'z-20 bg-white border-b border-sand-30 items-center xl:px-16 lg:px-10 px-8 xl:sticky fixed w-full top-0 transform duration-300',
+          'z-20 bg-white border-b border-sand-30 items-center xl:px-16 lg:px-8 px-4 xl:sticky fixed w-full top-0 transform duration-300',
           {
-            'py-small': small,
-            'py-large': !small,
+            'py-small': (isMobile || small),
+            'py-large': (!isMobile && !small),
           }
         )}
       >
-        <div className="xl:justify-center justify-between flex">
+        <div className="sm:justify-center justify-between flex">
           <div className="flex">
             <img
-                  className={cx({
-                    'w-24': !small,
-                    'w-16': small,
+                  className={cx(
+                  {
+                    'w-24': (!isMobile && !small),
+                    'w-16': (isMobile || small),
                   })}
                   src={logo}
                 />
             <h1 
               style={brandColorsStyles.primary.text}
-              className="xl:flex text-2xl items-center font-medium">
+              className="flex mx-4 xl:text-2xl sm:text-xl items-center font-medium">
                 {name}'s Community Catalog
             </h1>
           </div>

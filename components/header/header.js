@@ -148,7 +148,7 @@ export const Header = () => {
                   'w-24': !small,
                   'w-16': small,
                 })}
-                src="https://digitaldeets.com/wp-content/uploads/2021/10/Digital-Deets-logo_new.png"
+                src="https://app.digitaldeets.com/wp-content/themes/sdthm/img/digital-deets-logo.jpg"
               />
             </a>
           </Link>

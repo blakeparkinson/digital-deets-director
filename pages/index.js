@@ -121,7 +121,6 @@ const ListingComponent = ({
   return show_block ? (
     <Grid
       sx={{
-        cursor: 'pointer',
         display: 'flex',
         justifyContent: 'center',
       }}
@@ -132,28 +131,30 @@ const ListingComponent = ({
         sx={{ width: 310 }}
         className="flex flex-col justify-between text-grey"
       >
-        <CardMedia
+        <CardMedia 
+          onClick={(event) => handleListItemClick(index)}
           component="img"
           height="140"
           image={listing.logo}
+          className="cursor-pointer" 
           onError={(e) => {
             e.target.onerror = null
             e.target.style.display = 'none'
           }}
         />
-        <CardContent onClick={(event) => handleListItemClick(index)}>
+        <CardContent onClick={(event) => handleListItemClick(index)} className="cursor-pointer">
           <Typography gutterBottom variant="h5" component="div">
             {listing.businessname}
           </Typography>
           {listing.promocode && (
             <Text level="xs" weight="normal" className="mt-2 flex text-grey">
-              <FaWindowMaximize className="mr-2 text-blue" />
+              <FaWindowMaximize className="mr-2" style={brandColorsStyles.primary.text} />
               {listing.promocode}
             </Text>
           )}
           {listing.streetaddress && (
             <Text level="xs" weight="normal" className="mt-2 flex text-grey">
-              <FaSearchLocation className="mr-2 text-blue" />
+              <FaSearchLocation className="mr-2" style={brandColorsStyles.primary.text} />
               {`${listing.streetaddress}, ${listing.city}, ${listing.state}, ${listing.zipcode}`}
             </Text>
           )}
@@ -163,7 +164,7 @@ const ListingComponent = ({
             className="flex w-full justify-end mr-2"
             onClick={(event) => handleListItemClick(index)}
           >
-            <Text level="s" weight="normal" className="mt-2 text-end" style={brandColorsStyles.primary.text}>
+            <Text level="s" weight="normal" className="mt-2 text-end cursor-pointer" style={brandColorsStyles.primary.text}>
               View full listing
             </Text>
           </div>
@@ -763,7 +764,6 @@ function DirectoryPage({organization = ''}) {
           </div>
           <Grid
             sx={{
-              cursor: 'pointer',
               display: 'flex',
               justifyContent: 'center',
             }}
