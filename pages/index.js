@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Script from 'next/script'
+import { styled, alpha } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -8,8 +13,6 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
 import Button from '@mui/material/Button'
-import { useRouter } from 'next/router'
-
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -22,11 +25,8 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import CustomMap from '../components/custommap'
-import { styled, alpha } from '@mui/material/styles'
-import { useTheme } from '@mui/material/styles'
 import { Text } from '../components/text'
-import Head from 'next/head'
-import Script from 'next/script'
+
 import {
   FaPhone,
   FaSearchLocation,
@@ -107,6 +107,7 @@ const ListingComponent = ({
   first_block,
   handleListItemClick,
   changeCatalogListingStatus,
+  brandColorsStyles,
 }) => {
   let blocks_in_row = 3
   if (window.innerWidth < 900) {
@@ -162,7 +163,7 @@ const ListingComponent = ({
             className="flex w-full justify-end mr-2"
             onClick={(event) => handleListItemClick(index)}
           >
-            <Text level="s" weight="normal" className="mt-2 text-blue text-end">
+            <Text level="s" weight="normal" className="mt-2 text-end" style={brandColorsStyles.primary.text}>
               View full listing
             </Text>
           </div>
@@ -192,10 +193,11 @@ const ListingComponent = ({
               </a>
             ) : (
               <a
-                className="w-full flex justify-end text-blue"
+                style={brandColorsStyles.primary.text}
+                className="w-full flex justify-end"           
                 href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
               >
-                Join this Organization
+                Join this Organization's community
               </a>
             )}
             </div>
@@ -217,7 +219,7 @@ function formatPhoneNumber(phoneNumberString) {
   return null
 }
 
-function DirectoryPage() {
+function DirectoryPage({organization = ''}) {
   const router = useRouter()
 
   const [APIurl, setAPIurl] = useState('https://app.digitaldeets.com')
@@ -227,7 +229,7 @@ function DirectoryPage() {
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(21)
   const [org, setOrg] = useState('')
-  const [sponsors_org, setSponsorsOrg] = useState('')
+  //const [organization, setOrganization] = useState('')
 
   const [searchTerm, setSearchTerm] = useState(null)
   const [paginatorCount, setPaginatorCount] = useState(0)
@@ -261,13 +263,11 @@ function DirectoryPage() {
 
   useEffect(() => {
     if(availableCategories && availableCategories.length){
-      const { orgID = '', categoryType = '', sponsors_org = ''} = router.query
+      const { orgID = '', categoryType = ''} = router.query
 
       setQueryParams(makeQueryParamString(router.query))
 
-      if(sponsors_org){
-        setSponsorsOrg(sponsors_org)
-      }else if (orgID) {
+      if(!organization && orgID) {
         setOrg(orgID)
       }
       
@@ -323,7 +323,7 @@ function DirectoryPage() {
 
       async function fetchListings() {
         let apiQueryString = new URLSearchParams({
-          sponsors_org_id: sponsors_org,
+          organization_id: organization,
           category:
             category == 'All Categories' ? 'all_organizations' : category,
           search: search_string,
@@ -346,7 +346,7 @@ function DirectoryPage() {
       const delayDebounceFn = setTimeout(() => {
         async function fetchListings() {
           let apiQueryString = new URLSearchParams({
-            sponsors_org_id: sponsors_org,
+            organization_id: organization,
             category:
               category == 'All Categories' ? 'all_organizations' : category,
             search: searchTerm,
@@ -390,7 +390,7 @@ function DirectoryPage() {
     let search_string = searchTerm !== null ? searchTerm : ''
 
     const apiQueryString = new URLSearchParams({
-      sponsors_org_id: sponsors_org,
+      organization_id: organization,
       category: category == 'All Categories' ? 'all_organizations' : category,
       search: search_string,
       page_limit: limit,
@@ -509,6 +509,25 @@ function DirectoryPage() {
     setPage(1)
     setSearchTerm(term)
   }
+
+  const brandColorsStyles = {
+    primary:{
+      text: {
+        color: theme.palette.primary.main
+      },
+      background: {
+        backgroundColor: theme.palette.primary.main
+      }
+    },
+    secondary:{
+      text: {
+        color: theme.palette.secondary.main
+      },
+      background: {
+        backgroundColor: theme.palette.secondary.main
+      }
+    }
+  };
 
   return (
     <>
@@ -665,10 +684,11 @@ function DirectoryPage() {
               </a>
             ) : (
               <a 
-                className="w-full flex justify-end text-blue"
+                style={brandColorsStyles.primary.text}
+                className="w-full flex justify-end" 
                 href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
               >
-                Join this Organization
+                Join this Organization's community
               </a>
             )}
           </div>
@@ -679,12 +699,12 @@ function DirectoryPage() {
         <Box className="mb-4" sx={{ flex: 2 }}>
           <Grid
             sx={{
-              backgroundColor: '#02779d',
               display: 'flex',
               alignItems: 'baseline',
               marginBottom: '20px',
               paddingBottom: '10px',
-            }}
+              backgroundColor: theme.palette.primary.main
+            }} 
           >
             <SearchComponent
               searchTerm={searchTerm}
@@ -731,12 +751,12 @@ function DirectoryPage() {
               </FormControl>
             </Grid>
           </Grid>
-          {/* <Divider style={{ marginTop: "50px" }} /> */}
           <div className="my-4 ml-4">
             Can't find your organization? Submit it{' '}
             <a
-              className="text-blue"
-              href="https://zfrmz.com/FsmjxMy4ow0X1XG0S0X5"
+              style={brandColorsStyles.primary.text}
+              href="https://zfrmz.com/FsmjxMy4ow0X1XG0S0X5" 
+              target="_blank"
             >
               here.
             </a>
@@ -762,9 +782,11 @@ function DirectoryPage() {
                   queryParams={queryParams}
                   handleListItemClick={handleListItemClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
+                  brandColorsStyles={brandColorsStyles}
                 />
               )
             })}
+            
             <div id="digitaldeets_promotions_widget"></div>
             {displayedListings.map((listing, index) => {
               return (
@@ -776,6 +798,7 @@ function DirectoryPage() {
                   queryParams={queryParams}
                   handleListItemClick={handleListItemClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
+                  brandColorsStyles={brandColorsStyles}
                 />
               )
             })}
@@ -810,13 +833,15 @@ function DirectoryPage() {
         if (!window.DigitalDeets) window.DigitalDeets = {};
         DigitalDeets.promotionsLimit = 3;
         setTimeout(function(){ 
-          if(!document.getElementById('digitaldeets_promotions_widget').childNodes.length){
+          if(!document.getElementById('digitaldeets_promotions_widget').childNodes.length 
+            && DigitalDeets.loadPromotionsWidget != undefined)
+          {
             DigitalDeets.loadPromotionsWidget();
           }
          }, 3000)
         `}
       </Script>
-      <Script src="https://api.digitaldeets.com/dd_widget/promotions.js" />
+      {!organization && <Script src="https://api.digitaldeets.com/dd_widget/promotions.js" />}
     </>
   )
 }
