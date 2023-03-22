@@ -8,10 +8,16 @@ function CustomMap({ google, locations = [] }) {
   const [showingInfoWindow, setShowingInfoWindow] = useState(false)
 
   const getCenter = () => {
-    const center = locations.find((location) => {
-      return location.marker
-    })
-    return { lat: 39.7392, lng: -104.9903 }
+    let center = { lat: 39.7392, lng: -104.9903 }
+
+    locations.forEach(location => {
+      if (location.marker) {
+        center = location.marker;
+        return;
+      }
+    });
+    
+    return center
   }
 
   const markerClick = (props, marker) => {
