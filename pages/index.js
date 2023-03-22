@@ -169,20 +169,20 @@ const ListingComponent = ({
             </Text>
           </div>
           {!listing.use_catalog && listing.catalog_listing_status != 'approve' ? (
-              <div className="w-full mr-2">
+              <div className="w-full mx-2 mt-2">
                 <div className="w-full overflow-hidden">
-                <Button className="self-end bg-orange text-white normal-case mt-2 float-left" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'approved')}>
+                <Button className="self-end bg-orange text-white normal-case float-left" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'approved')}>
                   Approve
                 </Button>
 
-                <Button className="self-end bg-orange text-white normal-case mt-2 float-right" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'request_edits')}>
+                <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'request_edits')}>
                   Request edits
                 </Button>
                 </div>
                 <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(index, 'removed')}><span>Remove my catalog listing</span></div>
               </div>
           ) : (
-            <div>
+            <div className="mt-2">
             {listing.status != 'complete' ? (
               <a
                 className="w-full flex justify-end"
@@ -557,145 +557,150 @@ function DirectoryPage({organization = ''}) {
           src={displayedListings[selectedIndex]?.logo} 
           className="w-auto self-center" 
         />
-        <DialogTitle id="responsive-dialog-title">
-          {displayedListings[selectedIndex]?.businessname}
+        <DialogTitle id="responsive-dialog-title" className="px-6 pt-2 pb-2">
+          {displayedListings[selectedIndex]?.businessname} 
         </DialogTitle>
-        <DialogContent>
-          <div>
-            <Typography sx={{ mt: 2 }}>
-              {displayedListings[selectedIndex]?.description}
-            </Typography>
-            <div className="flex justify-center my-2">
-              <img
-                src={displayedListings[selectedIndex]?.spotlight_photo}
-                className="w-auto self-center"
-              />
-            </div>
-            {displayedListings[selectedIndex]?.categories[0] && (
-              <Typography sx={{ mt: 1 }}>
-                <b>Category: </b>{' '}
-                {displayedListings[selectedIndex]?.categories.join(', ')}
-              </Typography>
-            )}
-            {displayedListings[selectedIndex]?.promocode && (
-              <Typography sx={{ mt: 1 }}>
-                <b>Deal/Offer: </b>{' '}
-                {displayedListings[selectedIndex]?.promocode}<br />
-                {displayedListings[selectedIndex]?.promocode_description}
-              </Typography>
-            )}
+
+        {displayedListings[selectedIndex]?.primary_match && (
+          <Typography className="mx-6 mb-4">
+            Proud Sponsor of {displayedListings[selectedIndex]?.primary_match}!
+          </Typography>
+        )}
+        <div className="mx-6 mt-4">
+          <Typography>
+            {displayedListings[selectedIndex]?.description}
+          </Typography>
+          <div className="flex justify-center my-2">
+            <img
+              src={displayedListings[selectedIndex]?.spotlight_photo}
+              className="w-auto self-center"
+            />
+          </div>
+          {displayedListings[selectedIndex]?.categories[0] && (
             <Typography sx={{ mt: 1 }}>
-            {displayedListings[selectedIndex]?.website && (
-                <a
-                  href={displayedListings[selectedIndex]?.website}
-                  target="_blank"
-                >
-                  <FaGlobe className="mr-3 inline-block" />
-                </a>
-            )}
-
-            {displayedListings[selectedIndex]?.facebook && (
-                <a
-                  href={displayedListings[selectedIndex]?.facebook}
-                  target="_blank"
-                >
-                  <FaFacebookF className="mr-3 inline-block" />
-                </a>
-            )}
-
-            {displayedListings[selectedIndex]?.instagram && (
-                <a
-                  href={displayedListings[selectedIndex]?.instagram}
-                  target="_blank"
-                >
-                  <GrInstagram className="mr-3 inline-block" />
-                </a>
-            )}
-            {displayedListings[selectedIndex]?.twitter && (
-                <a
-                  href={displayedListings[selectedIndex]?.twitter}
-                  target="_blank"
-                >
-                  <FaTwitter className="mr-3 inline-block" />
-                </a>
-            )}
+              <b>Category: </b>{' '}
+              {displayedListings[selectedIndex]?.categories.join(', ')}
             </Typography>
-
-            {displayedListings[selectedIndex]?.phonenumber && (
-               <Typography
-               sx={{ mt: 1 }}
-               className="flex items-center"
-             >
-                <FaPhone className="mr-2" />
-                {formatPhoneNumber(
-                  displayedListings[selectedIndex]?.phonenumber
-                )}
-                </Typography>
-            )}
-            {displayedListings[selectedIndex]?.email && (
-              <Typography
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <FaEnvelope className="mr-2" />
-                <a
-                  href={`mailto:${displayedListings[selectedIndex]?.email}`}
-                  target="_blank"
-                >
-                  {displayedListings[selectedIndex]?.email}
-                </a>
-              </Typography>
-            )}
-            {displayedListings[selectedIndex]?.streetaddress && (
-              <Typography
-                sx={{ mt: 1 }}
-                className="flex items-center"
-              >
-                <FaSearchLocation className="mr-2" />
-                {displayedListings[selectedIndex]?.streetaddress},{' '}
-                {displayedListings[selectedIndex]?.city},{' '}
-                {displayedListings[selectedIndex]?.state},{' '}
-                {displayedListings[selectedIndex]?.zipcode}
-              </Typography>
-            )}
-          </div>
-          {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
-              <div>
-                <div>
-                <Button className="self-end bg-orange text-white normal-case mt-2" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'approved')}>
-                  Approve
-                </Button>
-
-                <Button className="self-end bg-orange text-white normal-case mt-2 float-right" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'request_edits')}>
-                  Request edits
-                </Button>
-                </div>
-                <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(selectedIndex, 'removed')}><span>Remove my catalog listing</span></div>
-              </div>
-          ) : (
-          <div className="flex items-end">
-            {displayedListings[selectedIndex]?.status != 'complete' ? (
-              <a
-                className="w-full flex justify-end"
-                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-              >
-                <Button className="w-full self-end bg-orange text-white normal-case mt-2">
-                  Sign Up My Organization
-                </Button>
-              </a>
-            ) : (
-              <a 
-                style={brandColorsStyles.primary.text}
-                className="w-full flex justify-end" 
-                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-              >
-                Join this Organization's community
-              </a>
-            )}
-          </div>
           )}
-        </DialogContent>
+          {displayedListings[selectedIndex]?.promocode && (
+            <Typography sx={{ mt: 1 }}>
+              <b>Deal/Offer: </b>{' '}
+              {displayedListings[selectedIndex]?.promocode}<br />
+              {displayedListings[selectedIndex]?.promocode_description}
+            </Typography>
+          )}
+          <Typography sx={{ mt: 1 }}>
+          {displayedListings[selectedIndex]?.website && (
+              <a
+                href={displayedListings[selectedIndex]?.website}
+                target="_blank"
+              >
+                <FaGlobe className="mr-3 inline-block" />
+              </a>
+          )}
+
+          {displayedListings[selectedIndex]?.facebook && (
+              <a
+                href={displayedListings[selectedIndex]?.facebook}
+                target="_blank"
+              >
+                <FaFacebookF className="mr-3 inline-block" />
+              </a>
+          )}
+
+          {displayedListings[selectedIndex]?.instagram && (
+              <a
+                href={displayedListings[selectedIndex]?.instagram}
+                target="_blank"
+              >
+                <GrInstagram className="mr-3 inline-block" />
+              </a>
+          )}
+          {displayedListings[selectedIndex]?.twitter && (
+              <a
+                href={displayedListings[selectedIndex]?.twitter}
+                target="_blank"
+              >
+                <FaTwitter className="mr-3 inline-block" />
+              </a>
+          )}
+          </Typography>
+
+          {displayedListings[selectedIndex]?.phonenumber && (
+              <Typography
+              sx={{ mt: 1 }}
+              className="flex items-center"
+            >
+              <FaPhone className="mr-2" />
+              {formatPhoneNumber(
+                displayedListings[selectedIndex]?.phonenumber
+              )}
+              </Typography>
+          )}
+          {displayedListings[selectedIndex]?.email && (
+            <Typography
+              sx={{ mt: 1 }}
+              className="flex items-center"
+            >
+              <FaEnvelope className="mr-2" />
+              <a
+                href={`mailto:${displayedListings[selectedIndex]?.email}`}
+                target="_blank"
+              >
+                {displayedListings[selectedIndex]?.email}
+              </a>
+            </Typography>
+          )}
+          {displayedListings[selectedIndex]?.streetaddress && (
+            <Typography
+              sx={{ mt: 1 }}
+              className="flex items-center"
+            >
+              <FaSearchLocation className="mr-2" />
+              {displayedListings[selectedIndex]?.streetaddress},{' '}
+              {displayedListings[selectedIndex]?.city},{' '}
+              {displayedListings[selectedIndex]?.state},{' '}
+              {displayedListings[selectedIndex]?.zipcode}
+            </Typography>
+          )}
+        </div>
+        {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
+            <div className="mx-6 my-4">
+              <div>
+              <Button className="self-end bg-orange text-white normal-case" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'approved')}>
+                Approve
+              </Button>
+
+              <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'request_edits')}>
+                Request edits
+              </Button>
+              </div>
+              <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(selectedIndex, 'removed')}><span>Remove my catalog listing</span></div>
+            </div>
+        ) : (
+        <div className="flex items-end my-4 mx-6">
+          {displayedListings[selectedIndex]?.status != 'complete' ? (
+            <a
+              className="w-full flex justify-end"
+              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+            >
+              <Button className="w-full self-end bg-orange text-white normal-case mt-2">
+                Sign Up My Organization
+              </Button>
+            </a>
+          ) : (
+            <a 
+              style={brandColorsStyles.primary.text}
+              className="w-full flex justify-end" 
+              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+            >
+              Join this Organization's community
+            </a>
+          )}
+        </div>
+        )}
       </Dialog>
+
       <div className="flex lg:flex-row flex-col mt-32 xl:mt-0 text-grey">
         <Box className="mb-4" sx={{ flex: 2 }}>
           <Grid
