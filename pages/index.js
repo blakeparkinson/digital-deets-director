@@ -808,6 +808,7 @@ function DirectoryPage({organization = ''}) {
           <CustomMap
             locations={displayedListings}
             google={{ zoomControl: true }}
+            organization={organization}
           />
         </Box>
       </div>

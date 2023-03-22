@@ -1,29 +1,35 @@
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react'
 import React, { useState } from 'react'
 
-function CustomMap({ google, locations = [] }) {
+function CustomMap({ google, locations = [], organization = '' }) {
+
   const [activeMarker, setActiveMarker] = useState(undefined)
   const [selectedPlace, setSelectedPlace] = useState(undefined)
 
-  const [showingInfoWindow, setShowingInfoWindow] = useState(false)
+  //const [showingInfoWindow, setShowingInfoWindow] = useState(false)
 
   const getCenter = () => {
+
+    //set Denver by default
     let center = { lat: 39.7392, lng: -104.9903 }
 
-    locations.forEach(location => {
-      if (location.marker) {
-        center = location.marker;
-        return;
-      }
-    });
-    
+    //set first sponsor by default if Organzation's Catalog
+    if(organization){
+      locations.forEach(location => {
+        if (location.marker) {
+          center = location.marker;
+          return;
+        }
+      });
+    }
+
     return center
   }
 
   const markerClick = (props, marker) => {
     setActiveMarker(marker)
     setSelectedPlace(props)
-    setShowingInfoWindow(true)
+    //setShowingInfoWindow(true)
   }
 
   return (
