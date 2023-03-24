@@ -252,7 +252,7 @@ function DirectoryPage({organization = ''}) {
     
     async function fetchCategories() {
       const response = await fetch(
-        API_url + '/api_catalog/categories'
+        APIurl + '/api_catalog/categories'
       )
       const result = await response.json()
       const categories = result.categories

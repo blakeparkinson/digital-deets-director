@@ -15,12 +15,9 @@ function CustomMap({ google, locations = [], organization = '' }) {
 
     //set first sponsor by default if Organzation's Catalog
     if(organization){
-      locations.forEach(location => {
-        if (location.marker) {
-          center = location.marker;
-          return;
-        }
-      });
+      if(locations.length){
+        center = locations[0].marker;
+      }
     }
 
     return center
