@@ -241,7 +241,6 @@ function DirectoryPage({organization = ''}) {
   const [displayedListings, setDisplayedListings] = useState([])
   const [limit, setLimit] = useState(21)
   const [org, setOrg] = useState('')
-  //const [organization, setOrganization] = useState('')
 
   const [searchTerm, setSearchTerm] = useState(null)
   const [paginatorCount, setPaginatorCount] = useState(0)
@@ -257,7 +256,7 @@ function DirectoryPage({organization = ''}) {
       .join('&')
   }
   useEffect(() => {
-
+    
     const API_url = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'http://digitaldeets.local'; 
     setAPIurl(API_url);
     
