@@ -168,6 +168,17 @@ const ListingComponent = ({
               View full listing
             </Text>
           </div>
+          {listing.sales_materials && (
+          <div className="mt-2">
+            <a
+              style={brandColorsStyles.primary.text}
+              className="w-full flex justify-end"           
+              href={`${listing.sales_materials}`}
+            >
+              Sponsor this Organization
+            </a>
+          </div>
+          )}
           {!listing.use_catalog && listing.catalog_listing_status != 'approve' ? (
               <div className="w-full mx-2 mt-2">
                 <div className="w-full overflow-hidden">
@@ -664,6 +675,17 @@ function DirectoryPage({organization = ''}) {
             </Typography>
           )}
         </div>
+        {displayedListings[selectedIndex]?.sales_materials && (
+          <div className="flex items-end mt-4 mx-6">
+            <a
+              style={brandColorsStyles.primary.text}
+              className="w-full flex justify-end"           
+              href={`${displayedListings[selectedIndex]?.sales_materials}`}
+            >
+              Sponsor this Organization
+            </a>
+          </div>
+        )}
         {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
             <div className="mx-6 my-4">
               <div>
