@@ -7,7 +7,6 @@ First, install the dependencies:
 ```bash
 yarn install
 ```
-
 Second, run the development server:
 
 ```bash
