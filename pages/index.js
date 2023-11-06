@@ -594,7 +594,7 @@ function DirectoryPage({organization = ''}) {
           )}
           {displayedListings[selectedIndex]?.promocode && (
             <Typography sx={{ mt: 1 }}>
-              <b>Deal/Offer: </b>{' '}
+              <b>Services: </b>{' '}
               {displayedListings[selectedIndex]?.promocode}<br />
               {displayedListings[selectedIndex]?.promocode_description}
             </Typography>
