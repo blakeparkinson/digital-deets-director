@@ -146,12 +146,6 @@ const ListingComponent = ({
           <Typography gutterBottom variant="h5" component="div">
             {listing.businessname}
           </Typography>
-          {listing.promocode && (
-            <Text level="xs" weight="normal" className="mt-2 flex text-grey">
-              <FaWindowMaximize className="mr-2" style={brandColorsStyles.primary.text} />
-              {listing.promocode}
-            </Text>
-          )}
           {listing.streetaddress && (
             <Text level="xs" weight="normal" className="mt-2 flex text-grey">
               <FaSearchLocation className="mr-2" style={brandColorsStyles.primary.text} />
