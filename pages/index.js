@@ -108,6 +108,7 @@ const ListingComponent = ({
   handleListItemClick,
   changeCatalogListingStatus,
   brandColorsStyles,
+  organization
 }) => {
   let blocks_in_row = 3
   if (window.innerWidth < 900) {
@@ -173,38 +174,42 @@ const ListingComponent = ({
             </a>
           </div>
           )}
-          {!listing.use_catalog && listing.catalog_listing_status != 'approve' ? (
-              <div className="w-full mx-2 mt-2">
-                <div className="w-full overflow-hidden">
-                <Button className="self-end bg-orange text-white normal-case float-left" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'approved')}>
-                  Approve
-                </Button>
+          {!organization && (
+            <div>
+            {!listing.use_catalog && listing.catalog_listing_status != 'approve' ? (
+                <div className="w-full mx-2 mt-2">
+                  <div className="w-full overflow-hidden">
+                  <Button className="self-end bg-orange text-white normal-case float-left" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'approved')}>
+                    Approve
+                  </Button>
 
-                <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'request_edits')}>
-                  Request edits
-                </Button>
+                  <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 130 }} onClick={(event) => changeCatalogListingStatus(index, 'request_edits')}>
+                    Request edits
+                  </Button>
+                  </div>
+                  <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(index, 'removed')}><span>Remove my catalog listing</span></div>
                 </div>
-                <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(index, 'removed')}><span>Remove my catalog listing</span></div>
-              </div>
-          ) : (
-            <div className="mt-2">
-            {listing.status != 'complete' ? (
-              <a
-                className="w-full flex justify-end"
-                href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
-              >
-                <Button className="w-full self-end bg-orange text-white normal-case">
-                  Sign Up My Organization
-                </Button>
-              </a>
             ) : (
-              <a
-                style={brandColorsStyles.primary.text}
-                className="w-full flex justify-end"           
-                href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
-              >
-                Join this Organization's community
-              </a>
+              <div className="mt-2">
+              {listing.status != 'complete' ? (
+                <a
+                  className="w-full flex justify-end"
+                  href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
+                >
+                  <Button className="w-full self-end bg-orange text-white normal-case">
+                    Sign Up My Organization
+                  </Button>
+                </a>
+              ) : (
+                <a
+                  style={brandColorsStyles.primary.text}
+                  className="w-full flex justify-end"           
+                  href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
+                >
+                  Join this Organization's community
+                </a>
+              )}
+              </div>
             )}
             </div>
           )}
@@ -226,6 +231,7 @@ function formatPhoneNumber(phoneNumberString) {
 }
 
 function DirectoryPage({organization = ''}) {
+
   const router = useRouter()
 
   const [APIurl, setAPIurl] = useState('https://app.digitaldeets.com')
@@ -570,7 +576,7 @@ function DirectoryPage({organization = ''}) {
             Proud Sponsor of {displayedListings[selectedIndex]?.primary_match}!
           </Typography>
         )}
-        <div className="mx-6 mt-4">
+        <div className="mx-6 mt-4 mb-2">
           <Typography>
             {displayedListings[selectedIndex]?.description}
           </Typography>
@@ -679,38 +685,42 @@ function DirectoryPage({organization = ''}) {
             </a>
           </div>
         )}
-        {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
-            <div className="mx-6 my-4">
-              <div>
-              <Button className="self-end bg-orange text-white normal-case" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'approved')}>
-                Approve
-              </Button>
+        {!organization && (
+        <div>
+          {!displayedListings[selectedIndex]?.use_catalog && displayedListings[selectedIndex]?.catalog_listing_status != 'approve' ? (
+              <div className="mx-6 my-4">
+                <div>
+                <Button className="self-end bg-orange text-white normal-case" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'approved')}>
+                  Approve
+                </Button>
 
-              <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'request_edits')}>
-                Request edits
-              </Button>
+                <Button className="self-end bg-orange text-white normal-case float-right" sx={{ minWidth: 150 }} onClick={(event) => changeCatalogListingStatus(selectedIndex, 'request_edits')}>
+                  Request edits
+                </Button>
+                </div>
+                <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(selectedIndex, 'removed')}><span>Remove my catalog listing</span></div>
               </div>
-              <div className="w-full flex justify-center text-blue mt-2 cursor-pointer" onClick={(event) => changeCatalogListingStatus(selectedIndex, 'removed')}><span>Remove my catalog listing</span></div>
-            </div>
-        ) : (
-        <div className="flex items-end my-4 mx-6">
-          {displayedListings[selectedIndex]?.status != 'complete' ? (
-            <a
-              className="w-full flex justify-end"
-              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-            >
-              <Button className="w-full self-end bg-orange text-white normal-case mt-2">
-                Sign Up My Organization
-              </Button>
-            </a>
           ) : (
-            <a 
-              style={brandColorsStyles.primary.text}
-              className="w-full flex justify-end" 
-              href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
-            >
-              Join this Organization's community
-            </a>
+          <div className="flex items-end my-4 mx-6">
+            {displayedListings[selectedIndex]?.status != 'complete' ? (
+              <a
+                className="w-full flex justify-end"
+                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+              >
+                <Button className="w-full self-end bg-orange text-white normal-case mt-2">
+                  Sign Up My Organization
+                </Button>
+              </a>
+            ) : (
+              <a 
+                style={brandColorsStyles.primary.text}
+                className="w-full flex justify-end" 
+                href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
+              >
+                Join this Organization's community
+              </a>
+            )}
+            </div>
           )}
         </div>
         )}
@@ -803,6 +813,7 @@ function DirectoryPage({organization = ''}) {
                   handleListItemClick={handleListItemClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
                   brandColorsStyles={brandColorsStyles}
+                  organization={organization}
                 />
               )
             })}
@@ -819,6 +830,7 @@ function DirectoryPage({organization = ''}) {
                   handleListItemClick={handleListItemClick}
                   changeCatalogListingStatus={changeCatalogListingStatus}
                   brandColorsStyles={brandColorsStyles}
+                  organization={organization}
                 />
               )
             })}
