@@ -29,9 +29,11 @@ function MyApp({ Component, pageProps }) {
 
     const { organization = ''} = router.query
 
-    if(organization){
-      let APIurl = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'http://digitaldeets.local'; 
+    const { orgID = ''} = router.query
+
+    let APIurl = (window.location.hostname == 'catalog.digitaldeets.com') ? 'https://app.digitaldeets.com' : 'http://digitaldeets.local'; 
       
+    if(organization){
       fetch(`${APIurl}/api_catalog/organization_info/${organization}`)
       .then(response => response.json())
       .then(data => {
@@ -47,6 +49,37 @@ function MyApp({ Component, pageProps }) {
           }
 
           setOrganizationName(data.name)
+          if(data.logo){
+            setOrganizationLogo(data.logo)
+          }
+
+          setShowOrganizationHeader(true)
+          setShowComponent(true)
+        }else{
+          setShowHeader(true)
+          setShowComponent(true)
+        }
+      });
+    }else if(orgID) {
+      fetch(`${APIurl}/api_catalog/sponsored_organization_info/${orgID}`)
+      .then(response => response.json())
+      .then(data => {
+        if(data.response == 1){
+
+          if(data.colors){
+            if(data.colors.primary_color){
+              setThemePrimaryColor(data.colors.primary_color)
+            }
+  
+            if(data.colors.secondary_color){
+              setThemeSecondaryColor(data.colors.secondary_color)
+            }
+          }
+
+          if(data.name){
+            setOrganizationName(data.name)
+          }
+          
           if(data.logo){
             setOrganizationLogo(data.logo)
           }

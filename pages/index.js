@@ -175,7 +175,7 @@ const ListingComponent = ({
           </div>
           )}
           {!organization && (
-            <div>
+            <div className="w-full flex justify-center mx-0">
             {!listing.use_catalog && listing.catalog_listing_status != 'approve' ? (
                 <div className="w-full mx-2 mt-2">
                   <div className="w-full overflow-hidden">
