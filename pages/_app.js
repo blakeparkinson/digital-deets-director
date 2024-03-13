@@ -84,7 +84,11 @@ function MyApp({ Component, pageProps }) {
             setOrganizationLogo(data.logo)
           }
 
-          setShowOrganizationHeader(true)
+          if(data.name){
+            setShowOrganizationHeader(true)
+          } else {
+            setShowHeader(true)
+          }
           setShowComponent(true)
         }else{
           setShowHeader(true)
