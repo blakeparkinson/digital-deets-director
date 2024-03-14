@@ -163,7 +163,7 @@ const ListingComponent = ({
               View full listing
             </Text>
           </div>
-          {listing.sales_materials && (
+          {listing.organization_type != 'Supporter' && listing.sales_materials && (
           <div className="mt-2">
             <a
               style={brandColorsStyles.primary.text}
@@ -191,7 +191,7 @@ const ListingComponent = ({
                 </div>
             ) : (
               <div className="mt-2">
-              {listing.status != 'complete' ? (
+              {listing.status != 'complete' && listing.organization_type != 'Supporter' && (
                 <a
                   className="w-full flex justify-end"
                   href={`https://community.digitaldeets.com/onboarding/${listing.id}?${queryParams}`}
@@ -200,7 +200,8 @@ const ListingComponent = ({
                     Sign Up My Organization
                   </Button>
                 </a>
-              ) : (
+              )}
+              {listing.status == 'complete' && listing.organization_type != 'Supporter' && (
                 <a
                   style={brandColorsStyles.primary.text}
                   className="w-full flex justify-end"           
@@ -428,7 +429,7 @@ function DirectoryPage({organization = ''}) {
 
     const { email = '', fName = '', lName = '' } = router.query
     const orgID = displayedListings[index].id
-    
+
     fetch(APIurl + '/wp-content/themes/sdthm/sdexe/api_catalog.php?request=save_catalog_listing_status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -446,51 +447,63 @@ function DirectoryPage({organization = ''}) {
             handleClose()
             setOrg(orgID)
 
-            if(!email){
+            if(displayedListings[index].organization_type == 'Supporter') {
               Swal.fire({
                 html: data.message,
                 icon:'success',
-                timer: 2500,
-                showConfirmButton: false
-              }) 
-            }else{
-              Swal.fire({
-                  html: data.question,
-                  icon:'question',
-                  showCancelButton: true,
-                  showConfirmButton: true,
-                  confirmButtonText: "Add it now",
-                  confirmButtonColor: "#0D779B"
+                showConfirmButton: true,
+                confirmButtonText: "Ok",
+                confirmButtonColor: "#0D779B"
               }).then((result) => {
-                if (result.isConfirmed) {
-                  fetch(APIurl + '/wp-content/themes/sdthm/sdexe/api_catalog.php?request=redirect_catalog_listing', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      organization_id: orgID,
-                      email: email,
-                      first_name: fName,
-                      last_name: lName
-                    })
-                  }).then(response => response.json())
-                    .then(data => {
-                      if(data.response == 1){
-                          window.location.href = data.redirect_url
-                      }else{
-                        Swal.fire({
-                          html: data.message,
-                          icon:'error',
-                          showConfirmButton: true,
-                          confirmButtonColor: "#0D779B"
-                        }) 
-                      }
-                    }) 
-                    .catch((error) => {
-                      console.error(error)
-                    })
-                }
-              }) 
-            }            
+                window.location.href = data.redirect_url
+              })
+            } else {
+              if(!email){
+                Swal.fire({
+                  html: data.message,
+                  icon:'success',
+                  timer: 2500,
+                  showConfirmButton: false
+                }) 
+              }else{
+                Swal.fire({
+                    html: data.question,
+                    icon:'question',
+                    showCancelButton: true,
+                    showConfirmButton: true,
+                    confirmButtonText: "Add it now",
+                    confirmButtonColor: "#0D779B"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    fetch(APIurl + '/wp-content/themes/sdthm/sdexe/api_catalog.php?request=redirect_catalog_listing', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        organization_id: orgID,
+                        email: email,
+                        first_name: fName,
+                        last_name: lName
+                      })
+                    }).then(response => response.json())
+                      .then(data => {
+                        if(data.response == 1){
+                            window.location.href = data.redirect_url
+                        }else{
+                          Swal.fire({
+                            html: data.message,
+                            icon:'error',
+                            showConfirmButton: true,
+                            confirmButtonColor: "#0D779B"
+                          }) 
+                        }
+                      }) 
+                      .catch((error) => {
+                        console.error(error)
+                      })
+                  }
+                }) 
+              }  
+            }          
           }else if(catalog_listing_status == 'request_edits'){           
             setTimeout(function(){
               window.location.href =  data.redirect_url;
@@ -571,11 +584,18 @@ function DirectoryPage({organization = ''}) {
           {displayedListings[selectedIndex]?.businessname} 
         </DialogTitle>
 
-        {displayedListings[selectedIndex]?.primary_match && (
+        {displayedListings[selectedIndex]?.primary_match && displayedListings[selectedIndex]?.organization_type != 'Supporter' && (
           <Typography className="mx-6 mb-4">
             Proud Sponsor of {displayedListings[selectedIndex]?.primary_match}!
           </Typography>
         )}
+
+        {displayedListings[selectedIndex]?.primary_match && displayedListings[selectedIndex]?.organization_type == 'Supporter' && (
+          <Typography className="mx-6 mb-4">
+            Proud Supporter of {displayedListings[selectedIndex]?.primary_match}!
+          </Typography>
+        )}
+
         <div className="mx-6 mt-4 mb-2">
           <Typography>
             {displayedListings[selectedIndex]?.description}
@@ -674,7 +694,7 @@ function DirectoryPage({organization = ''}) {
             </Typography>
           )}
         </div>
-        {displayedListings[selectedIndex]?.sales_materials && (
+        {displayedListings[selectedIndex]?.organization_type != 'Supporter' && displayedListings[selectedIndex]?.sales_materials && (
           <div className="flex items-end mt-4 mx-6">
             <a
               style={brandColorsStyles.primary.text}
@@ -702,7 +722,7 @@ function DirectoryPage({organization = ''}) {
               </div>
           ) : (
           <div className="flex items-end my-4 mx-6">
-            {displayedListings[selectedIndex]?.status != 'complete' ? (
+            {displayedListings[selectedIndex]?.status != 'complete' && displayedListings[selectedIndex]?.organization_type != 'Supporter' && (
               <a
                 className="w-full flex justify-end"
                 href={`https://community.digitaldeets.com/onboarding/${displayedListings[selectedIndex]?.id}?${queryParams}`}
@@ -711,7 +731,8 @@ function DirectoryPage({organization = ''}) {
                   Sign Up My Organization
                 </Button>
               </a>
-            ) : (
+            )}
+            {displayedListings[selectedIndex]?.status == 'complete' && displayedListings[selectedIndex]?.organization_type != 'Supporter' && (
               <a 
                 style={brandColorsStyles.primary.text}
                 className="w-full flex justify-end" 
